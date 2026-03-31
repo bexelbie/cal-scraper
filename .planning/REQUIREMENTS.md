@@ -83,34 +83,34 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SCRP-01 | — | Pending |
-| SCRP-02 | — | Pending |
-| SCRP-03 | — | Pending |
-| SCRP-04 | — | Pending |
-| SCRP-05 | — | Pending |
-| SCRP-06 | — | Pending |
-| SCRP-07 | — | Pending |
-| DATE-01 | — | Pending |
-| DATE-02 | — | Pending |
-| DATE-03 | — | Pending |
-| DATE-04 | — | Pending |
-| DATE-05 | — | Pending |
-| DATE-06 | — | Pending |
-| DATE-07 | — | Pending |
-| ICAL-01 | — | Pending |
-| ICAL-02 | — | Pending |
-| ICAL-03 | — | Pending |
-| ICAL-04 | — | Pending |
-| ICAL-05 | — | Pending |
-| ICAL-06 | — | Pending |
-| CLI-01 | — | Pending |
-| CLI-02 | — | Pending |
+| DATE-01 | Phase 1 | Pending |
+| DATE-02 | Phase 1 | Pending |
+| DATE-03 | Phase 1 | Pending |
+| DATE-04 | Phase 1 | Pending |
+| DATE-05 | Phase 1 | Pending |
+| DATE-06 | Phase 1 | Pending |
+| DATE-07 | Phase 1 | Pending |
+| SCRP-01 | Phase 2 | Pending |
+| SCRP-02 | Phase 2 | Pending |
+| SCRP-03 | Phase 2 | Pending |
+| SCRP-04 | Phase 2 | Pending |
+| SCRP-05 | Phase 2 | Pending |
+| SCRP-06 | Phase 2 | Pending |
+| SCRP-07 | Phase 2 | Pending |
+| ICAL-01 | Phase 3 | Pending |
+| ICAL-02 | Phase 3 | Pending |
+| ICAL-03 | Phase 3 | Pending |
+| ICAL-04 | Phase 3 | Pending |
+| ICAL-05 | Phase 3 | Pending |
+| ICAL-06 | Phase 3 | Pending |
+| CLI-01 | Phase 3 | Pending |
+| CLI-02 | Phase 3 | Pending |
 
 **Coverage:**
 - v1 requirements: 22 total
-- Mapped to phases: 0
-- Unmapped: 22 ⚠️
+- Mapped to phases: 22 ✓
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-31*
-*Last updated: 2026-03-31 after initial definition*
+*Last updated: 2026-03-31 after roadmap creation*
