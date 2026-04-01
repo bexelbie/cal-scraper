@@ -38,8 +38,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### CLI
 
-- [ ] **CLI-01**: Accept --output flag for configurable output path (default: ./moravska-galerie-deti.ics)
-- [ ] **CLI-02**: Print summary of scraped events to stdout (count, date range)
+- [x] **CLI-01**: Accept --output flag for configurable output path (default: ./moravska-galerie-deti.ics)
+- [x] **CLI-02**: Print summary of scraped events to stdout (count, date range)
 
 ## v2 Requirements
 
@@ -103,8 +103,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ICAL-04 | Phase 3 | Complete |
 | ICAL-05 | Phase 3 | Complete |
 | ICAL-06 | Phase 3 | Complete |
-| CLI-01 | Phase 3 | Pending |
-| CLI-02 | Phase 3 | Pending |
+| CLI-01 | Phase 3 | Complete |
+| CLI-02 | Phase 3 | Complete |
 
 **Coverage:**
 - v1 requirements: 22 total

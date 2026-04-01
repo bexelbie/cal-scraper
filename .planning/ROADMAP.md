@@ -63,7 +63,7 @@ Plans:
 
 Plans:
 - [x] 03-01-PLAN.md — ICS generator module: Event → VEVENT → Calendar .ics with deterministic UIDs
-- [ ] 03-02-PLAN.md — CLI entry point & pipeline wiring: cal-scraper command with --output flag
+- [x] 03-02-PLAN.md — CLI entry point & pipeline wiring: cal-scraper command with --output flag
 
 ## Progress
 
