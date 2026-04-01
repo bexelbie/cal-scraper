@@ -21,6 +21,9 @@ dev = [
     "responses>=0.25",
 ]
 
+[project.scripts]
+cal-scraper = "cal_scraper.cli:main"
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 
