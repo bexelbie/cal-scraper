@@ -38,7 +38,7 @@ MOCK_EVENTS = [
     ),
 ]
 
-MOCK_ICS = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nEND:VCALENDAR\r\n"
+MOCK_ICS = "BEGIN:VCALENDAR\nVERSION:2.0\nEND:VCALENDAR\n"
 
 
 def _patch_pipeline(events=None, ics=None, pages=None):
@@ -107,17 +107,19 @@ class TestCliArgParsing:
 
     def test_verbose_flag(self, tmp_path):
         """main(["--verbose"]) enables DEBUG-level logging."""
+        import logging
+
         out = tmp_path / "out.ics"
         patches = _patch_pipeline()
         with patches["fetch"], patches["extract"], patches["ics"], \
-             patch("cal_scraper.cli.logging") as mock_logging:
+             patch("logging.basicConfig") as mock_basic_config:
             from cal_scraper.cli import main
 
             main(["--verbose", "-o", str(out)])
             # basicConfig should be called with DEBUG level
-            mock_logging.basicConfig.assert_called_once()
-            args, kwargs = mock_logging.basicConfig.call_args
-            assert kwargs.get("level") == 10  # logging.DEBUG == 10
+            mock_basic_config.assert_called_once()
+            _args, kwargs = mock_basic_config.call_args
+            assert kwargs.get("level") == logging.DEBUG
 
 
 # ---------------------------------------------------------------------------
