@@ -25,7 +25,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **DATE-04**: Parse multi-day date ranges ("7/7 – 11/7/2026") using en-dash separator
 - [ ] **DATE-05**: Parse multi-day + time range ("27/7 – 31/7/2026, 9–16 H")
 - [ ] **DATE-06**: Handle D/M/Y European date order (not M/D/Y)
-- [ ] **DATE-07**: Apply Europe/Prague timezone to all parsed dates
+- [x] **DATE-07**: Apply Europe/Prague timezone to all parsed dates
 
 ### iCal Generation
 
@@ -89,7 +89,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DATE-04 | Phase 1 | Pending |
 | DATE-05 | Phase 1 | Pending |
 | DATE-06 | Phase 1 | Pending |
-| DATE-07 | Phase 1 | Pending |
+| DATE-07 | Phase 1 | Complete |
 | SCRP-01 | Phase 2 | Pending |
 | SCRP-02 | Phase 2 | Pending |
 | SCRP-03 | Phase 2 | Pending |

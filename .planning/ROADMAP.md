@@ -31,7 +31,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans:** 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Project foundation: package scaffolding, pyproject.toml, data models (ParsedDate, Event, PRAGUE_TZ)
+- [x] 01-01-PLAN.md — Project foundation: package scaffolding, pyproject.toml, data models (ParsedDate, Event, PRAGUE_TZ)
 - [ ] 01-02-PLAN.md — Czech date parser (TDD): regex fallback chain for all 6 date format variants
 
 ### Phase 2: Web Scraping
