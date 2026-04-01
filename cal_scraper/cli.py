@@ -21,6 +21,7 @@ from cal_scraper.sites import SITE_REGISTRY, SiteConfig
 
 # Trigger site registration on import
 import cal_scraper.sites.moravska_galerie  # noqa: F401
+import cal_scraper.sites.hvezdarna  # noqa: F401
 
 
 # ---------------------------------------------------------------------------

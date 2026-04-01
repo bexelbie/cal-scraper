@@ -40,6 +40,14 @@ MOCK_EVENTS = [
 MOCK_ICS = "BEGIN:VCALENDAR\nVERSION:2.0\nEND:VCALENDAR\n"
 
 
+@pytest.fixture(autouse=True)
+def _mock_hvezdarna_scrape():
+    """Prevent hvezdarna from making real HTTP calls during CLI tests."""
+    with patch("cal_scraper.sites.hvezdarna.scrape", return_value=MOCK_EVENTS):
+        yield
+
+
+
 # ---------------------------------------------------------------------------
 # CLI-01: Argument parsing
 # ---------------------------------------------------------------------------
@@ -138,7 +146,7 @@ class TestCliPipeline:
         with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
              patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS) as mock_ics:
             from cal_scraper.cli import main
-            main(["-d", str(out_dir)])
+            main(["--site", "moravska-galerie", "-d", str(out_dir)])
             mock_ics.assert_called_once()
             _, kwargs = mock_ics.call_args
             assert kwargs["cal_name"] == "Moravská galerie – Děti a rodiny (unofficial)"
