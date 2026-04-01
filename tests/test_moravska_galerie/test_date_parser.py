@@ -2,7 +2,6 @@
 
 from datetime import date, datetime, timedelta
 
-import pytest
 
 from cal_scraper.sites.moravska_galerie.date_parser import parse_date
 from cal_scraper.models import PRAGUE_TZ

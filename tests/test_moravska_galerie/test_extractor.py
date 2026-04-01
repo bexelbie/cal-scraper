@@ -1,13 +1,12 @@
 """Tests for cal_scraper.extractor — HTML event extraction from Elementor cards."""
 
 import logging
-from datetime import date, datetime
+from datetime import datetime
 from pathlib import Path
 
 import pytest
 
 from cal_scraper.sites.moravska_galerie.extractor import extract_all_events, extract_events_from_html
-from cal_scraper.models import PRAGUE_TZ, Event
 
 # ---------------------------------------------------------------------------
 # Fixture data

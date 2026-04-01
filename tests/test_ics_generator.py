@@ -2,7 +2,6 @@
 
 from datetime import date, datetime, timedelta
 
-import pytest
 from icalendar import Calendar
 
 from cal_scraper.ics_generator import event_to_vevent, events_to_ics, generate_uid

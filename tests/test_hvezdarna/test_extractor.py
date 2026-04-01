@@ -4,7 +4,7 @@ from datetime import date, datetime, timedelta
 
 import pytest
 
-from cal_scraper.models import PRAGUE_TZ, Event
+from cal_scraper.models import PRAGUE_TZ
 from cal_scraper.sites.hvezdarna.extractor import (
     _parse_date_header,
     _parse_duration,

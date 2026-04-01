@@ -36,7 +36,6 @@ def _week_url(base_url: str, d: date) -> str:
     Uses single-digit month/day (no zero-padding) as the site expects.
     """
     datum = f"{d.year}-{d.month}-{d.day}"
-    sep = "" if base_url.endswith("/") else "/"
     # Prefer query parameter on the base URL
     return f"{base_url}?type=tyden&datum={datum}"
 

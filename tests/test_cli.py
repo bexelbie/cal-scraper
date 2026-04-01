@@ -1,9 +1,7 @@
 """Tests for CLI entry point and multi-site pipeline wiring."""
 
-import sys
 from datetime import date, datetime
-from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 
@@ -41,9 +39,10 @@ MOCK_ICS = "BEGIN:VCALENDAR\nVERSION:2.0\nEND:VCALENDAR\n"
 
 
 @pytest.fixture(autouse=True)
-def _mock_hvezdarna_scrape():
-    """Prevent hvezdarna from making real HTTP calls during CLI tests."""
-    with patch("cal_scraper.sites.hvezdarna.scrape", return_value=MOCK_EVENTS):
+def _mock_external_sites():
+    """Prevent external sites from making real HTTP calls during CLI tests."""
+    with patch("cal_scraper.sites.hvezdarna.scrape", return_value=MOCK_EVENTS), \
+         patch("cal_scraper.sites.ikea_brno.scrape", return_value=MOCK_EVENTS):
         yield
 
 

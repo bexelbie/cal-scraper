@@ -17,11 +17,12 @@ from pathlib import Path
 
 from cal_scraper.ics_generator import events_to_ics
 from cal_scraper.models import Event
-from cal_scraper.sites import SITE_REGISTRY, SiteConfig
+from cal_scraper.sites import SITE_REGISTRY
 
 # Trigger site registration on import
 import cal_scraper.sites.moravska_galerie  # noqa: F401
 import cal_scraper.sites.hvezdarna  # noqa: F401
+import cal_scraper.sites.ikea_brno  # noqa: F401
 
 
 # ---------------------------------------------------------------------------
