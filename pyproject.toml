@@ -18,6 +18,7 @@ dependencies = [
 dev = [
     "pytest>=8.0",
     "ruff>=0.4",
+    "responses>=0.25",
 ]
 
 [tool.pytest.ini_options]
