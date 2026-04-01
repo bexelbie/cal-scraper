@@ -108,9 +108,18 @@ def extract_events_from_html(html: str) -> list[Event]:
     """Extract all valid Event objects from an HTML page of Elementor event cards.
 
     Skips articles missing critical fields (title, date) with warning logs.
+    Warns if no article elements are found — likely a template/selector change.
     """
     soup = BeautifulSoup(html, "lxml")
     articles = soup.select(ARTICLE_SELECTOR)
+
+    if not articles:
+        logger.warning(
+            "No article elements matched selector %r — "
+            "the site template may have changed",
+            ARTICLE_SELECTOR,
+        )
+
     events: list[Event] = []
 
     for article in articles:

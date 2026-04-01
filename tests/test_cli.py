@@ -229,16 +229,18 @@ class TestCliSummary:
         assert str(out) in captured
 
     def test_summary_no_events(self, tmp_path, capsys):
-        """With empty events: output contains 'No events found'."""
+        """With empty events: returns 1 and prints error to stderr."""
         out = tmp_path / "output.ics"
         patches = _patch_pipeline(events=[])
         with patches["fetch"], patches["extract"], patches["ics"]:
             from cal_scraper.cli import main
 
-            main(["-o", str(out)])
+            result = main(["-o", str(out)])
 
-        captured = capsys.readouterr().out
-        assert "No events found" in captured
+        assert result == 1
+        captured = capsys.readouterr().err
+        assert "no events found" in captured.lower()
+        assert "template" in captured.lower()
 
 
 # ---------------------------------------------------------------------------

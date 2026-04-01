@@ -30,11 +30,6 @@ DEFAULT_OUTPUT = "moravska-galerie-deti.ics"
 
 def _summarize(events: list[Event], output_path: str) -> None:
     """Print a human-readable summary of the scraping result to stdout."""
-    if not events:
-        print("No events found.")
-        print(f"Written to {output_path}")
-        return
-
     dates: list[date] = []
     for ev in events:
         d = ev.dtstart
@@ -106,6 +101,14 @@ def main(argv: list[str] | None = None) -> int:
             events = enrich_events(events)
     except ScrapingError as exc:
         print(f"Error: {exc}", file=sys.stderr)
+        return 1
+
+    if not events:
+        print(
+            "Error: no events found. The website template may have changed — "
+            "check that Elementor selectors in extractor.py still match.",
+            file=sys.stderr,
+        )
         return 1
 
     ics_content = events_to_ics(events)

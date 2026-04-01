@@ -254,3 +254,12 @@ def test_sold_out_case_insensitive():
     events = extract_events_from_html(html)
     assert len(events) == 1
     assert events[0].sold_out is True
+
+
+def test_no_articles_warns(caplog):
+    """A page with no article elements logs a warning about template changes."""
+    html = "<html><body><p>No events here</p></body></html>"
+    with caplog.at_level(logging.WARNING, logger="cal_scraper.extractor"):
+        events = extract_events_from_html(html)
+    assert events == []
+    assert any("template" in r.message.lower() for r in caplog.records)
