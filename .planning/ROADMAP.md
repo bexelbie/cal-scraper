@@ -43,7 +43,11 @@ Plans:
   2. Each extracted event contains title, date text, venue (with sub-location), description, and detail URL — all with Czech diacritics preserved
   3. Network errors (timeout, connection refused) produce a warning and processing continues with remaining pages
   4. Requests include 1-second delays between pages and a descriptive User-Agent header
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — HTTP page fetcher with pagination discovery, rate limiting, and error handling
+- [ ] 02-02-PLAN.md — HTML event extractor with Elementor selector-based field extraction
 
 ### Phase 3: ICS Generation & CLI
 **Goal**: Users can run a single command to produce a valid .ics calendar file of all upcoming children/family events from the gallery
