@@ -68,8 +68,17 @@ def event_to_vevent(event: Event, dtstamp: datetime | None = None) -> IcsEvent:
 
     vevent.add("location", event.venue)
 
-    # Description: event text + original date string
-    description = f"{event.description}\nDatum: {event.raw_date}"
+    # Build description with enriched fields
+    desc_parts: list[str] = []
+    if event.sold_out:
+        desc_parts.append("[VYPRODÁNO / SOLD OUT]")
+    desc_parts.append(event.description)
+    if event.price:
+        desc_parts.append(f"Cena: {event.price}")
+    if event.reservation:
+        desc_parts.append(f"Rezervace: {event.reservation}")
+    desc_parts.append(f"Datum: {event.raw_date}")
+    description = "\n".join(desc_parts)
     vevent.add("description", description)
 
     vevent.add("url", event.url)

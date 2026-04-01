@@ -256,7 +256,7 @@ class TestCliErrorHandling:
         with patch(
             "cal_scraper.cli.fetch_all_pages",
             side_effect=ScrapingError("Failed to fetch first page"),
-        ):
+        ), patch("cal_scraper.cli.enrich_events"):
             from cal_scraper.cli import main
 
             result = main(["-o", str(tmp_path / "out.ics")])
@@ -269,7 +269,7 @@ class TestCliErrorHandling:
         with patch(
             "cal_scraper.cli.fetch_all_pages",
             side_effect=ScrapingError("Network failure"),
-        ):
+        ), patch("cal_scraper.cli.enrich_events"):
             from cal_scraper.cli import main
 
             main(["-o", str(tmp_path / "out.ics")])
@@ -285,9 +285,42 @@ class TestCliErrorHandling:
         with patch(
             "cal_scraper.cli.fetch_all_pages",
             side_effect=ScrapingError("Boom"),
-        ):
+        ), patch("cal_scraper.cli.enrich_events"):
             from cal_scraper.cli import main
 
             main(["-o", str(out)])
 
         assert not out.exists()
+
+
+# ---------------------------------------------------------------------------
+# --no-details flag and enrichment
+# ---------------------------------------------------------------------------
+
+
+class TestCliNoDetailsFlag:
+    """CLI --no-details flag controls detail page fetching."""
+
+    def test_no_details_flag_recognized(self, tmp_path):
+        """--no-details flag is accepted without error."""
+        out = tmp_path / "output.ics"
+        patches = _patch_pipeline()
+        with patches["fetch"], patches["extract"], patches["ics"], \
+             patch("cal_scraper.cli.enrich_events") as mock_enrich:
+            from cal_scraper.cli import main
+
+            result = main(["--no-details", "-o", str(out)])
+            assert result == 0
+            mock_enrich.assert_not_called()
+
+    def test_enrich_called_by_default(self, tmp_path):
+        """Without --no-details, enrich_events is called."""
+        out = tmp_path / "output.ics"
+        patches = _patch_pipeline()
+        with patches["fetch"], patches["extract"], patches["ics"], \
+             patch("cal_scraper.cli.enrich_events", return_value=MOCK_EVENTS) as mock_enrich:
+            from cal_scraper.cli import main
+
+            result = main(["-o", str(out)])
+            assert result == 0
+            mock_enrich.assert_called_once()

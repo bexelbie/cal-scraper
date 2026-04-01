@@ -14,6 +14,7 @@ import logging
 import sys
 from datetime import date, datetime
 
+from cal_scraper.detail_parser import enrich_events
 from cal_scraper.extractor import extract_all_events
 from cal_scraper.fetcher import ScrapingError, fetch_all_pages
 from cal_scraper.ics_generator import events_to_ics
@@ -86,6 +87,11 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Print ICS to stdout instead of writing to a file",
     )
+    parser.add_argument(
+        "--no-details",
+        action="store_true",
+        help="Skip fetching individual event detail pages (faster, less data)",
+    )
     args = parser.parse_args(argv)
 
     logging.basicConfig(
@@ -96,6 +102,8 @@ def main(argv: list[str] | None = None) -> int:
     try:
         pages = fetch_all_pages()
         events = extract_all_events(pages)
+        if not args.no_details:
+            events = enrich_events(events)
     except ScrapingError as exc:
         print(f"Error: {exc}", file=sys.stderr)
         return 1

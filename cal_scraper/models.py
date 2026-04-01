@@ -40,3 +40,7 @@ class Event:
     description: str
     url: str
     raw_date: str
+    # v2 fields — enriched from detail pages
+    price: str = ""
+    reservation: str = ""
+    sold_out: bool = False

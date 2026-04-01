@@ -124,6 +124,54 @@ class TestEventToVevent:
         desc = str(vevent.get("description"))
         assert "Datum: 8/4/2026, 16.30 H" in desc
 
+    def test_sold_out_in_description(self):
+        """sold_out=True adds [VYPRODÁNO / SOLD OUT] to description (ENHN-01)."""
+        event = _timed_event()
+        event.sold_out = True
+        vevent = event_to_vevent(event)
+        desc = str(vevent.get("description"))
+        assert "[VYPRODÁNO / SOLD OUT]" in desc
+
+    def test_no_sold_out_in_description(self):
+        """sold_out=False does not add sold-out marker to description."""
+        event = _timed_event()
+        event.sold_out = False
+        vevent = event_to_vevent(event)
+        desc = str(vevent.get("description"))
+        assert "VYPRODÁNO" not in desc
+
+    def test_price_in_description(self):
+        """Event with price includes 'Cena:' line in description (DETL-02)."""
+        event = _timed_event()
+        event.price = "V – 100 Kč"
+        vevent = event_to_vevent(event)
+        desc = str(vevent.get("description"))
+        assert "Cena: V – 100 Kč" in desc
+
+    def test_no_price_in_description(self):
+        """Event without price does not include 'Cena:' in description."""
+        event = _timed_event()
+        event.price = ""
+        vevent = event_to_vevent(event)
+        desc = str(vevent.get("description"))
+        assert "Cena:" not in desc
+
+    def test_reservation_in_description(self):
+        """Event with reservation includes 'Rezervace:' in description (DETL-03)."""
+        event = _timed_event()
+        event.reservation = "info@gallery.cz, 724 543 722"
+        vevent = event_to_vevent(event)
+        desc = str(vevent.get("description"))
+        assert "Rezervace: info@gallery.cz, 724 543 722" in desc
+
+    def test_no_reservation_in_description(self):
+        """Event without reservation does not include 'Rezervace:' in description."""
+        event = _timed_event()
+        event.reservation = ""
+        vevent = event_to_vevent(event)
+        desc = str(vevent.get("description"))
+        assert "Rezervace:" not in desc
+
     def test_timed_event_none_dtend_uses_default_duration(self):
         """When dtend is None for a timed event, uses DEFAULT_DURATION."""
         event = _timed_event()

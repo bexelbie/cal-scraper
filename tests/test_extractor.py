@@ -162,3 +162,95 @@ def test_multi_time_slot_produces_multiple_events():
     # All share the same title, venue, description
     assert all(e.title == "Multi Slot Event" for e in events)
     assert all(e.venue == "Some Venue" for e in events)
+
+
+# ---------------------------------------------------------------------------
+# ENHN-01: Sold-out detection (VYPRODÁNO in title)
+# ---------------------------------------------------------------------------
+
+
+def test_sold_out_detected():
+    """Title containing 'VYPRODÁNO' sets sold_out=True (ENHN-01)."""
+    html = """
+    <html><body>
+    <article class="elementor-post ecs-post-loop post-77777">
+      <div data-elementor-type="loop">
+        <div data-id="ff31590">
+          <h2 class="elementor-heading-title">
+            <a href="https://example.com/sold/">Workshop – VYPRODÁNO</a>
+          </h2>
+        </div>
+        <div data-id="fe5263e">
+          <div class="elementor-widget-container">● 15/6/2026, 10 H</div>
+        </div>
+        <div data-id="d2f8856">
+          <div class="elementor-widget-container">Venue</div>
+        </div>
+        <div data-id="16d0837">
+          <div class="elementor-widget-container">Desc</div>
+        </div>
+      </div>
+    </article>
+    </body></html>
+    """
+    events = extract_events_from_html(html)
+    assert len(events) == 1
+    assert events[0].sold_out is True
+
+
+def test_sold_out_false_when_absent():
+    """Title without 'VYPRODÁNO' sets sold_out=False (ENHN-01)."""
+    html = """
+    <html><body>
+    <article class="elementor-post ecs-post-loop post-66666">
+      <div data-elementor-type="loop">
+        <div data-id="ff31590">
+          <h2 class="elementor-heading-title">
+            <a href="https://example.com/avail/">Available Workshop</a>
+          </h2>
+        </div>
+        <div data-id="fe5263e">
+          <div class="elementor-widget-container">● 15/6/2026, 10 H</div>
+        </div>
+        <div data-id="d2f8856">
+          <div class="elementor-widget-container">Venue</div>
+        </div>
+        <div data-id="16d0837">
+          <div class="elementor-widget-container">Desc</div>
+        </div>
+      </div>
+    </article>
+    </body></html>
+    """
+    events = extract_events_from_html(html)
+    assert len(events) == 1
+    assert events[0].sold_out is False
+
+
+def test_sold_out_case_insensitive():
+    """VYPRODÁNO detection is case insensitive (ENHN-01)."""
+    html = """
+    <html><body>
+    <article class="elementor-post ecs-post-loop post-55555">
+      <div data-elementor-type="loop">
+        <div data-id="ff31590">
+          <h2 class="elementor-heading-title">
+            <a href="https://example.com/case/">Event Vyprodáno</a>
+          </h2>
+        </div>
+        <div data-id="fe5263e">
+          <div class="elementor-widget-container">● 15/6/2026, 10 H</div>
+        </div>
+        <div data-id="d2f8856">
+          <div class="elementor-widget-container">Venue</div>
+        </div>
+        <div data-id="16d0837">
+          <div class="elementor-widget-container">Desc</div>
+        </div>
+      </div>
+    </article>
+    </body></html>
+    """
+    events = extract_events_from_html(html)
+    assert len(events) == 1
+    assert events[0].sold_out is True

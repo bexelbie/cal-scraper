@@ -60,6 +60,9 @@ def _extract_events_from_article(article: Tag) -> list[Event]:
     title = _clean_text(title_el.get_text())
     url = title_el.get("href", "")
 
+    # ENHN-01: detect sold-out events
+    sold_out = "VYPRODÁNO" in title.upper()
+
     # Date (critical — skip if missing)
     date_el = article.select_one(DATE_SELECTOR)
     if date_el is None:
@@ -90,6 +93,7 @@ def _extract_events_from_article(article: Tag) -> list[Event]:
             description=description,
             url=url,
             raw_date=parsed.raw_text,
+            sold_out=sold_out,
         )
         for parsed in parsed_dates
     ]
