@@ -113,28 +113,30 @@ class TestMultiDayRange:
 # ---------------------------------------------------------------------------
 
 class TestMultiDayTimeRange:
-    """DATE-05: D/M – D/M/YYYY, H–H H → spanning timed event."""
+    """DATE-05: D/M – D/M/YYYY, H–H H → all-day spanning event (camp-style)."""
 
     def test_basic(self):
         result = parse_date("● 27/7 – 31/7/2026, 9–16 H")
         assert result is not None
-        assert result.dtstart == datetime(2026, 7, 27, 9, 0, tzinfo=PRAGUE_TZ)
-        assert result.dtend == datetime(2026, 7, 31, 16, 0, tzinfo=PRAGUE_TZ)
-        assert result.all_day is False
+        assert result.dtstart == date(2026, 7, 27)
+        assert result.dtend == date(2026, 8, 1)  # exclusive DTEND
+        assert result.all_day is True
 
-    def test_start_hour(self):
+    def test_is_date_not_datetime(self):
         result = parse_date("● 27/7 – 31/7/2026, 9–16 H")
-        assert result.dtstart.hour == 9
+        assert isinstance(result.dtstart, date)
+        assert not isinstance(result.dtstart, datetime)
 
-    def test_end_hour(self):
+    def test_exclusive_dtend(self):
         result = parse_date("● 27/7 – 31/7/2026, 9–16 H")
-        assert result.dtend.hour == 16
+        # DTEND is exclusive: 31st + 1 day = Aug 1
+        assert result.dtend == date(2026, 8, 1)
 
     def test_different_dates(self):
         result = parse_date("● 13/7 – 17/7/2026, 9–16 H")
         assert result is not None
-        assert result.dtstart == datetime(2026, 7, 13, 9, 0, tzinfo=PRAGUE_TZ)
-        assert result.dtend == datetime(2026, 7, 17, 16, 0, tzinfo=PRAGUE_TZ)
+        assert result.dtstart == date(2026, 7, 13)
+        assert result.dtend == date(2026, 7, 18)  # exclusive DTEND
 
 
 # ---------------------------------------------------------------------------

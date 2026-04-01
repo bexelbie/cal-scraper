@@ -86,13 +86,16 @@ _RE_DATE_ONLY = re.compile(
 # ---------------------------------------------------------------------------
 
 def _parse_multi_day_time(m: re.Match, raw: str) -> ParsedDate:
-    """'27/7 – 31/7/2026, 9–16 H' → spanning timed event (D-03)."""
+    """'27/7 – 31/7/2026, 9–16 H' → all-day spanning event.
+
+    Multi-day camps with daily hours render better as all-day banners
+    in calendar apps than as a single massive timed block.
+    """
     sd, sm = int(m.group(1)), int(m.group(2))
     ed, em, year = int(m.group(3)), int(m.group(4)), int(m.group(5))
-    start_hour, end_hour = int(m.group(6)), int(m.group(7))
-    start = _make_dt(sd, sm, year, start_hour)
-    end = _make_dt(ed, em, year, end_hour)
-    return ParsedDate(dtstart=start, dtend=end, all_day=False, raw_text=raw)
+    start = _make_date(sd, sm, year)
+    end = _make_date(ed, em, year) + timedelta(days=1)  # exclusive DTEND
+    return ParsedDate(dtstart=start, dtend=end, all_day=True, raw_text=raw)
 
 
 def _parse_multi_day(m: re.Match, raw: str) -> ParsedDate:
