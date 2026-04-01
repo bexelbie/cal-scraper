@@ -1,10 +1,10 @@
 """CLI entry point for cal-scraper.
 
-Wires the full pipeline: fetch → extract → generate ICS → write file.
+Wires the full pipeline: select sites → scrape → generate ICS → write files.
 Registered as the ``cal-scraper`` console command via pyproject.toml.
 
 Public API:
-    main(argv) — parse arguments, run pipeline, write .ics file
+    main(argv) — parse arguments, run pipeline, write .ics files
 """
 
 from __future__ import annotations
@@ -13,14 +13,14 @@ import argparse
 import logging
 import sys
 from datetime import date, datetime
+from pathlib import Path
 
-from cal_scraper.detail_parser import enrich_events
-from cal_scraper.extractor import extract_all_events
-from cal_scraper.fetcher import ScrapingError, fetch_all_pages
 from cal_scraper.ics_generator import events_to_ics
 from cal_scraper.models import Event
+from cal_scraper.sites import SITE_REGISTRY, SiteConfig
 
-DEFAULT_OUTPUT = "moravska-galerie-deti.ics"
+# Trigger site registration on import
+import cal_scraper.sites.moravska_galerie  # noqa: F401
 
 
 # ---------------------------------------------------------------------------
@@ -63,13 +63,21 @@ def main(argv: list[str] | None = None) -> int:
     """
     parser = argparse.ArgumentParser(
         prog="cal-scraper",
-        description="Scrape Moravská galerie children/family events → iCal file",
+        description="Scrape event calendars → iCal files",
     )
     parser.add_argument(
-        "--output",
-        "-o",
-        default=DEFAULT_OUTPUT,
-        help=f"Output .ics file path (default: {DEFAULT_OUTPUT})",
+        "--site",
+        "-s",
+        nargs="*",
+        choices=list(SITE_REGISTRY.keys()),
+        default=None,
+        help="Sites to scrape (default: all registered sites)",
+    )
+    parser.add_argument(
+        "--output-dir",
+        "-d",
+        default=".",
+        help="Output directory for .ics files (default: current directory)",
     )
     parser.add_argument(
         "--verbose",
@@ -80,7 +88,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--dry-run",
         action="store_true",
-        help="Print ICS to stdout instead of writing to a file",
+        help="Print ICS to stdout instead of writing to files",
     )
     parser.add_argument(
         "--no-details",
@@ -94,33 +102,60 @@ def main(argv: list[str] | None = None) -> int:
         format="%(levelname)s: %(message)s",
     )
 
-    try:
-        pages = fetch_all_pages()
-        events = extract_all_events(pages)
-        if not args.no_details:
-            events = enrich_events(events)
-    except ScrapingError as exc:
-        print(f"Error: {exc}", file=sys.stderr)
-        return 1
+    selected = args.site if args.site is not None else list(SITE_REGISTRY.keys())
+    output_dir = Path(args.output_dir)
 
-    if not events:
-        print(
-            "Error: no events found. The website template may have changed — "
-            "check that Elementor selectors in extractor.py still match.",
-            file=sys.stderr,
+    errors = 0
+
+    for site_name in selected:
+        config = SITE_REGISTRY[site_name]
+        site_module = _import_site(site_name)
+
+        try:
+            events = site_module.scrape(
+                verbose=args.verbose, no_details=args.no_details
+            )
+        except Exception as exc:
+            print(f"Error [{site_name}]: {exc}", file=sys.stderr)
+            errors += 1
+            continue
+
+        if not events:
+            print(
+                f"Error [{site_name}]: no events found. The website template may "
+                "have changed — check that selectors still match.",
+                file=sys.stderr,
+            )
+            errors += 1
+            continue
+
+        ics_content = events_to_ics(
+            events,
+            cal_name=config.cal_name,
+            source_url=config.source_url,
+            prodid=config.prodid,
         )
-        return 1
 
-    ics_content = events_to_ics(events)
+        if args.dry_run:
+            print(ics_content)
+            _summarize(events, "(stdout)")
+        else:
+            out_path = output_dir / config.default_filename
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(out_path, "w", encoding="utf-8") as fh:
+                fh.write(ics_content)
+            _summarize(events, str(out_path))
 
-    if args.dry_run:
-        print(ics_content)
-    else:
-        with open(args.output, "w", encoding="utf-8") as fh:
-            fh.write(ics_content)
+    return 1 if errors else 0
 
-    _summarize(events, "(stdout)" if args.dry_run else args.output)
-    return 0
+
+def _import_site(name: str):
+    """Import and return the site module for a registered site name."""
+    import importlib
+
+    # Convert site name (e.g. "moravska-galerie") to module path
+    module_name = name.replace("-", "_")
+    return importlib.import_module(f"cal_scraper.sites.{module_name}")
 
 
 if __name__ == "__main__":

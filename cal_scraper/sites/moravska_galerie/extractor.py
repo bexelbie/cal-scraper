@@ -10,7 +10,7 @@ import logging
 
 from bs4 import BeautifulSoup, Tag
 
-from cal_scraper.date_parser import parse_dates
+from cal_scraper.sites.moravska_galerie.date_parser import parse_dates
 from cal_scraper.models import Event
 
 logger = logging.getLogger(__name__)

@@ -7,7 +7,7 @@ import time
 import requests
 from bs4 import BeautifulSoup
 
-from cal_scraper.fetcher import USER_AGENT
+from cal_scraper.sites.moravska_galerie.fetcher import USER_AGENT
 from cal_scraper.models import Event
 
 logger = logging.getLogger(__name__)

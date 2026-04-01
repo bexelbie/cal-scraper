@@ -5,7 +5,7 @@ import requests
 import responses
 from unittest.mock import patch
 
-from cal_scraper.fetcher import (
+from cal_scraper.sites.moravska_galerie.fetcher import (
     fetch_all_pages,
     fetch_page,
     _get_page_url,
@@ -150,7 +150,7 @@ class TestFetchAllPages:
         assert "cal-scraper" in responses.calls[0].request.headers["User-Agent"]
 
     @responses.activate
-    @patch("cal_scraper.fetcher.time.sleep")
+    @patch("cal_scraper.sites.moravska_galerie.fetcher.time.sleep")
     def test_fetch_all_pages_delay(self, mock_sleep):
         """time.sleep(1.0) is called between page fetches (not before the first)."""
         responses.add(responses.GET, BASE_URL, body=PAGE1_HTML, status=200)

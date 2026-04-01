@@ -4,7 +4,7 @@ from datetime import date, datetime, timedelta
 
 import pytest
 
-from cal_scraper.date_parser import parse_date
+from cal_scraper.sites.moravska_galerie.date_parser import parse_date
 from cal_scraper.models import PRAGUE_TZ
 
 
@@ -170,30 +170,30 @@ class TestMultipleTimeSlots:
         assert results.dtstart.hour == 15
 
     def test_parse_dates_returns_three(self):
-        from cal_scraper.date_parser import parse_dates
+        from cal_scraper.sites.moravska_galerie.date_parser import parse_dates
         results = parse_dates("● 24/5/2026, 15 H / 16 H / 17 H")
         assert len(results) == 3
 
     def test_parse_dates_hours(self):
-        from cal_scraper.date_parser import parse_dates
+        from cal_scraper.sites.moravska_galerie.date_parser import parse_dates
         results = parse_dates("● 24/5/2026, 15 H / 16 H / 17 H")
         hours = [r.dtstart.hour for r in results]
         assert hours == [15, 16, 17]
 
     def test_each_slot_has_default_duration(self):
-        from cal_scraper.date_parser import parse_dates
+        from cal_scraper.sites.moravska_galerie.date_parser import parse_dates
         results = parse_dates("● 24/5/2026, 15 H / 16 H / 17 H")
         for r in results:
             assert r.dtend - r.dtstart == timedelta(hours=2)
 
     def test_each_slot_is_timed(self):
-        from cal_scraper.date_parser import parse_dates
+        from cal_scraper.sites.moravska_galerie.date_parser import parse_dates
         results = parse_dates("● 24/5/2026, 15 H / 16 H / 17 H")
         for r in results:
             assert r.all_day is False
 
     def test_two_slots(self):
-        from cal_scraper.date_parser import parse_dates
+        from cal_scraper.sites.moravska_galerie.date_parser import parse_dates
         results = parse_dates("● 24/5/2026, 10 H / 14 H")
         assert len(results) == 2
         assert results[0].dtstart.hour == 10

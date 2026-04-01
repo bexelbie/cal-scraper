@@ -1,10 +1,9 @@
-"""Tests for CLI entry point and pipeline wiring."""
+"""Tests for CLI entry point and multi-site pipeline wiring."""
 
-import io
 import sys
 from datetime import date, datetime
 from pathlib import Path
-from unittest.mock import MagicMock, call, patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -41,38 +40,20 @@ MOCK_EVENTS = [
 MOCK_ICS = "BEGIN:VCALENDAR\nVERSION:2.0\nEND:VCALENDAR\n"
 
 
-def _patch_pipeline(events=None, ics=None, pages=None):
-    """Return a dict of patch context managers for the three pipeline functions."""
-    if events is None:
-        events = MOCK_EVENTS
-    if ics is None:
-        ics = MOCK_ICS
-    if pages is None:
-        pages = ["<html>page1</html>"]
-    return {
-        "fetch": patch("cal_scraper.cli.fetch_all_pages", return_value=pages),
-        "extract": patch("cal_scraper.cli.extract_all_events", return_value=events),
-        "ics": patch("cal_scraper.cli.events_to_ics", return_value=ics),
-    }
-
-
 # ---------------------------------------------------------------------------
-# CLI-01: Argument parsing — --output, -o, --verbose, defaults
+# CLI-01: Argument parsing
 # ---------------------------------------------------------------------------
 
 
 class TestCliArgParsing:
-    """CLI argument parsing for --output/-o and --verbose flags."""
+    """CLI argument parsing for --output-dir, --site, --verbose flags."""
 
-    def test_default_output_path(self, tmp_path):
-        """main([]) uses default output path moravska-galerie-deti.ics."""
-        patches = _patch_pipeline()
-        with patches["fetch"], patches["extract"], patches["ics"]:
+    def test_default_output_dir(self, tmp_path):
+        """main([]) writes to current directory by default."""
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
+             patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS):
             from cal_scraper.cli import main
-
-            # Run from tmp_path so file is written there
             import os
-
             old_cwd = os.getcwd()
             os.chdir(tmp_path)
             try:
@@ -81,117 +62,100 @@ class TestCliArgParsing:
                 os.chdir(old_cwd)
 
             assert result == 0
-            assert (tmp_path / "moravska-galerie-deti.ics").exists()
+            assert (tmp_path / "moravska-galerie.ics").exists()
 
-    def test_long_output_flag(self, tmp_path):
-        """main(["--output", "custom.ics"]) sets output path to custom.ics."""
-        out = tmp_path / "custom.ics"
-        patches = _patch_pipeline()
-        with patches["fetch"], patches["extract"], patches["ics"]:
+    def test_output_dir_flag(self, tmp_path):
+        """main(["--output-dir", dir]) writes site files to specified directory."""
+        out_dir = tmp_path / "out"
+        out_dir.mkdir()
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
+             patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS):
             from cal_scraper.cli import main
-
-            result = main(["--output", str(out)])
+            result = main(["--output-dir", str(out_dir)])
             assert result == 0
-            assert out.exists()
+            assert (out_dir / "moravska-galerie.ics").exists()
 
-    def test_short_output_flag(self, tmp_path):
-        """main(["-o", "custom.ics"]) sets output path to custom.ics."""
-        out = tmp_path / "custom.ics"
-        patches = _patch_pipeline()
-        with patches["fetch"], patches["extract"], patches["ics"]:
+    def test_short_output_dir_flag(self, tmp_path):
+        """main(["-d", dir]) works as --output-dir alias."""
+        out_dir = tmp_path / "out"
+        out_dir.mkdir()
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
+             patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS):
             from cal_scraper.cli import main
-
-            result = main(["-o", str(out)])
+            result = main(["-d", str(out_dir)])
             assert result == 0
-            assert out.exists()
+            assert (out_dir / "moravska-galerie.ics").exists()
 
     def test_verbose_flag(self, tmp_path):
         """main(["--verbose"]) enables DEBUG-level logging."""
         import logging
-
-        out = tmp_path / "out.ics"
-        patches = _patch_pipeline()
-        with patches["fetch"], patches["extract"], patches["ics"], \
+        out_dir = tmp_path / "out"
+        out_dir.mkdir()
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
+             patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS), \
              patch("logging.basicConfig") as mock_basic_config:
             from cal_scraper.cli import main
-
-            main(["--verbose", "-o", str(out)])
-            # basicConfig should be called with DEBUG level
+            main(["--verbose", "-d", str(out_dir)])
             mock_basic_config.assert_called_once()
             _args, kwargs = mock_basic_config.call_args
             assert kwargs.get("level") == logging.DEBUG
 
+    def test_site_flag_filters(self, tmp_path):
+        """main(["--site", "moravska-galerie"]) runs only selected site."""
+        out_dir = tmp_path / "out"
+        out_dir.mkdir()
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS) as mock_scrape, \
+             patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS):
+            from cal_scraper.cli import main
+            result = main(["--site", "moravska-galerie", "-d", str(out_dir)])
+            assert result == 0
+            mock_scrape.assert_called_once()
+
 
 # ---------------------------------------------------------------------------
-# CLI-01/02: Pipeline wiring — fetch → extract → ics → write
+# CLI-01/02: Pipeline wiring — site.scrape() → ics → write
 # ---------------------------------------------------------------------------
 
 
 class TestCliPipeline:
-    """CLI calls the three pipeline functions in order and writes the output file."""
+    """CLI calls site scrape and ICS generator and writes output."""
 
-    def test_pipeline_call_order(self, tmp_path):
-        """main() calls fetch_all_pages, extract_all_events, events_to_ics in sequence."""
-        out = tmp_path / "output.ics"
-        call_order = []
-
-        def track_fetch(*a, **kw):
-            call_order.append("fetch")
-            return ["<html>page1</html>"]
-
-        def track_extract(*a, **kw):
-            call_order.append("extract")
-            return MOCK_EVENTS
-
-        def track_ics(*a, **kw):
-            call_order.append("ics")
-            return MOCK_ICS
-
-        with patch("cal_scraper.cli.fetch_all_pages", side_effect=track_fetch), \
-             patch("cal_scraper.cli.extract_all_events", side_effect=track_extract), \
-             patch("cal_scraper.cli.events_to_ics", side_effect=track_ics):
-            from cal_scraper.cli import main
-
-            result = main(["-o", str(out)])
-
-        assert call_order == ["fetch", "extract", "ics"]
-        assert result == 0
-
-    def test_output_file_contains_ics_content(self, tmp_path):
+    def test_pipeline_writes_ics_content(self, tmp_path):
         """main() writes the ICS string returned by events_to_ics to the output file."""
-        out = tmp_path / "output.ics"
-        patches = _patch_pipeline()
-        with patches["fetch"], patches["extract"], patches["ics"]:
-            from cal_scraper.cli import main
-
-            main(["-o", str(out)])
-
-        assert out.read_text(encoding="utf-8") == MOCK_ICS
-
-    def test_extract_receives_fetched_pages(self, tmp_path):
-        """extract_all_events receives the pages returned by fetch_all_pages."""
-        out = tmp_path / "output.ics"
-        pages = ["<html>p1</html>", "<html>p2</html>"]
-
-        with patch("cal_scraper.cli.fetch_all_pages", return_value=pages) as mock_fetch, \
-             patch("cal_scraper.cli.extract_all_events", return_value=MOCK_EVENTS) as mock_extract, \
+        out_dir = tmp_path / "out"
+        out_dir.mkdir()
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
              patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS):
             from cal_scraper.cli import main
+            main(["-d", str(out_dir)])
 
-            main(["-o", str(out)])
-            mock_extract.assert_called_once_with(pages)
+        assert (out_dir / "moravska-galerie.ics").read_text(encoding="utf-8") == MOCK_ICS
 
-    def test_ics_receives_extracted_events(self, tmp_path):
-        """events_to_ics receives the events returned by extract_all_events."""
-        out = tmp_path / "output.ics"
-
-        with patch("cal_scraper.cli.fetch_all_pages", return_value=["<html></html>"]), \
-             patch("cal_scraper.cli.extract_all_events", return_value=MOCK_EVENTS), \
+    def test_ics_receives_site_config_params(self, tmp_path):
+        """events_to_ics receives per-site cal_name, source_url, prodid."""
+        out_dir = tmp_path / "out"
+        out_dir.mkdir()
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
              patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS) as mock_ics:
             from cal_scraper.cli import main
+            main(["-d", str(out_dir)])
+            mock_ics.assert_called_once()
+            _, kwargs = mock_ics.call_args
+            assert kwargs["cal_name"] == "Moravská galerie – Děti a rodiny (unofficial)"
+            assert "moravska-galerie" in kwargs["prodid"]
+            assert kwargs["source_url"] == "https://moravska-galerie.cz/program/deti-a-rodiny/"
 
-            main(["-o", str(out)])
-            mock_ics.assert_called_once_with(MOCK_EVENTS)
+    def test_no_details_passed_to_scrape(self, tmp_path):
+        """--no-details flag is passed through to site scrape function."""
+        out_dir = tmp_path / "out"
+        out_dir.mkdir()
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS) as mock_scrape, \
+             patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS):
+            from cal_scraper.cli import main
+            main(["--no-details", "-d", str(out_dir)])
+            mock_scrape.assert_called_once()
+            _, kwargs = mock_scrape.call_args
+            assert kwargs["no_details"] is True
 
 
 # ---------------------------------------------------------------------------
@@ -204,12 +168,12 @@ class TestCliSummary:
 
     def test_summary_with_events(self, tmp_path, capsys):
         """With events: output contains event count and date range."""
-        out = tmp_path / "output.ics"
-        patches = _patch_pipeline()
-        with patches["fetch"], patches["extract"], patches["ics"]:
+        out_dir = tmp_path / "out"
+        out_dir.mkdir()
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
+             patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS):
             from cal_scraper.cli import main
-
-            main(["-o", str(out)])
+            main(["-d", str(out_dir)])
 
         captured = capsys.readouterr().out
         assert "2" in captured  # 2 events
@@ -218,111 +182,117 @@ class TestCliSummary:
 
     def test_summary_output_path_confirmation(self, tmp_path, capsys):
         """Output path confirmation line present in stdout."""
-        out = tmp_path / "output.ics"
-        patches = _patch_pipeline()
-        with patches["fetch"], patches["extract"], patches["ics"]:
+        out_dir = tmp_path / "out"
+        out_dir.mkdir()
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
+             patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS):
             from cal_scraper.cli import main
-
-            main(["-o", str(out)])
+            main(["-d", str(out_dir)])
 
         captured = capsys.readouterr().out
-        assert str(out) in captured
+        assert "moravska-galerie.ics" in captured
 
     def test_summary_no_events(self, tmp_path, capsys):
         """With empty events: returns 1 and prints error to stderr."""
-        out = tmp_path / "output.ics"
-        patches = _patch_pipeline(events=[])
-        with patches["fetch"], patches["extract"], patches["ics"]:
+        out_dir = tmp_path / "out"
+        out_dir.mkdir()
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=[]), \
+             patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS):
             from cal_scraper.cli import main
-
-            result = main(["-o", str(out)])
+            result = main(["-d", str(out_dir)])
 
         assert result == 1
         captured = capsys.readouterr().err
         assert "no events found" in captured.lower()
-        assert "template" in captured.lower()
+
+    def test_dry_run_prints_to_stdout(self, tmp_path, capsys):
+        """--dry-run prints ICS to stdout instead of writing file."""
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
+             patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS):
+            from cal_scraper.cli import main
+            result = main(["--dry-run"])
+
+        assert result == 0
+        captured = capsys.readouterr().out
+        assert MOCK_ICS in captured
 
 
 # ---------------------------------------------------------------------------
-# Error handling — ScrapingError
+# Error handling
 # ---------------------------------------------------------------------------
 
 
 class TestCliErrorHandling:
-    """CLI handles ScrapingError from fetch_all_pages gracefully."""
+    """CLI handles errors from site scrape functions gracefully."""
 
     def test_scraping_error_returns_1(self, tmp_path):
-        """ScrapingError results in return code 1."""
-        from cal_scraper.fetcher import ScrapingError
+        """Exception from site scrape results in return code 1."""
+        from cal_scraper.sites.moravska_galerie.fetcher import ScrapingError
 
         with patch(
-            "cal_scraper.cli.fetch_all_pages",
+            "cal_scraper.sites.moravska_galerie.scrape",
             side_effect=ScrapingError("Failed to fetch first page"),
-        ), patch("cal_scraper.cli.enrich_events"):
+        ):
             from cal_scraper.cli import main
-
-            result = main(["-o", str(tmp_path / "out.ics")])
+            result = main(["-d", str(tmp_path)])
             assert result == 1
 
     def test_scraping_error_prints_to_stderr(self, tmp_path, capsys):
-        """ScrapingError message is printed to stderr."""
-        from cal_scraper.fetcher import ScrapingError
+        """Exception message is printed to stderr."""
+        from cal_scraper.sites.moravska_galerie.fetcher import ScrapingError
 
         with patch(
-            "cal_scraper.cli.fetch_all_pages",
+            "cal_scraper.sites.moravska_galerie.scrape",
             side_effect=ScrapingError("Network failure"),
-        ), patch("cal_scraper.cli.enrich_events"):
+        ):
             from cal_scraper.cli import main
-
-            main(["-o", str(tmp_path / "out.ics")])
+            main(["-d", str(tmp_path)])
 
         captured = capsys.readouterr().err
         assert "Network failure" in captured
 
     def test_scraping_error_no_output_file(self, tmp_path):
-        """ScrapingError means no output file is created."""
-        from cal_scraper.fetcher import ScrapingError
+        """Exception means no output file is created."""
+        from cal_scraper.sites.moravska_galerie.fetcher import ScrapingError
 
-        out = tmp_path / "out.ics"
         with patch(
-            "cal_scraper.cli.fetch_all_pages",
+            "cal_scraper.sites.moravska_galerie.scrape",
             side_effect=ScrapingError("Boom"),
-        ), patch("cal_scraper.cli.enrich_events"):
+        ):
             from cal_scraper.cli import main
+            main(["-d", str(tmp_path)])
 
-            main(["-o", str(out)])
-
-        assert not out.exists()
+        assert not (tmp_path / "moravska-galerie.ics").exists()
 
 
 # ---------------------------------------------------------------------------
-# --no-details flag and enrichment
+# --no-details flag
 # ---------------------------------------------------------------------------
 
 
 class TestCliNoDetailsFlag:
-    """CLI --no-details flag controls detail page fetching."""
+    """CLI --no-details flag is passed to site scrape."""
 
     def test_no_details_flag_recognized(self, tmp_path):
         """--no-details flag is accepted without error."""
-        out = tmp_path / "output.ics"
-        patches = _patch_pipeline()
-        with patches["fetch"], patches["extract"], patches["ics"], \
-             patch("cal_scraper.cli.enrich_events") as mock_enrich:
+        out_dir = tmp_path / "out"
+        out_dir.mkdir()
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS) as mock_scrape, \
+             patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS):
             from cal_scraper.cli import main
-
-            result = main(["--no-details", "-o", str(out)])
+            result = main(["--no-details", "-d", str(out_dir)])
             assert result == 0
-            mock_enrich.assert_not_called()
+            _, kwargs = mock_scrape.call_args
+            assert kwargs["no_details"] is True
 
-    def test_enrich_called_by_default(self, tmp_path):
-        """Without --no-details, enrich_events is called."""
-        out = tmp_path / "output.ics"
-        patches = _patch_pipeline()
-        with patches["fetch"], patches["extract"], patches["ics"], \
-             patch("cal_scraper.cli.enrich_events", return_value=MOCK_EVENTS) as mock_enrich:
+    def test_details_by_default(self, tmp_path):
+        """Without --no-details, no_details=False is passed to scrape."""
+        out_dir = tmp_path / "out"
+        out_dir.mkdir()
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS) as mock_scrape, \
+             patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS):
             from cal_scraper.cli import main
-
-            result = main(["-o", str(out)])
+            result = main(["-d", str(out_dir)])
             assert result == 0
-            mock_enrich.assert_called_once()
+            _, kwargs = mock_scrape.call_args
+            assert kwargs["no_details"] is False

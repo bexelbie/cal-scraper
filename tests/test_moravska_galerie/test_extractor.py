@@ -6,14 +6,14 @@ from pathlib import Path
 
 import pytest
 
-from cal_scraper.extractor import extract_all_events, extract_events_from_html
+from cal_scraper.sites.moravska_galerie.extractor import extract_all_events, extract_events_from_html
 from cal_scraper.models import PRAGUE_TZ, Event
 
 # ---------------------------------------------------------------------------
 # Fixture data
 # ---------------------------------------------------------------------------
 
-FIXTURE_PATH = Path(__file__).parent / "fixtures" / "event_page.html"
+FIXTURE_PATH = Path(__file__).parent.parent / "fixtures" / "event_page.html"
 FIXTURE_HTML = FIXTURE_PATH.read_text(encoding="utf-8")
 
 

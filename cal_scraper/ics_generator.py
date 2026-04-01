@@ -20,14 +20,6 @@ from icalendar import Event as IcsEvent
 from cal_scraper.models import DEFAULT_DURATION, PRAGUE_TZ, Event
 
 # ---------------------------------------------------------------------------
-# Constants
-# ---------------------------------------------------------------------------
-
-PRODID = "-//cal-scraper//moravska-galerie//CS"
-CALNAME = "Moravská galerie – Děti a rodiny"
-
-
-# ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
 
@@ -88,7 +80,12 @@ def event_to_vevent(event: Event, dtstamp: datetime | None = None) -> IcsEvent:
     return vevent
 
 
-def events_to_ics(events: list[Event]) -> str:
+def events_to_ics(
+    events: list[Event],
+    cal_name: str = "cal-scraper (unofficial)",
+    source_url: str = "",
+    prodid: str = "-//cal-scraper//unknown//CS",
+) -> str:
     """Convert a list of Events to an RFC 5545 .ics calendar string.
 
     Returns a UTF-8 string suitable for writing to a .ics file.
@@ -96,9 +93,14 @@ def events_to_ics(events: list[Event]) -> str:
     Uses a single DTSTAMP for all events so output is stable within a run.
     """
     cal = Calendar()
-    cal.add("prodid", PRODID)
+    cal.add("prodid", prodid)
     cal.add("version", "2.0")
-    cal.add("x-wr-calname", CALNAME)
+    cal.add("x-wr-calname", cal_name)
+    if source_url:
+        cal.add(
+            "x-wr-caldesc",
+            f"Unofficial scrape of {source_url} — not affiliated with the venue.",
+        )
 
     dtstamp = datetime.now(tz=PRAGUE_TZ)
     for event in events:

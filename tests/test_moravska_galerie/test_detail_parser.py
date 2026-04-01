@@ -4,7 +4,7 @@ from datetime import datetime
 
 import responses
 
-from cal_scraper.detail_parser import _extract_detail, enrich_events
+from cal_scraper.sites.moravska_galerie.detail_parser import _extract_detail, enrich_events
 from cal_scraper.models import PRAGUE_TZ, Event
 
 

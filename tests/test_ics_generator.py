@@ -222,6 +222,36 @@ class TestEventsToIcs:
         ics = events_to_ics([event])
         assert ics.count("BEGIN:VEVENT") == 1
 
+    def test_custom_cal_name(self):
+        """Passing cal_name sets X-WR-CALNAME."""
+        ics = events_to_ics([], cal_name="Test Calendar (unofficial)")
+        assert "Test Calendar (unofficial)" in ics
+
+    def test_custom_prodid(self):
+        """Passing prodid sets PRODID."""
+        ics = events_to_ics([], prodid="-//test//custom//CS")
+        assert "-//test//custom//CS" in ics
+
+    def test_caldesc_present_with_source_url(self):
+        """X-WR-CALDESC disclaimer is present when source_url is given."""
+        ics = events_to_ics(
+            [], source_url="https://example.com/events/"
+        )
+        # Unfold ICS line continuations for checking
+        unfolded = ics.replace("\r\n ", "")
+        assert "Unofficial scrape of https://example.com/events/" in unfolded
+        assert "not affiliated with the venue" in unfolded
+
+    def test_caldesc_absent_without_source_url(self):
+        """X-WR-CALDESC is not present when source_url is empty."""
+        ics = events_to_ics([])
+        assert "X-WR-CALDESC" not in ics
+
+    def test_default_cal_name_has_unofficial(self):
+        """Default cal_name includes '(unofficial)' suffix."""
+        ics = events_to_ics([])
+        assert "(unofficial)" in ics
+
 
 # ---------------------------------------------------------------------------
 # Round-trip: generate ICS → parse back → verify structure
