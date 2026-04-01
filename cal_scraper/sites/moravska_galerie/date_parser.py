@@ -114,7 +114,7 @@ def _parse_single_hm(m: re.Match, raw: str) -> ParsedDate:
     h, mi = int(m.group(4)), int(m.group(5))
     start = _make_dt(d, mo, y, h, mi)
     end = start + DEFAULT_DURATION
-    return ParsedDate(dtstart=start, dtend=end, all_day=False, raw_text=raw)
+    return ParsedDate(dtstart=start, dtend=end, all_day=False, raw_text=raw, estimated_end=True)
 
 
 def _parse_multi_time(m: re.Match, raw: str) -> list[ParsedDate]:
@@ -125,7 +125,7 @@ def _parse_multi_time(m: re.Match, raw: str) -> list[ParsedDate]:
     for h in hours:
         start = _make_dt(d, mo, y, h)
         end = start + DEFAULT_DURATION
-        results.append(ParsedDate(dtstart=start, dtend=end, all_day=False, raw_text=raw))
+        results.append(ParsedDate(dtstart=start, dtend=end, all_day=False, raw_text=raw, estimated_end=True))
     return results
 
 
@@ -135,7 +135,7 @@ def _parse_single_h(m: re.Match, raw: str) -> ParsedDate:
     h = int(m.group(4))
     start = _make_dt(d, mo, y, h)
     end = start + DEFAULT_DURATION
-    return ParsedDate(dtstart=start, dtend=end, all_day=False, raw_text=raw)
+    return ParsedDate(dtstart=start, dtend=end, all_day=False, raw_text=raw, estimated_end=True)
 
 
 def _parse_date_only(m: re.Match, raw: str) -> ParsedDate:

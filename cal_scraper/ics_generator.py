@@ -69,6 +69,12 @@ def event_to_vevent(event: Event, dtstamp: datetime | None = None) -> IcsEvent:
         desc_parts.append(f"Cena: {event.price}")
     if event.reservation:
         desc_parts.append(f"Rezervace: {event.reservation}")
+    if event.estimated_end:
+        duration = dtend - event.dtstart
+        total_min = int(duration.total_seconds() // 60)
+        hours, mins = divmod(total_min, 60)
+        dur_str = f"{hours}h" if mins == 0 else f"{hours}h {mins}min" if hours else f"{mins}min"
+        desc_parts.append(f"Note: End time is approximate (duration estimated at {dur_str})")
     desc_parts.append(f"Datum: {event.raw_date}")
     description = "\n".join(desc_parts)
     vevent.add("description", description)

@@ -23,6 +23,7 @@ from cal_scraper.sites import SITE_REGISTRY
 import cal_scraper.sites.moravska_galerie  # noqa: F401
 import cal_scraper.sites.hvezdarna  # noqa: F401
 import cal_scraper.sites.ikea_brno  # noqa: F401
+import cal_scraper.sites.vida  # noqa: F401 — triggers registration
 
 
 # ---------------------------------------------------------------------------

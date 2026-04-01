@@ -85,6 +85,7 @@ def _parse_show_metadata(desc_div: Tag) -> dict:
         "venue": "",
         "age": "",
         "duration": DEFAULT_DURATION,
+        "duration_estimated": True,
         "price": "",
         "notes": [],
         "ticket_url": "",
@@ -106,6 +107,7 @@ def _parse_show_metadata(desc_div: Tag) -> dict:
             parsed = _parse_duration(text)
             if parsed:
                 meta["duration"] = parsed
+                meta["duration_estimated"] = False
         elif lower.startswith("cena:") or "cena:" in lower:
             meta["price"] = text
         elif "3d" in lower or "2d" in lower:
@@ -189,6 +191,7 @@ def _extract_from_page(html: str, year: int) -> list[Event]:
                 "venue": "",
                 "age": "",
                 "duration": DEFAULT_DURATION,
+                "duration_estimated": True,
                 "price": "",
                 "notes": [],
                 "ticket_url": "",
@@ -236,6 +239,7 @@ def _extract_from_page(html: str, year: int) -> list[Event]:
                     url=show_url,
                     raw_date=f"{current_date.day}/{current_date.month}/{current_date.year}, {hour}:{minute:02d}",
                     price=meta["price"],
+                    estimated_end=meta["duration_estimated"],
                 )
             )
 

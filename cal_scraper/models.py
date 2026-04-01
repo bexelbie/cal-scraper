@@ -22,6 +22,7 @@ class ParsedDate:
     dtend: datetime | date | None
     all_day: bool
     raw_text: str
+    estimated_end: bool = False
 
 
 @dataclass
@@ -44,3 +45,4 @@ class Event:
     price: str = ""
     reservation: str = ""
     sold_out: bool = False
+    estimated_end: bool = False  # True when dtend is a guess (no end time from source)

@@ -94,6 +94,7 @@ def _extract_events_from_article(article: Tag) -> list[Event]:
             url=url,
             raw_date=parsed.raw_text,
             sold_out=sold_out,
+            estimated_end=parsed.estimated_end,
         )
         for parsed in parsed_dates
     ]

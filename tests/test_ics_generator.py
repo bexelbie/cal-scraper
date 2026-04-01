@@ -187,6 +187,40 @@ class TestEventToVevent:
         dtend = vevent.get("dtend").dt
         assert dtend == event.dtstart + timedelta(days=1)
 
+    def test_estimated_end_adds_note(self):
+        """estimated_end=True appends duration note to description."""
+        event = _timed_event()
+        event.estimated_end = True
+        vevent = event_to_vevent(event)
+        desc = str(vevent.get("description"))
+        assert "Note: End time is approximate (duration estimated at 2h)" in desc
+
+    def test_estimated_end_false_no_note(self):
+        """estimated_end=False does not add duration note."""
+        event = _timed_event()
+        event.estimated_end = False
+        vevent = event_to_vevent(event)
+        desc = str(vevent.get("description"))
+        assert "End time is approximate" not in desc
+
+    def test_estimated_end_90min_format(self):
+        """90-minute estimated duration formats as '1h 30min'."""
+        event = _timed_event()
+        event.dtend = event.dtstart + timedelta(minutes=90)
+        event.estimated_end = True
+        vevent = event_to_vevent(event)
+        desc = str(vevent.get("description"))
+        assert "duration estimated at 1h 30min" in desc
+
+    def test_estimated_end_55min_format(self):
+        """55-minute estimated duration formats as '55min'."""
+        event = _timed_event()
+        event.dtend = event.dtstart + timedelta(minutes=55)
+        event.estimated_end = True
+        vevent = event_to_vevent(event)
+        desc = str(vevent.get("description"))
+        assert "duration estimated at 55min" in desc
+
 
 # ---------------------------------------------------------------------------
 # ICAL-01 / ICAL-05: events_to_ics — full calendar output

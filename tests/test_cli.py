@@ -42,7 +42,8 @@ MOCK_ICS = "BEGIN:VCALENDAR\nVERSION:2.0\nEND:VCALENDAR\n"
 def _mock_external_sites():
     """Prevent external sites from making real HTTP calls during CLI tests."""
     with patch("cal_scraper.sites.hvezdarna.scrape", return_value=MOCK_EVENTS), \
-         patch("cal_scraper.sites.ikea_brno.scrape", return_value=MOCK_EVENTS):
+         patch("cal_scraper.sites.ikea_brno.scrape", return_value=MOCK_EVENTS), \
+         patch("cal_scraper.sites.vida.scrape", return_value=MOCK_EVENTS):
         yield
 
 
