@@ -173,3 +173,111 @@ class TestEventsToIcs:
         event = _allday_event()
         ics = events_to_ics([event])
         assert ics.count("BEGIN:VEVENT") == 1
+
+
+# ---------------------------------------------------------------------------
+# Round-trip: generate ICS → parse back → verify structure
+# ---------------------------------------------------------------------------
+
+class TestIcsRoundTrip:
+    """Parse generated ICS back with icalendar and verify structure."""
+
+    @staticmethod
+    def _build_mixed_events() -> list[Event]:
+        """Three events: timed single-day, all-day single-day, multi-day all-day."""
+        timed = Event(
+            title="Výtvarná dílna",
+            dtstart=datetime(2026, 5, 10, 14, 0, tzinfo=PRAGUE_TZ),
+            dtend=datetime(2026, 5, 10, 16, 0, tzinfo=PRAGUE_TZ),
+            all_day=False,
+            venue="Uměleckoprůmyslové muzeum",
+            description="Odpolední workshop",
+            url="https://www.moravska-galerie.cz/vytvarna-dilna/",
+            raw_date="10/5/2026, 14 H",
+        )
+        allday_single = Event(
+            title="Den otevřených dveří",
+            dtstart=date(2026, 6, 1),
+            dtend=None,
+            all_day=True,
+            venue="Pražákův palác",
+            description="Vstup zdarma",
+            url="https://www.moravska-galerie.cz/den-otevrenych-dveri/",
+            raw_date="1/6/2026",
+        )
+        allday_multi = Event(
+            title="Letní výtvarný tábor",
+            dtstart=date(2026, 7, 13),
+            dtend=date(2026, 7, 18),
+            all_day=True,
+            venue="Místodržitelský palác",
+            description="Pětidenní kreativní tábor",
+            url="https://www.moravska-galerie.cz/letni-tabor-2/",
+            raw_date="13/7 – 17/7/2026",
+        )
+        return [timed, allday_single, allday_multi]
+
+    def test_round_trip_vevent_count(self):
+        """Parsed calendar contains exactly 3 VEVENTs."""
+        events = self._build_mixed_events()
+        ics = events_to_ics(events)
+        cal = Calendar.from_ical(ics)
+        vevents = [c for c in cal.walk() if c.name == "VEVENT"]
+        assert len(vevents) == 3
+
+    def test_round_trip_timed_event_types(self):
+        """Timed event round-trips as datetime for DTSTART and DTEND."""
+        events = self._build_mixed_events()
+        ics = events_to_ics(events)
+        cal = Calendar.from_ical(ics)
+        vevents = [c for c in cal.walk() if c.name == "VEVENT"]
+        # Find the timed event by summary
+        timed = [v for v in vevents if str(v.get("summary")) == "Výtvarná dílna"][0]
+        assert isinstance(timed.get("dtstart").dt, datetime)
+        assert isinstance(timed.get("dtend").dt, datetime)
+
+    def test_round_trip_allday_event_types(self):
+        """All-day single-day event round-trips as date for DTSTART and DTEND."""
+        events = self._build_mixed_events()
+        ics = events_to_ics(events)
+        cal = Calendar.from_ical(ics)
+        vevents = [c for c in cal.walk() if c.name == "VEVENT"]
+        allday = [v for v in vevents if str(v.get("summary")) == "Den otevřených dveří"][0]
+        dt = allday.get("dtstart").dt
+        assert isinstance(dt, date) and not isinstance(dt, datetime)
+
+    def test_round_trip_multiday_span(self):
+        """Multi-day event has correct DTSTART and DTEND range."""
+        events = self._build_mixed_events()
+        ics = events_to_ics(events)
+        cal = Calendar.from_ical(ics)
+        vevents = [c for c in cal.walk() if c.name == "VEVENT"]
+        multi = [v for v in vevents if str(v.get("summary")) == "Letní výtvarný tábor"][0]
+        assert multi.get("dtstart").dt == date(2026, 7, 13)
+        assert multi.get("dtend").dt == date(2026, 7, 18)
+
+    def test_round_trip_required_fields(self):
+        """All VEVENTs have non-empty SUMMARY, LOCATION, UID, DTSTAMP."""
+        events = self._build_mixed_events()
+        ics = events_to_ics(events)
+        cal = Calendar.from_ical(ics)
+        vevents = [c for c in cal.walk() if c.name == "VEVENT"]
+        for vevent in vevents:
+            assert str(vevent.get("summary")), "SUMMARY must be non-empty"
+            assert str(vevent.get("location")), "LOCATION must be non-empty"
+            assert str(vevent.get("uid")), "UID must be non-empty"
+            assert vevent.get("dtstamp") is not None, "DTSTAMP must be present"
+
+    def test_round_trip_vtimezone_present(self):
+        """Generated ICS with timed events contains VTIMEZONE for Europe/Prague."""
+        events = self._build_mixed_events()
+        ics = events_to_ics(events)
+        assert "VTIMEZONE" in ics
+        assert "Europe/Prague" in ics
+
+    def test_round_trip_prodid_present(self):
+        """Parsed calendar has PRODID."""
+        events = self._build_mixed_events()
+        ics = events_to_ics(events)
+        cal = Calendar.from_ical(ics)
+        assert cal.get("prodid") is not None
