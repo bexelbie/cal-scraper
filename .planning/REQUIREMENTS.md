@@ -9,13 +9,13 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Scraping
 
-- [ ] **SCRP-01**: Scrape all paginated pages of /program/deti-a-rodiny/ (detect last page dynamically, not hardcoded)
-- [ ] **SCRP-02**: Extract event title preserving Czech diacritics and special characters
-- [ ] **SCRP-03**: Extract venue name including sub-locations (e.g., "Pražákův palác, Knihovna")
-- [ ] **SCRP-04**: Extract short description text from listing pages
-- [ ] **SCRP-05**: Extract event detail page URL for each event
-- [ ] **SCRP-06**: Handle network errors gracefully (retry transient failures, log warnings, continue processing)
-- [ ] **SCRP-07**: Use respectful scraping practices (delays between requests, proper User-Agent header)
+- [x] **SCRP-01**: Scrape all paginated pages of /program/deti-a-rodiny/ (detect last page dynamically, not hardcoded)
+- [x] **SCRP-02**: Extract event title preserving Czech diacritics and special characters
+- [x] **SCRP-03**: Extract venue name including sub-locations (e.g., "Pražákův palác, Knihovna")
+- [x] **SCRP-04**: Extract short description text from listing pages
+- [x] **SCRP-05**: Extract event detail page URL for each event
+- [x] **SCRP-06**: Handle network errors gracefully (retry transient failures, log warnings, continue processing)
+- [x] **SCRP-07**: Use respectful scraping practices (delays between requests, proper User-Agent header)
 
 ### Date Parsing
 
@@ -90,13 +90,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DATE-05 | Phase 1 | Complete |
 | DATE-06 | Phase 1 | Complete |
 | DATE-07 | Phase 1 | Complete |
-| SCRP-01 | Phase 2 | Pending |
-| SCRP-02 | Phase 2 | Pending |
-| SCRP-03 | Phase 2 | Pending |
-| SCRP-04 | Phase 2 | Pending |
-| SCRP-05 | Phase 2 | Pending |
-| SCRP-06 | Phase 2 | Pending |
-| SCRP-07 | Phase 2 | Pending |
+| SCRP-01 | Phase 2 | Complete |
+| SCRP-02 | Phase 2 | Complete |
+| SCRP-03 | Phase 2 | Complete |
+| SCRP-04 | Phase 2 | Complete |
+| SCRP-05 | Phase 2 | Complete |
+| SCRP-06 | Phase 2 | Complete |
+| SCRP-07 | Phase 2 | Complete |
 | ICAL-01 | Phase 3 | Pending |
 | ICAL-02 | Phase 3 | Pending |
 | ICAL-03 | Phase 3 | Pending |

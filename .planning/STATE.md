@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: verifying
-stopped_at: Completed 01-02-PLAN.md
-last_updated: "2026-04-01T06:49:55.758Z"
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-04-01T10:17:59.302Z"
 last_activity: 2026-04-01
 progress:
   total_phases: 3
-  completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  completed_phases: 2
+  total_plans: 4
+  completed_plans: 4
   percent: 0
 ---
 
@@ -21,12 +21,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-31)
 
 **Core value:** Reliably extract all upcoming children/family events from moravska-galerie.cz and produce a valid .ics file that any calendar app can import.
-**Current focus:** Phase 01 — foundation-date-parser
+**Current focus:** Phase 02 — web-scraping
 
 ## Current Position
 
-Phase: 2
-Plan: Not started
+Phase: 02 (web-scraping) — EXECUTING
+Plan: 2 of 2
 Status: Phase complete — ready for verification
 Last activity: 2026-04-01
 
@@ -54,6 +54,8 @@ Progress: [░░░░░░░░░░] 0%
 *Updated after each plan completion*
 | Phase 01-01 P01 | 2min | 2 tasks | 6 files |
 | Phase 01-foundation-date-parser P02 | 3min | 2 tasks | 2 files |
+| Phase 02-web-scraping P01 | 3min | 2 tasks | 3 files |
+| Phase 02-web-scraping P02 | 3min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -68,6 +70,10 @@ Recent decisions affecting current work:
 - [Phase 01-foundation-date-parser]: Regex pattern ordering most-specific-first prevents ambiguous partial matches
 - [Phase 01-foundation-date-parser]: Direct function references in dispatch table (not globals() lookup)
 - [Phase 01-foundation-date-parser]: En-dash U+2013 matched explicitly in regex — no normalization to ASCII hyphen
+- [Phase 02-web-scraping]: Data-settings JSON approach for pagination discovery (not hardcoded page count)
+- [Phase 02-web-scraping]: Simple warn-and-continue with majority failure bail (FAILURE_THRESHOLD=0.5)
+- [Phase 02-02]: CSS selectors use Elementor data-id attributes — stable identifiers from site research
+- [Phase 02-02]: Warn-and-skip for missing title/date; empty-string fallback for venue/description
 
 ### Pending Todos
 
@@ -80,6 +86,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T06:46:18.537Z
-Stopped at: Completed 01-02-PLAN.md
+Last session: 2026-04-01T10:17:59.296Z
+Stopped at: Completed 02-02-PLAN.md
 Resume file: None

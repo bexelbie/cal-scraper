@@ -46,8 +46,8 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — HTTP page fetcher with pagination discovery, rate limiting, and error handling
-- [ ] 02-02-PLAN.md — HTML event extractor with Elementor selector-based field extraction
+- [x] 02-01-PLAN.md — HTTP page fetcher with pagination discovery, rate limiting, and error handling
+- [x] 02-02-PLAN.md — HTML event extractor with Elementor selector-based field extraction
 
 ### Phase 3: ICS Generation & CLI
 **Goal**: Users can run a single command to produce a valid .ics calendar file of all upcoming children/family events from the gallery
