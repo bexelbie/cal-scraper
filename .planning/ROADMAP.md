@@ -28,7 +28,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Parser correctly converts multi-day ranges like "7/7 – 11/7/2026" and "27/7 – 31/7/2026, 9–16 H" to start/end datetime pairs
   4. Parser correctly identifies all-day events (no time component) vs timed events
   5. All date formats use D/M/Y European order and produce Europe/Prague timezone-aware results
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Project foundation: package scaffolding, pyproject.toml, data models (ParsedDate, Event, PRAGUE_TZ)
+- [ ] 01-02-PLAN.md — Czech date parser (TDD): regex fallback chain for all 6 date format variants
 
 ### Phase 2: Web Scraping
 **Goal**: The tool can fetch all paginated event listings from moravska-galerie.cz and extract structured event data with Czech text preserved
