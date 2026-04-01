@@ -43,26 +43,38 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ## v2 Requirements
 
-Deferred to future release. Tracked but not in current roadmap.
+Completed or explicitly deferred. Updated 2026-04-01.
 
 ### Detail Page Scraping
 
-- **DETL-01**: Visit each event's detail page for full description text
-- **DETL-02**: Extract price information (e.g., "50 jednotlivec / 120 Kč rodinné")
-- **DETL-03**: Extract reservation method (phone, email, online)
+- [x] **DETL-01**: Visit each event's detail page for full description text
+- [x] **DETL-02**: Extract price information (e.g., "50 jednotlivec / 120 Kč rodinné")
+- [x] **DETL-03**: Extract reservation method (phone, email, online)
 
 ### Enhanced Output
 
-- **ENHN-01**: Detect and flag sold-out events ("[VYPRODÁNO]" in title)
-- **ENHN-02**: Add CATEGORIES property (venue name, "Děti a rodiny")
-- **ENHN-03**: Add configurable VALARM reminders
-- **ENHN-04**: Support --venue flag to filter by venue
-- **ENHN-05**: Support --format json for structured output
+- [x] **ENHN-01**: Detect and flag sold-out events ("[VYPRODÁNO]" in title)
+- ~~**ENHN-02**: Add CATEGORIES property~~ — Won't do (low value for calendar readers)
+- ~~**ENHN-03**: Add configurable VALARM reminders~~ — Won't do (calendar apps handle this natively)
+- ~~**ENHN-04**: Support --venue flag to filter by venue~~ — Won't do (superseded by multi-site --site flag)
+- ~~**ENHN-05**: Support --format json for structured output~~ — Won't do (no identified use case)
 
 ### Automation
 
-- **AUTO-01**: Calendar subscription URL (webcal:// protocol)
-- **AUTO-02**: GitHub Actions workflow for automated .ics updates
+- ~~**AUTO-01**: Calendar subscription URL (webcal:// protocol)~~ — Won't do (requires hosting)
+- ~~**AUTO-02**: GitHub Actions workflow for automated .ics updates~~ — Won't do (user runs locally)
+
+### Multi-site (added post-v1)
+
+- [x] Multi-site architecture with `--site` flag and per-site .ics output
+- [x] Hvězdárna Brno (planetarium public shows)
+- [x] IKEA Brno (kids events via JSON API)
+- [x] VIDA! Science Center (family events + lab workshops)
+- [x] English calendar names with "(unofficial, in CZ)" suffix
+- [x] Per-site X-WR-CALDESC with filtering descriptions
+- [x] Estimated end time notes in event descriptions
+- ~~Detail page scraping for hvězdárna~~ — Won't do (listing already has all data)
+- ~~Detail page scraping for VIDA~~ — Won't do (detail pages are day guides, not structured event data)
 
 ## Out of Scope
 
@@ -70,12 +82,11 @@ Deferred to future release. Tracked but not in current roadmap.
 |---------|--------|
 | Translation of Czech text | User specified — events stay in Czech, external translation if needed |
 | GUI or web interface | CLI script only — keeps it simple |
-| Headless browser / JS rendering | Site serves static HTML, no JavaScript rendering needed |
+| Headless browser / JS rendering | Sites serve static HTML or JSON APIs, no JavaScript rendering needed |
 | Database / state management | .ics file IS the state — calendar apps handle dedup via UIDs |
-| Recurring event detection | Site lists each occurrence separately — standalone VEVENTs are simpler and more reliable |
-| Multi-site support | Scope is Moravská galerie only |
+| Recurring event detection | Sites list each occurrence separately — standalone VEVENTs are simpler and more reliable |
 | Image downloading | Calendar apps have poor image support — users can see images via event URL |
-| General-purpose scraper config | One site, hardcode selectors — code is easier to update than config |
+| Hosted calendar server | No webcal:// hosting — user runs locally and imports .ics files |
 
 ## Traceability
 
