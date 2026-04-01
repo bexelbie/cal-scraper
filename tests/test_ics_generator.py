@@ -251,6 +251,15 @@ class TestEventsToIcs:
         ics = events_to_ics([])
         assert "(unofficial)" in ics
 
+    def test_cal_desc_overrides_default(self):
+        """Explicit cal_desc takes precedence over auto-generated description."""
+        ics = events_to_ics(
+            [], source_url="https://example.com/", cal_desc="Custom description here."
+        )
+        unfolded = ics.replace("\r\n ", "")
+        assert "Custom description here." in unfolded
+        assert "not affiliated" not in unfolded
+
 
 # ---------------------------------------------------------------------------
 # Round-trip: generate ICS → parse back → verify structure

@@ -148,7 +148,7 @@ class TestCliPipeline:
             main(["--site", "moravska-galerie", "-d", str(out_dir)])
             mock_ics.assert_called_once()
             _, kwargs = mock_ics.call_args
-            assert kwargs["cal_name"] == "Moravská galerie – Děti a rodiny (unofficial)"
+            assert kwargs["cal_name"] == "Moravská galerie – Children & Families (unofficial, in CZ)"
             assert "moravska-galerie" in kwargs["prodid"]
             assert kwargs["source_url"] == "https://moravska-galerie.cz/program/deti-a-rodiny/"
 

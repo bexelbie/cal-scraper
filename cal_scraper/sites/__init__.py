@@ -13,10 +13,11 @@ from dataclasses import dataclass
 class SiteConfig:
     """Per-site configuration for calendar generation."""
     name: str              # short key e.g. "moravska-galerie"
-    cal_name: str          # X-WR-CALNAME value (with "(unofficial)" suffix)
+    cal_name: str          # X-WR-CALNAME value
     source_url: str        # base URL of the scraped site section
     prodid: str            # PRODID value for ICS
     default_filename: str  # default output filename
+    cal_desc: str = ""     # X-WR-CALDESC override (auto-generated if empty)
 
 # Registry populated by site __init__ modules
 SITE_REGISTRY: dict[str, SiteConfig] = {}

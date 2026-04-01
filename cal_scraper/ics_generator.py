@@ -85,6 +85,7 @@ def events_to_ics(
     cal_name: str = "cal-scraper (unofficial)",
     source_url: str = "",
     prodid: str = "-//cal-scraper//unknown//CS",
+    cal_desc: str = "",
 ) -> str:
     """Convert a list of Events to an RFC 5545 .ics calendar string.
 
@@ -96,11 +97,12 @@ def events_to_ics(
     cal.add("prodid", prodid)
     cal.add("version", "2.0")
     cal.add("x-wr-calname", cal_name)
-    if source_url:
-        cal.add(
-            "x-wr-caldesc",
-            f"Unofficial scrape of {source_url} — not affiliated with the venue.",
-        )
+    desc = cal_desc or (
+        f"Unofficial scrape of {source_url} — not affiliated with the venue."
+        if source_url else ""
+    )
+    if desc:
+        cal.add("x-wr-caldesc", desc)
 
     dtstamp = datetime.now(tz=PRAGUE_TZ)
     for event in events:

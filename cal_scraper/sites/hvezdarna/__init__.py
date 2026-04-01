@@ -6,10 +6,11 @@ from cal_scraper.sites import SiteConfig, register
 
 SITE_CONFIG = SiteConfig(
     name="hvezdarna",
-    cal_name="Hvězdárna a planetárium Brno (unofficial)",
+    cal_name="Hvězdárna Brno – Public Shows (unofficial, in CZ)",
     source_url="https://www.hvezdarna.cz/",
     prodid="-//cal-scraper//hvezdarna//CS",
     default_filename="hvezdarna.ics",
+    cal_desc="Unofficial scrape — public shows only (school programs excluded). Source: https://www.hvezdarna.cz/",
 )
 register(SITE_CONFIG)
 

@@ -6,10 +6,11 @@ from cal_scraper.sites import SiteConfig, register
 
 SITE_CONFIG = SiteConfig(
     name="moravska-galerie",
-    cal_name="Moravská galerie – Děti a rodiny (unofficial)",
+    cal_name="Moravská galerie – Children & Families (unofficial, in CZ)",
     source_url="https://moravska-galerie.cz/program/deti-a-rodiny/",
     prodid="-//cal-scraper//moravska-galerie//CS",
     default_filename="moravska-galerie.ics",
+    cal_desc="Unofficial scrape — children & family events only. Source: https://moravska-galerie.cz/program/deti-a-rodiny/",
 )
 register(SITE_CONFIG)
 

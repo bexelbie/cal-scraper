@@ -17,10 +17,11 @@ SOURCE_URL = "https://www.ikea.com/cz/cs/stores/brno/"
 
 SITE_CONFIG = SiteConfig(
     name="ikea-brno",
-    cal_name="IKEA Brno – Akce pro děti (unofficial)",
+    cal_name="IKEA Brno – Kids Events (unofficial, in CZ)",
     source_url=SOURCE_URL,
     prodid="-//cal-scraper//ikea-brno//CS",
     default_filename="ikea-brno.ics",
+    cal_desc="Unofficial scrape — kids events only (promotions and adult events excluded). Source: https://www.ikea.com/cz/cs/stores/brno/",
 )
 register(SITE_CONFIG)
 

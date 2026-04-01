@@ -136,6 +136,7 @@ def main(argv: list[str] | None = None) -> int:
             cal_name=config.cal_name,
             source_url=config.source_url,
             prodid=config.prodid,
+            cal_desc=config.cal_desc,
         )
 
         if args.dry_run:
