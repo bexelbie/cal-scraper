@@ -59,7 +59,11 @@ Plans:
   3. Multi-day events appear as spanning the full date range (single VEVENT, not separate per-day entries)
   4. Re-importing the .ics file does not create duplicate events (stable deterministic UIDs)
   5. Running `cal-scraper --output /path/to/file.ics` saves to the specified path, and stdout shows event count and date range summary
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — ICS generator module: Event → VEVENT → Calendar .ics with deterministic UIDs
+- [ ] 03-02-PLAN.md — CLI entry point & pipeline wiring: cal-scraper command with --output flag
 
 ## Progress
 
