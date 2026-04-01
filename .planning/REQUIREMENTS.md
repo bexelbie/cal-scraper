@@ -29,12 +29,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### iCal Generation
 
-- [ ] **ICAL-01**: Generate valid RFC 5545 .ics file with VCALENDAR and VEVENT components
-- [ ] **ICAL-02**: Include DTSTART, DTEND, SUMMARY, DESCRIPTION, LOCATION, URL, UID, DTSTAMP per event
-- [ ] **ICAL-03**: Generate stable deterministic UIDs from WordPress post IDs or URL slugs (re-import won't duplicate)
-- [ ] **ICAL-04**: Use DATE value type for all-day events, DATE-TIME for timed events
-- [ ] **ICAL-05**: Include VTIMEZONE component for Europe/Prague
-- [ ] **ICAL-06**: Represent multi-day events as single VEVENT spanning the date range
+- [x] **ICAL-01**: Generate valid RFC 5545 .ics file with VCALENDAR and VEVENT components
+- [x] **ICAL-02**: Include DTSTART, DTEND, SUMMARY, DESCRIPTION, LOCATION, URL, UID, DTSTAMP per event
+- [x] **ICAL-03**: Generate stable deterministic UIDs from WordPress post IDs or URL slugs (re-import won't duplicate)
+- [x] **ICAL-04**: Use DATE value type for all-day events, DATE-TIME for timed events
+- [x] **ICAL-05**: Include VTIMEZONE component for Europe/Prague
+- [x] **ICAL-06**: Represent multi-day events as single VEVENT spanning the date range
 
 ### CLI
 
@@ -97,12 +97,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SCRP-05 | Phase 2 | Complete |
 | SCRP-06 | Phase 2 | Complete |
 | SCRP-07 | Phase 2 | Complete |
-| ICAL-01 | Phase 3 | Pending |
-| ICAL-02 | Phase 3 | Pending |
-| ICAL-03 | Phase 3 | Pending |
-| ICAL-04 | Phase 3 | Pending |
-| ICAL-05 | Phase 3 | Pending |
-| ICAL-06 | Phase 3 | Pending |
+| ICAL-01 | Phase 3 | Complete |
+| ICAL-02 | Phase 3 | Complete |
+| ICAL-03 | Phase 3 | Complete |
+| ICAL-04 | Phase 3 | Complete |
+| ICAL-05 | Phase 3 | Complete |
+| ICAL-06 | Phase 3 | Complete |
 | CLI-01 | Phase 3 | Pending |
 | CLI-02 | Phase 3 | Pending |
 
