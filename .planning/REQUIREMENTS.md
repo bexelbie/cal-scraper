@@ -19,12 +19,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Date Parsing
 
-- [ ] **DATE-01**: Parse single day + hour format ("31/3/2026, 15 H")
-- [ ] **DATE-02**: Parse single day + hour.minutes format ("8/4/2026, 16.30 H")
-- [ ] **DATE-03**: Parse single day with no time (all-day event)
-- [ ] **DATE-04**: Parse multi-day date ranges ("7/7 – 11/7/2026") using en-dash separator
-- [ ] **DATE-05**: Parse multi-day + time range ("27/7 – 31/7/2026, 9–16 H")
-- [ ] **DATE-06**: Handle D/M/Y European date order (not M/D/Y)
+- [x] **DATE-01**: Parse single day + hour format ("31/3/2026, 15 H")
+- [x] **DATE-02**: Parse single day + hour.minutes format ("8/4/2026, 16.30 H")
+- [x] **DATE-03**: Parse single day with no time (all-day event)
+- [x] **DATE-04**: Parse multi-day date ranges ("7/7 – 11/7/2026") using en-dash separator
+- [x] **DATE-05**: Parse multi-day + time range ("27/7 – 31/7/2026, 9–16 H")
+- [x] **DATE-06**: Handle D/M/Y European date order (not M/D/Y)
 - [x] **DATE-07**: Apply Europe/Prague timezone to all parsed dates
 
 ### iCal Generation
@@ -83,12 +83,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DATE-01 | Phase 1 | Pending |
-| DATE-02 | Phase 1 | Pending |
-| DATE-03 | Phase 1 | Pending |
-| DATE-04 | Phase 1 | Pending |
-| DATE-05 | Phase 1 | Pending |
-| DATE-06 | Phase 1 | Pending |
+| DATE-01 | Phase 1 | Complete |
+| DATE-02 | Phase 1 | Complete |
+| DATE-03 | Phase 1 | Complete |
+| DATE-04 | Phase 1 | Complete |
+| DATE-05 | Phase 1 | Complete |
+| DATE-06 | Phase 1 | Complete |
 | DATE-07 | Phase 1 | Complete |
 | SCRP-01 | Phase 2 | Pending |
 | SCRP-02 | Phase 2 | Pending |

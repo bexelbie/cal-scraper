@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 01-01-PLAN.md
-last_updated: "2026-04-01T06:40:41.302Z"
+status: verifying
+stopped_at: Completed 01-02-PLAN.md
+last_updated: "2026-04-01T06:46:18.543Z"
 last_activity: 2026-04-01
 progress:
   total_phases: 3
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
+  completed_plans: 2
   percent: 0
 ---
 
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-03-31)
 
 Phase: 01 (foundation-date-parser) — EXECUTING
 Plan: 2 of 2
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-04-01
 
 Progress: [░░░░░░░░░░] 0%
@@ -53,6 +53,7 @@ Progress: [░░░░░░░░░░] 0%
 
 *Updated after each plan completion*
 | Phase 01-01 P01 | 2min | 2 tasks | 6 files |
+| Phase 01-foundation-date-parser P02 | 3min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -64,6 +65,9 @@ Recent decisions affecting current work:
 - [Roadmap]: 3-phase coarse structure — date parser first (highest risk, no network needed), then scraping, then ICS+CLI
 - [Research]: Custom regex for Czech dates — no library handles "31/3/2026, 15 H" or en-dash ranges
 - [Phase 01-01]: Fixed build-backend from invalid setuptools.backends._legacy:_Backend to setuptools.build_meta
+- [Phase 01-foundation-date-parser]: Regex pattern ordering most-specific-first prevents ambiguous partial matches
+- [Phase 01-foundation-date-parser]: Direct function references in dispatch table (not globals() lookup)
+- [Phase 01-foundation-date-parser]: En-dash U+2013 matched explicitly in regex — no normalization to ASCII hyphen
 
 ### Pending Todos
 
@@ -76,6 +80,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T06:40:41.298Z
-Stopped at: Completed 01-01-PLAN.md
+Last session: 2026-04-01T06:46:18.537Z
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None
