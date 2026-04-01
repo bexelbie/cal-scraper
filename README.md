@@ -1,9 +1,17 @@
 # Cal-Scraper
 
-Scrapes the Moravská galerie (Moravian Gallery in Brno) website's children and
-family events section and generates an iCal (.ics) feed.
+Scrapes Czech cultural venue websites in Brno and generates iCal (.ics) feeds.
+Events are in Czech and are not translated — the .ics files preserve the original text.
 
-Events are in Czech and are not translated — the .ics file preserves the original Czech text.
+**Supported sites:**
+
+| Site | Key | What's scraped |
+|------|-----|---------------|
+| [Moravská galerie](https://moravska-galerie.cz/program/deti-a-rodiny/) | `moravska-galerie` | Children & family events |
+| [Hvězdárna a planetárium Brno](https://www.hvezdarna.cz/) | `hvezdarna` | Public planetarium shows (school-only shows excluded) |
+
+Each calendar is marked **(unofficial)** and includes a disclaimer — these are
+not affiliated with the venues.
 
 ## Installation
 
@@ -13,4 +21,34 @@ pip install -e ".[dev]"
 
 ## Usage
 
-Coming soon — see Phase 3.
+```bash
+# Scrape all sites, write .ics files to current directory
+cal-scraper
+
+# Scrape a specific site
+cal-scraper --site hvezdarna
+
+# Specify output directory
+cal-scraper --output-dir /path/to/feeds
+
+# Preview without writing files
+cal-scraper --dry-run
+
+# Skip detail page fetching (Moravská galerie only, faster but less info)
+cal-scraper --site moravska-galerie --no-details
+
+# Verbose logging
+cal-scraper --verbose
+```
+
+Output files: `moravska-galerie.ics`, `hvezdarna.ics`
+
+## Development
+
+```bash
+# Run tests
+pytest
+
+# Run linter
+ruff check .
+```
