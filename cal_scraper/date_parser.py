@@ -69,6 +69,7 @@ _RE_SINGLE_HM = re.compile(
 _RE_MULTI_TIME = re.compile(
     r"(\d{1,2})/(\d{1,2})/(\d{4}),\s*(\d{1,2})\s*H\s*/"
 )
+_RE_MULTI_TIME_HOURS = re.compile(r"(\d{1,2})\s*H")
 
 # Pattern e: Single day + whole hour  "31/3/2026, 15 H"
 _RE_SINGLE_H = re.compile(
@@ -116,13 +117,16 @@ def _parse_single_hm(m: re.Match, raw: str) -> ParsedDate:
     return ParsedDate(dtstart=start, dtend=end, all_day=False, raw_text=raw)
 
 
-def _parse_multi_time(m: re.Match, raw: str) -> ParsedDate:
-    """'24/5/2026, 15 H / 16 H / 17 H' → uses first time slot only."""
+def _parse_multi_time(m: re.Match, raw: str) -> list[ParsedDate]:
+    """'24/5/2026, 15 H / 16 H / 17 H' → one ParsedDate per time slot."""
     d, mo, y = int(m.group(1)), int(m.group(2)), int(m.group(3))
-    h = int(m.group(4))
-    start = _make_dt(d, mo, y, h)
-    end = start + DEFAULT_DURATION
-    return ParsedDate(dtstart=start, dtend=end, all_day=False, raw_text=raw)
+    hours = [int(h) for h in _RE_MULTI_TIME_HOURS.findall(raw)]
+    results = []
+    for h in hours:
+        start = _make_dt(d, mo, y, h)
+        end = start + DEFAULT_DURATION
+        results.append(ParsedDate(dtstart=start, dtend=end, all_day=False, raw_text=raw))
+    return results
 
 
 def _parse_single_h(m: re.Match, raw: str) -> ParsedDate:
@@ -163,19 +167,32 @@ _PATTERNS: list[tuple[re.Pattern, callable]] = [
 def parse_date(raw_text: str) -> ParsedDate | None:
     """Parse a Czech date string into a ParsedDate, or None if unrecognized.
 
-    Strips the ● bullet prefix, then tries each regex pattern in order
-    (most specific first). Returns the result of the first matching handler.
-    Logs a warning and returns None for unrecognized formats (D-04).
+    For multi-time-slot formats, returns only the first slot.
+    Use parse_dates() to get all time slots.
+    """
+    results = parse_dates(raw_text)
+    return results[0] if results else None
+
+
+def parse_dates(raw_text: str) -> list[ParsedDate]:
+    """Parse a Czech date string into a list of ParsedDate objects.
+
+    Returns multiple results for multi-time-slot formats (e.g. "15 H / 16 H / 17 H").
+    Returns a single-element list for all other recognized formats.
+    Returns an empty list for unrecognized formats (with a logged warning).
     """
     cleaned = _clean(raw_text)
     if not cleaned:
         logger.warning("Unrecognized date format: %r", raw_text)
-        return None
+        return []
 
     for pattern, handler in _PATTERNS:
         match = pattern.search(cleaned)
         if match:
-            return handler(match, cleaned)
+            result = handler(match, cleaned)
+            if isinstance(result, list):
+                return result
+            return [result]
 
     logger.warning("Unrecognized date format: %r", raw_text)
-    return None
+    return []

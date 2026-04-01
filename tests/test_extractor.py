@@ -129,3 +129,36 @@ def test_extract_all_events_multi_page():
     """extract_all_events combines events from multiple HTML pages."""
     combined = extract_all_events([FIXTURE_HTML, FIXTURE_HTML])
     assert len(combined) == 6  # 3 valid per page × 2 pages
+
+
+def test_multi_time_slot_produces_multiple_events():
+    """Article with '15 H / 16 H / 17 H' produces three separate Events."""
+    html = """
+    <html><body>
+    <article class="elementor-post ecs-post-loop post-88888">
+      <div data-elementor-type="loop">
+        <div data-id="ff31590">
+          <h2 class="elementor-heading-title">
+            <a href="https://example.com/multi/">Multi Slot Event</a>
+          </h2>
+        </div>
+        <div data-id="fe5263e">
+          <div class="elementor-widget-container">● 24/5/2026, 15 H / 16 H / 17 H</div>
+        </div>
+        <div data-id="d2f8856">
+          <div class="elementor-widget-container">Some Venue</div>
+        </div>
+        <div data-id="16d0837">
+          <div class="elementor-widget-container">Description text</div>
+        </div>
+      </div>
+    </article>
+    </body></html>
+    """
+    events = extract_events_from_html(html)
+    assert len(events) == 3
+    hours = [e.dtstart.hour for e in events]
+    assert hours == [15, 16, 17]
+    # All share the same title, venue, description
+    assert all(e.title == "Multi Slot Event" for e in events)
+    assert all(e.venue == "Some Venue" for e in events)

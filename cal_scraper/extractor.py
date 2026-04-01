@@ -7,11 +7,10 @@ Integrates with cal_scraper.date_parser for Czech date string parsing.
 """
 
 import logging
-import unicodedata
 
 from bs4 import BeautifulSoup, Tag
 
-from cal_scraper.date_parser import parse_date
+from cal_scraper.date_parser import parse_dates
 from cal_scraper.models import Event
 
 logger = logging.getLogger(__name__)
@@ -44,14 +43,19 @@ def _clean_text(text: str) -> str:
 # ---------------------------------------------------------------------------
 
 
-def _extract_single_event(article: Tag) -> Event | None:
-    """Extract a single Event from an Elementor article tag, or None if critical fields missing."""
+def _extract_events_from_article(article: Tag) -> list[Event]:
+    """Extract Events from an Elementor article tag.
+
+    Returns one Event per time slot. Multi-slot dates (e.g. "15 H / 16 H / 17 H")
+    produce multiple Events sharing the same title, venue, and description.
+    Returns an empty list if critical fields are missing.
+    """
     # Title (critical — skip if missing)
     title_el = article.select_one(TITLE_SELECTOR)
     if title_el is None:
         classes = article.get("class", [])
         logger.warning("Skipping event: no title element found in article %s", classes)
-        return None
+        return []
 
     title = _clean_text(title_el.get_text())
     url = title_el.get("href", "")
@@ -60,13 +64,13 @@ def _extract_single_event(article: Tag) -> Event | None:
     date_el = article.select_one(DATE_SELECTOR)
     if date_el is None:
         logger.warning("Skipping event: no date element found for '%s'", title)
-        return None
+        return []
 
     date_text = _clean_text(date_el.get_text())
-    parsed = parse_date(date_text)
-    if parsed is None:
+    parsed_dates = parse_dates(date_text)
+    if not parsed_dates:
         logger.warning("Skipping event: unrecognized date format for '%s': %r", title, date_text)
-        return None
+        return []
 
     # Venue (non-critical — empty string fallback)
     venue_el = article.select_one(VENUE_SELECTOR)
@@ -76,16 +80,19 @@ def _extract_single_event(article: Tag) -> Event | None:
     desc_el = article.select_one(DESCRIPTION_SELECTOR)
     description = _clean_text(desc_el.get_text()) if desc_el else ""
 
-    return Event(
-        title=title,
-        dtstart=parsed.dtstart,
-        dtend=parsed.dtend,
-        all_day=parsed.all_day,
-        venue=venue,
-        description=description,
-        url=url,
-        raw_date=parsed.raw_text,
-    )
+    return [
+        Event(
+            title=title,
+            dtstart=parsed.dtstart,
+            dtend=parsed.dtend,
+            all_day=parsed.all_day,
+            venue=venue,
+            description=description,
+            url=url,
+            raw_date=parsed.raw_text,
+        )
+        for parsed in parsed_dates
+    ]
 
 
 # ---------------------------------------------------------------------------
@@ -103,9 +110,7 @@ def extract_events_from_html(html: str) -> list[Event]:
     events: list[Event] = []
 
     for article in articles:
-        event = _extract_single_event(article)
-        if event is not None:
-            events.append(event)
+        events.extend(_extract_events_from_article(article))
 
     return events
 

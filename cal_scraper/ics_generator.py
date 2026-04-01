@@ -43,12 +43,15 @@ def generate_uid(url: str) -> str:
     return f"{digest}@cal-scraper"
 
 
-def event_to_vevent(event: Event) -> IcsEvent:
+def event_to_vevent(event: Event, dtstamp: datetime | None = None) -> IcsEvent:
     """Convert an Event dataclass to an icalendar VEVENT component.
 
     Timed events (all_day=False) produce DATE-TIME values.
     All-day events (all_day=True) produce DATE values.
     """
+    if dtstamp is None:
+        dtstamp = datetime.now(tz=PRAGUE_TZ)
+
     vevent = IcsEvent()
 
     vevent.add("summary", event.title)
@@ -71,7 +74,7 @@ def event_to_vevent(event: Event) -> IcsEvent:
 
     vevent.add("url", event.url)
     vevent.add("uid", generate_uid(event.url))
-    vevent.add("dtstamp", datetime.now(tz=PRAGUE_TZ))
+    vevent.add("dtstamp", dtstamp)
 
     return vevent
 
@@ -81,14 +84,16 @@ def events_to_ics(events: list[Event]) -> str:
 
     Returns a UTF-8 string suitable for writing to a .ics file.
     Includes VTIMEZONE for Europe/Prague when timed events are present.
+    Uses a single DTSTAMP for all events so output is stable within a run.
     """
     cal = Calendar()
     cal.add("prodid", PRODID)
     cal.add("version", "2.0")
     cal.add("x-wr-calname", CALNAME)
 
+    dtstamp = datetime.now(tz=PRAGUE_TZ)
     for event in events:
-        cal.add_component(event_to_vevent(event))
+        cal.add_component(event_to_vevent(event, dtstamp=dtstamp))
 
     # Add VTIMEZONE definitions for any referenced timezones
     cal.add_missing_timezones()

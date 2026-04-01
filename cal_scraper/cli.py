@@ -81,6 +81,11 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Enable verbose logging",
     )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Print ICS to stdout instead of writing to a file",
+    )
     args = parser.parse_args(argv)
 
     logging.basicConfig(
@@ -97,10 +102,13 @@ def main(argv: list[str] | None = None) -> int:
 
     ics_content = events_to_ics(events)
 
-    with open(args.output, "w", encoding="utf-8") as fh:
-        fh.write(ics_content)
+    if args.dry_run:
+        print(ics_content)
+    else:
+        with open(args.output, "w", encoding="utf-8") as fh:
+            fh.write(ics_content)
 
-    _summarize(events, args.output)
+    _summarize(events, "(stdout)" if args.dry_run else args.output)
     return 0
 
 
