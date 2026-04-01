@@ -10,9 +10,11 @@ Events are in Czech and are not translated — the .ics files preserve the origi
 | [Moravská galerie](https://moravska-galerie.cz/program/deti-a-rodiny/) | `moravska-galerie` | Children & family events |
 | [Hvězdárna a planetárium Brno](https://www.hvezdarna.cz/) | `hvezdarna` | Public planetarium shows (school-only shows excluded) |
 | [IKEA Brno](https://www.ikea.com/cz/cs/stores/brno/) | `ikea-brno` | Kids events (craft workshops, Småland activities) |
+| [VIDA! Science Center](http://vida.cz/doprovodny-program) | `vida` | Family events & lab workshops (Brno area, no 18+ After Dark) |
 
 Each calendar is marked **(unofficial)** and includes a disclaimer — these are
-not affiliated with the venues.
+not affiliated with the venues. Events with estimated end times include a note
+in the description.
 
 ## Installation
 
@@ -42,7 +44,7 @@ cal-scraper --site moravska-galerie --no-details
 cal-scraper --verbose
 ```
 
-Output files: `moravska-galerie.ics`, `hvezdarna.ics`, `ikea-brno.ics`
+Output files: `moravska-galerie.ics`, `hvezdarna.ics`, `ikea-brno.ics`, `vida.ics`
 
 ## Development
 
