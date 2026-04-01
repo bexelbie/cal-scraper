@@ -76,9 +76,11 @@ def test_raw_date_preserved(events):
 # ---------------------------------------------------------------------------
 
 
-def test_skip_event_missing_title(events, caplog):
+def test_skip_event_missing_title(caplog):
     """Article 4 (missing title) is skipped; warning logged (D-02)."""
-    assert len(events) == 3  # 4 articles but only 3 valid
+    with caplog.at_level(logging.WARNING):
+        result = extract_events_from_html(FIXTURE_HTML)
+    assert len(result) == 3  # 4 articles but only 3 valid
     assert any("title" in rec.message.lower() for rec in caplog.records
                if rec.levelno >= logging.WARNING)
 

@@ -1,0 +1,118 @@
+"""HTML event extractor for Moravská galerie Elementor event cards.
+
+Parses Elementor-based event listing pages into Event objects using
+CSS selectors derived from the site's widget data-id attributes.
+
+Integrates with cal_scraper.date_parser for Czech date string parsing.
+"""
+
+import logging
+import unicodedata
+
+from bs4 import BeautifulSoup, Tag
+
+from cal_scraper.date_parser import parse_date
+from cal_scraper.models import Event
+
+logger = logging.getLogger(__name__)
+
+# ---------------------------------------------------------------------------
+# Selector constants (from ARCHITECTURE.md verified selectors)
+# ---------------------------------------------------------------------------
+
+ARTICLE_SELECTOR = "article.elementor-post"
+TITLE_SELECTOR = '[data-id="ff31590"] a'
+DATE_SELECTOR = '[data-id="fe5263e"] .elementor-widget-container'
+VENUE_SELECTOR = '[data-id="d2f8856"] .elementor-widget-container'
+DESCRIPTION_SELECTOR = '[data-id="16d0837"] .elementor-widget-container'
+
+
+# ---------------------------------------------------------------------------
+# Text cleaning
+# ---------------------------------------------------------------------------
+
+
+def _clean_text(text: str) -> str:
+    """Normalize whitespace: replace non-breaking spaces with regular spaces, strip."""
+    # Replace \xa0 (non-breaking space, U+00A0) with regular space
+    text = text.replace("\xa0", " ")
+    return text.strip()
+
+
+# ---------------------------------------------------------------------------
+# Single event extraction
+# ---------------------------------------------------------------------------
+
+
+def _extract_single_event(article: Tag) -> Event | None:
+    """Extract a single Event from an Elementor article tag, or None if critical fields missing."""
+    # Title (critical — skip if missing)
+    title_el = article.select_one(TITLE_SELECTOR)
+    if title_el is None:
+        classes = article.get("class", [])
+        logger.warning("Skipping event: no title element found in article %s", classes)
+        return None
+
+    title = _clean_text(title_el.get_text())
+    url = title_el.get("href", "")
+
+    # Date (critical — skip if missing)
+    date_el = article.select_one(DATE_SELECTOR)
+    if date_el is None:
+        logger.warning("Skipping event: no date element found for '%s'", title)
+        return None
+
+    date_text = _clean_text(date_el.get_text())
+    parsed = parse_date(date_text)
+    if parsed is None:
+        logger.warning("Skipping event: unrecognized date format for '%s': %r", title, date_text)
+        return None
+
+    # Venue (non-critical — empty string fallback)
+    venue_el = article.select_one(VENUE_SELECTOR)
+    venue = _clean_text(venue_el.get_text()) if venue_el else ""
+
+    # Description (non-critical — empty string fallback)
+    desc_el = article.select_one(DESCRIPTION_SELECTOR)
+    description = _clean_text(desc_el.get_text()) if desc_el else ""
+
+    return Event(
+        title=title,
+        dtstart=parsed.dtstart,
+        dtend=parsed.dtend,
+        all_day=parsed.all_day,
+        venue=venue,
+        description=description,
+        url=url,
+        raw_date=parsed.raw_text,
+    )
+
+
+# ---------------------------------------------------------------------------
+# Public API
+# ---------------------------------------------------------------------------
+
+
+def extract_events_from_html(html: str) -> list[Event]:
+    """Extract all valid Event objects from an HTML page of Elementor event cards.
+
+    Skips articles missing critical fields (title, date) with warning logs.
+    """
+    soup = BeautifulSoup(html, "lxml")
+    articles = soup.select(ARTICLE_SELECTOR)
+    events: list[Event] = []
+
+    for article in articles:
+        event = _extract_single_event(article)
+        if event is not None:
+            events.append(event)
+
+    return events
+
+
+def extract_all_events(pages: list[str]) -> list[Event]:
+    """Extract events from multiple HTML pages and return combined list."""
+    all_events: list[Event] = []
+    for page_html in pages:
+        all_events.extend(extract_events_from_html(page_html))
+    return all_events
