@@ -18,6 +18,7 @@ from pathlib import Path
 from cal_scraper.ics_generator import events_to_ics
 from cal_scraper.models import Event
 from cal_scraper.sites import SITE_REGISTRY
+from cal_scraper.translator import TranslationError, load_azure_config, translate_events
 
 # Trigger site registration on import
 import cal_scraper.sites.moravska_galerie  # noqa: F401
@@ -98,6 +99,15 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Skip fetching individual event detail pages (faster, less data)",
     )
+    parser.add_argument(
+        "--translate",
+        action="store_true",
+        help=(
+            "Translate events to bilingual English/Czech using Azure OpenAI. "
+            "Requires AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_KEY, "
+            "AZURE_OPENAI_DEPLOYMENT, AZURE_OPENAI_API_VERSION env vars."
+        ),
+    )
     args = parser.parse_args(argv)
 
     logging.basicConfig(
@@ -107,6 +117,15 @@ def main(argv: list[str] | None = None) -> int:
 
     selected = args.site if args.site is not None else list(SITE_REGISTRY.keys())
     output_dir = Path(args.output_dir)
+
+    # Load translation config once if --translate is requested
+    azure_config: dict[str, str] | None = None
+    if args.translate:
+        try:
+            azure_config = load_azure_config()
+        except TranslationError as exc:
+            print(f"Error: {exc}", file=sys.stderr)
+            return 1
 
     errors = 0
 
@@ -131,6 +150,11 @@ def main(argv: list[str] | None = None) -> int:
             )
             errors += 1
             continue
+
+        if azure_config is not None:
+            print(f"Translating {len(events)} events for {site_name}...",
+                  file=sys.stderr)
+            events = translate_events(events, azure_config)
 
         ics_content = events_to_ics(
             events,

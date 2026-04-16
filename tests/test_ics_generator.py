@@ -221,6 +221,23 @@ class TestEventToVevent:
         desc = str(vevent.get("description"))
         assert "duration estimated at 55min" in desc
 
+    def test_translated_event_uses_precomposed_description(self):
+        """translated=True event uses description as-is, no extra fields."""
+        event = _timed_event()
+        event.price = "50 Kč"
+        event.reservation = "online"
+        event.estimated_end = True
+        event.translated = True
+        event.description = "English text\n\n---\nPrice/Cena: 50 Kč\n---\n\nCzech text"
+        vevent = event_to_vevent(event)
+        desc = str(vevent.get("description"))
+        # Should contain the pre-composed content
+        assert "English text" in desc
+        assert "Czech text" in desc
+        # Should NOT re-add fields
+        assert desc.count("Cena:") == 1
+        assert "Datum:" not in desc
+
 
 # ---------------------------------------------------------------------------
 # ICAL-01 / ICAL-05: events_to_ics — full calendar output

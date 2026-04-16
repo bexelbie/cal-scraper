@@ -304,3 +304,45 @@ class TestCliNoDetailsFlag:
             assert result == 0
             _, kwargs = mock_scrape.call_args
             assert kwargs["no_details"] is False
+
+
+# ---------------------------------------------------------------------------
+# --translate flag
+# ---------------------------------------------------------------------------
+
+
+class TestCliTranslateFlag:
+    """CLI --translate flag triggers translation of events."""
+
+    def test_translate_calls_translate_events(self, tmp_path):
+        """--translate causes translate_events to be called."""
+        out_dir = tmp_path / "out"
+        out_dir.mkdir()
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
+             patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS), \
+             patch("cal_scraper.cli.load_azure_config", return_value={"k": "v"}), \
+             patch("cal_scraper.cli.translate_events", return_value=MOCK_EVENTS) as mock_trans:
+            from cal_scraper.cli import main
+            result = main(["--translate", "--site", "moravska-galerie", "-d", str(out_dir)])
+            assert result == 0
+            mock_trans.assert_called_once()
+
+    def test_translate_missing_config_returns_1(self, tmp_path):
+        """--translate without env vars returns error code 1."""
+        from cal_scraper.translator import TranslationError
+        with patch("cal_scraper.cli.load_azure_config",
+                   side_effect=TranslationError("Missing vars")):
+            from cal_scraper.cli import main
+            result = main(["--translate", "-d", str(tmp_path)])
+            assert result == 1
+
+    def test_no_translate_by_default(self, tmp_path):
+        """Without --translate, translate_events is never called."""
+        out_dir = tmp_path / "out"
+        out_dir.mkdir()
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
+             patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS), \
+             patch("cal_scraper.cli.translate_events") as mock_trans:
+            from cal_scraper.cli import main
+            main(["--site", "moravska-galerie", "-d", str(out_dir)])
+            mock_trans.assert_not_called()

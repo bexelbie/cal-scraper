@@ -10,3 +10,4 @@ build/
 venv/
 *.ics
 .ruff_cache/
+.DS_Store

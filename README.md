@@ -1,7 +1,7 @@
 # Cal-Scraper
 
 Scrapes Czech cultural venue websites in Brno and generates iCal (.ics) feeds.
-Events are in Czech and are not translated — the .ics files preserve the original text.
+Events are in Czech by default — use `--translate` for bilingual English/Czech output.
 
 **Supported sites:**
 
@@ -42,6 +42,24 @@ cal-scraper --site moravska-galerie --no-details
 
 # Verbose logging
 cal-scraper --verbose
+
+# Translate to bilingual English/Czech (requires Azure OpenAI)
+cal-scraper --translate
+```
+
+### Translation
+
+The `--translate` flag uses Azure OpenAI (gpt-4o-mini) to produce bilingual events:
+- **Title:** `English Title / Czech Title`
+- **Description:** English text → event details → original Czech text
+
+Set these environment variables:
+
+```bash
+export AZURE_OPENAI_ENDPOINT=https://YOUR-RESOURCE.openai.azure.com
+export AZURE_OPENAI_KEY=your-api-key
+export AZURE_OPENAI_DEPLOYMENT=gpt-4o-mini
+export AZURE_OPENAI_API_VERSION=2025-01-01-preview
 ```
 
 Output files: `moravska-galerie.ics`, `hvezdarna.ics`, `ikea-brno.ics`, `vida.ics`

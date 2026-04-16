@@ -46,3 +46,4 @@ class Event:
     reservation: str = ""
     sold_out: bool = False
     estimated_end: bool = False  # True when dtend is a guess (no end time from source)
+    translated: bool = False  # True when description is pre-composed bilingual text
