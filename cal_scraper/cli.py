@@ -108,6 +108,14 @@ def main(argv: list[str] | None = None) -> int:
             "AZURE_OPENAI_DEPLOYMENT, AZURE_OPENAI_API_VERSION env vars."
         ),
     )
+    parser.add_argument(
+        "--filename-suffix",
+        default="",
+        help=(
+            "Suffix to append to output filenames before .ics extension "
+            "(e.g., '--filename-suffix=-en' → moravska-galerie-en.ics)"
+        ),
+    )
     args = parser.parse_args(argv)
 
     logging.basicConfig(
@@ -128,6 +136,8 @@ def main(argv: list[str] | None = None) -> int:
             return 1
 
     errors = 0
+    succeeded: list[str] = []
+    failed: list[str] = []
 
     for site_name in selected:
         config = SITE_REGISTRY[site_name]
@@ -140,6 +150,7 @@ def main(argv: list[str] | None = None) -> int:
         except Exception as exc:
             print(f"Error [{site_name}]: {exc}", file=sys.stderr)
             errors += 1
+            failed.append(site_name)
             continue
 
         if not events:
@@ -149,12 +160,22 @@ def main(argv: list[str] | None = None) -> int:
                 file=sys.stderr,
             )
             errors += 1
+            failed.append(site_name)
             continue
 
         if azure_config is not None:
             print(f"Translating {len(events)} events for {site_name}...",
                   file=sys.stderr)
-            events = translate_events(events, azure_config)
+            events, translation_ok = translate_events(events, azure_config)
+            if not translation_ok:
+                print(
+                    f"Error [{site_name}]: translation failed — "
+                    "keeping previous translated file (if any)",
+                    file=sys.stderr,
+                )
+                errors += 1
+                failed.append(site_name)
+                continue
 
         ics_content = events_to_ics(
             events,
@@ -168,11 +189,29 @@ def main(argv: list[str] | None = None) -> int:
             print(ics_content)
             _summarize(events, "(stdout)")
         else:
-            out_path = output_dir / config.default_filename
+            # Apply filename suffix (e.g., moravska-galerie.ics → moravska-galerie-en.ics)
+            base_name = config.default_filename
+            if args.filename_suffix:
+                stem, ext = base_name.rsplit(".", 1)
+                base_name = f"{stem}{args.filename_suffix}.{ext}"
+            out_path = output_dir / base_name
             out_path.parent.mkdir(parents=True, exist_ok=True)
             with open(out_path, "w", encoding="utf-8") as fh:
                 fh.write(ics_content)
             _summarize(events, str(out_path))
+
+        succeeded.append(site_name)
+
+    # Final summary for journal/log visibility
+    total = len(selected)
+    ok = len(succeeded)
+    if failed:
+        print(
+            f"cal-scraper: {ok}/{total} sites OK (failed: {', '.join(failed)})",
+            file=sys.stderr,
+        )
+    else:
+        print(f"cal-scraper: {ok}/{total} sites OK", file=sys.stderr)
 
     return 1 if errors else 0
 

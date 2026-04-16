@@ -1,0 +1,39 @@
+# ABOUTME: Example quadlet container unit for cal-scraper feed generator.
+# ABOUTME: Copy and adapt for your deployment. See README.md for details.
+#
+# Installation:
+#   1. Copy this file and cal-scraper.timer to your quadlet directory
+#   2. Adjust Volume path, Network, and EnvironmentFile for your system
+#   3. Create the environment file with Azure config (see cal-scraper.env.example)
+#   4. Run: systemctl --user daemon-reload
+#   5. Enable the timer: systemctl --user enable --now cal-scraper.timer
+#
+# Monitoring:
+#   systemctl --user status cal-scraper
+#   journalctl --user -u cal-scraper --no-pager -n 50
+
+[Unit]
+Description=Cal-scraper iCal feed generator
+
+[Container]
+Image=ghcr.io/bexelbie/cal-scraper:latest
+ContainerName=cal-scraper
+PodmanArgs=--pull=newer
+
+# Host directory is mounted as /data inside the container.
+# Czech .ics and translated -en.ics files are written here.
+Volume=/home/youruser/cal-scraper/feeds:/data:Z
+
+# Azure OpenAI settings for translation (optional — omit if Czech-only).
+# Required vars: AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_KEY,
+#   AZURE_OPENAI_DEPLOYMENT, AZURE_OPENAI_API_VERSION
+EnvironmentFile=/home/youruser/cal-scraper/cal-scraper.env
+
+# Set this to your Podman network that can reach the internet
+Network=YOUR-NETWORK-NAME
+
+[Service]
+Type=oneshot
+Restart=no
+StandardOutput=journal
+StandardError=journal

@@ -1,0 +1,13 @@
+# ABOUTME: Systemd timer for cal-scraper feed generation.
+# ABOUTME: Runs daily at 06:00 Europe/Prague timezone.
+
+[Unit]
+Description=Cal-scraper daily iCal feed update
+
+[Timer]
+OnCalendar=*-*-* 06:00:00 Europe/Prague
+Persistent=true
+Unit=cal-scraper.service
+
+[Install]
+WantedBy=timers.target

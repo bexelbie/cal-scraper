@@ -281,7 +281,8 @@ class TestTranslateEvents:
             {"id": 0, "title": "Creative Workshop for Families",
              "description": "Come create with kids in the gallery."},
         ])
-        result = translate_events([SAMPLE_EVENT], self.FAKE_CONFIG)
+        result, ok = translate_events([SAMPLE_EVENT], self.FAKE_CONFIG)
+        assert ok is True
         assert len(result) == 1
         assert result[0].title == "Creative Workshop for Families / Tvořivá dílna pro rodiny"
         assert result[0].translated is True
@@ -293,7 +294,8 @@ class TestTranslateEvents:
             {"id": 0, "title": "Småland otevřen",
              "description": ""},
         ])
-        result = translate_events([SAMPLE_EVENT_EMPTY_DESC], self.FAKE_CONFIG)
+        result, ok = translate_events([SAMPLE_EVENT_EMPTY_DESC], self.FAKE_CONFIG)
+        assert ok is True
         assert result[0].title == "Småland otevřen"
 
     @patch("cal_scraper.translator._call_azure_openai")
@@ -302,7 +304,8 @@ class TestTranslateEvents:
             {"id": 0, "title": "Creative Workshop",
              "description": "Come create with kids."},
         ])
-        result = translate_events([SAMPLE_EVENT], self.FAKE_CONFIG)
+        result, ok = translate_events([SAMPLE_EVENT], self.FAKE_CONFIG)
+        assert ok is True
         desc = result[0].description
         assert "Come create with kids." in desc
         assert "Price/Cena: 50 Kč" in desc
@@ -311,7 +314,8 @@ class TestTranslateEvents:
     @patch("cal_scraper.translator._call_azure_openai")
     def test_fallback_on_api_error(self, mock_call):
         mock_call.side_effect = TranslationError("API down")
-        result = translate_events([SAMPLE_EVENT], self.FAKE_CONFIG)
+        result, ok = translate_events([SAMPLE_EVENT], self.FAKE_CONFIG)
+        assert ok is False
         assert result[0].title == SAMPLE_EVENT.title
         assert result[0].translated is False
 
@@ -320,12 +324,14 @@ class TestTranslateEvents:
         mock_call.return_value = {
             "choices": [{"message": {"content": "not valid json"}}]
         }
-        result = translate_events([SAMPLE_EVENT], self.FAKE_CONFIG)
+        result, ok = translate_events([SAMPLE_EVENT], self.FAKE_CONFIG)
+        assert ok is False
         assert result[0].title == SAMPLE_EVENT.title
 
     @patch("cal_scraper.translator._call_azure_openai")
     def test_empty_events_list(self, mock_call):
-        result = translate_events([], self.FAKE_CONFIG)
+        result, ok = translate_events([], self.FAKE_CONFIG)
+        assert ok is True
         assert result == []
         mock_call.assert_not_called()
 
@@ -336,7 +342,8 @@ class TestTranslateEvents:
             {"id": 1, "title": "Cat Adventure", "description": "A story."},
         ])
         events = [SAMPLE_EVENT, SAMPLE_EVENT_ESTIMATED]
-        result = translate_events(events, self.FAKE_CONFIG)
+        result, ok = translate_events(events, self.FAKE_CONFIG)
+        assert ok is True
         assert len(result) == 2
         # Single API call for both events
         mock_call.assert_called_once()

@@ -321,7 +321,7 @@ class TestCliTranslateFlag:
         with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
              patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS), \
              patch("cal_scraper.cli.load_azure_config", return_value={"k": "v"}), \
-             patch("cal_scraper.cli.translate_events", return_value=MOCK_EVENTS) as mock_trans:
+             patch("cal_scraper.cli.translate_events", return_value=(MOCK_EVENTS, True)) as mock_trans:
             from cal_scraper.cli import main
             result = main(["--translate", "--site", "moravska-galerie", "-d", str(out_dir)])
             assert result == 0
@@ -346,3 +346,101 @@ class TestCliTranslateFlag:
             from cal_scraper.cli import main
             main(["--site", "moravska-galerie", "-d", str(out_dir)])
             mock_trans.assert_not_called()
+
+    def test_translate_failure_skips_file_write(self, tmp_path):
+        """When translation fails, skip writing the file (keep old)."""
+        out_dir = tmp_path / "out"
+        out_dir.mkdir()
+        # Pre-create an existing file to prove it's not overwritten
+        existing = out_dir / "moravska-galerie.ics"
+        existing.write_text("OLD CONTENT")
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
+             patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS), \
+             patch("cal_scraper.cli.load_azure_config", return_value={"k": "v"}), \
+             patch("cal_scraper.cli.translate_events", return_value=(MOCK_EVENTS, False)):
+            from cal_scraper.cli import main
+            result = main(["--translate", "--site", "moravska-galerie", "-d", str(out_dir)])
+            assert result == 1
+            # Old file preserved — not overwritten
+            assert existing.read_text() == "OLD CONTENT"
+
+    def test_translate_failure_returns_1(self, tmp_path, capsys):
+        """Translation failure counts as an error."""
+        out_dir = tmp_path / "out"
+        out_dir.mkdir()
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
+             patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS), \
+             patch("cal_scraper.cli.load_azure_config", return_value={"k": "v"}), \
+             patch("cal_scraper.cli.translate_events", return_value=(MOCK_EVENTS, False)):
+            from cal_scraper.cli import main
+            result = main(["--translate", "--site", "moravska-galerie", "-d", str(out_dir)])
+            assert result == 1
+            captured = capsys.readouterr().err
+            assert "translation failed" in captured.lower()
+
+
+# ---------------------------------------------------------------------------
+# Summary output
+# ---------------------------------------------------------------------------
+
+
+class TestCliSummaryLine:
+    """CLI prints a final summary line showing success/failure counts."""
+
+    def test_all_sites_ok_summary(self, tmp_path, capsys):
+        """Summary line shows N/N sites OK when all succeed."""
+        out_dir = tmp_path / "out"
+        out_dir.mkdir()
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
+             patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS):
+            from cal_scraper.cli import main
+            main(["--site", "moravska-galerie", "-d", str(out_dir)])
+        captured = capsys.readouterr().err
+        assert "cal-scraper: 1/1 sites OK" in captured
+
+    def test_partial_failure_summary(self, tmp_path, capsys):
+        """Summary line shows failed sites when some fail."""
+        out_dir = tmp_path / "out"
+        out_dir.mkdir()
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
+             patch("cal_scraper.sites.hvezdarna.scrape", return_value=[]), \
+             patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS):
+            from cal_scraper.cli import main
+            result = main(["--site", "moravska-galerie", "hvezdarna", "-d", str(out_dir)])
+        assert result == 1
+        captured = capsys.readouterr().err
+        assert "1/2 sites OK" in captured
+        assert "failed: hvezdarna" in captured
+
+
+# ---------------------------------------------------------------------------
+# --filename-suffix flag
+# ---------------------------------------------------------------------------
+
+
+class TestCliFilenameSuffix:
+    """CLI --filename-suffix appends suffix to output filenames."""
+
+    def test_suffix_applied(self, tmp_path):
+        """--filename-suffix=-en produces moravska-galerie-en.ics."""
+        out_dir = tmp_path / "out"
+        out_dir.mkdir()
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
+             patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS):
+            from cal_scraper.cli import main
+            result = main(["--site", "moravska-galerie", "--filename-suffix=-en",
+                           "-d", str(out_dir)])
+            assert result == 0
+            assert (out_dir / "moravska-galerie-en.ics").exists()
+            assert not (out_dir / "moravska-galerie.ics").exists()
+
+    def test_no_suffix_by_default(self, tmp_path):
+        """Without --filename-suffix, default filename is used."""
+        out_dir = tmp_path / "out"
+        out_dir.mkdir()
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
+             patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS):
+            from cal_scraper.cli import main
+            result = main(["--site", "moravska-galerie", "-d", str(out_dir)])
+            assert result == 0
+            assert (out_dir / "moravska-galerie.ics").exists()

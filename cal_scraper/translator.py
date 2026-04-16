@@ -244,14 +244,15 @@ def _format_duration(event: Event) -> str:
 def translate_events(
     events: list[Event],
     config: dict[str, str],
-) -> list[Event]:
+) -> tuple[list[Event], bool]:
     """Translate a list of events to bilingual English/Czech.
 
-    Returns new Event objects with bilingual titles and descriptions.
-    On translation failure, returns the original events unchanged.
+    Returns a tuple of (events, success):
+    - On success: (bilingual Event objects, True)
+    - On failure: (original Czech events unchanged, False)
     """
     if not events:
-        return events
+        return events, True
 
     items = _build_translation_request(events)
 
@@ -273,12 +274,12 @@ def translate_events(
         content = resp["choices"][0]["message"]["content"]
     except (TranslationError, KeyError, IndexError) as exc:
         logger.warning("Translation failed: %s — using Czech originals", exc)
-        return events
+        return events, False
 
     translated = _parse_translation_response(content, len(events))
     if not translated:
         logger.warning("Could not parse translation — using Czech originals")
-        return events
+        return events, False
 
     result: list[Event] = []
     for i, ev in enumerate(events):
@@ -298,4 +299,4 @@ def translate_events(
 
         result.append(replace(ev, title=bi_title, description=bi_desc, translated=True))
 
-    return result
+    return result, True

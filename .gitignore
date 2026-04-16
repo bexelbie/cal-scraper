@@ -11,3 +11,4 @@ venv/
 *.ics
 .ruff_cache/
 .DS_Store
+cal-scraper.env
