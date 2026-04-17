@@ -11,7 +11,9 @@ from __future__ import annotations
 
 import argparse
 import logging
+import os
 import sys
+import tempfile
 from datetime import date, datetime
 from pathlib import Path
 
@@ -196,8 +198,15 @@ def main(argv: list[str] | None = None) -> int:
                 base_name = f"{stem}{args.filename_suffix}.{ext}"
             out_path = output_dir / base_name
             out_path.parent.mkdir(parents=True, exist_ok=True)
-            with open(out_path, "w", encoding="utf-8") as fh:
-                fh.write(ics_content)
+            # Atomic write: tempfile + rename so readers never see a half-written file
+            fd, tmp = tempfile.mkstemp(dir=out_path.parent, suffix=".ics.tmp")
+            try:
+                with os.fdopen(fd, "w", encoding="utf-8") as fh:
+                    fh.write(ics_content)
+                os.replace(tmp, out_path)
+            except BaseException:
+                os.unlink(tmp)
+                raise
             _summarize(events, str(out_path))
 
         succeeded.append(site_name)
