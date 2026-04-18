@@ -3,9 +3,10 @@
 Parses all observed date format variants from the gallery site into
 typed ParsedDate objects with timezone-aware datetimes in Europe/Prague.
 
-Format variants handled (DATE-01 through DATE-06):
+Format variants handled (DATE-01 through DATE-07):
   - "31/3/2026, 15 H"              → single day + whole hour
   - "8/4/2026, 16.30 H"            → single day + hour.minutes
+  - "23/5/2026, 13–22 H"           → single day + time range
   - "23/5/2026"                     → date only (all-day event)
   - "7/7 – 11/7/2026"              → multi-day range (en-dash)
   - "27/7 – 31/7/2026, 9–16 H"    → multi-day + time range
@@ -65,6 +66,11 @@ _RE_SINGLE_HM = re.compile(
     r"(\d{1,2})/(\d{1,2})/(\d{4}),\s*(\d{1,2})\.(\d{2})\s*H"
 )
 
+# Pattern c2: Single day + time range  "23/5/2026, 13–22 H"
+_RE_SINGLE_RANGE = re.compile(
+    r"(\d{1,2})/(\d{1,2})/(\d{4}),\s*(\d{1,2})\u2013(\d{1,2})\s*H$"
+)
+
 # Pattern d: Multiple time slots  "24/5/2026, 15 H / 16 H / 17 H"
 _RE_MULTI_TIME = re.compile(
     r"(\d{1,2})/(\d{1,2})/(\d{4}),\s*(\d{1,2})\s*H\s*/"
@@ -117,6 +123,15 @@ def _parse_single_hm(m: re.Match, raw: str) -> ParsedDate:
     return ParsedDate(dtstart=start, dtend=end, all_day=False, raw_text=raw, estimated_end=True)
 
 
+def _parse_single_range(m: re.Match, raw: str) -> ParsedDate:
+    """'23/5/2026, 13–22 H' → timed event with explicit start and end hours."""
+    d, mo, y = int(m.group(1)), int(m.group(2)), int(m.group(3))
+    h_start, h_end = int(m.group(4)), int(m.group(5))
+    start = _make_dt(d, mo, y, h_start)
+    end = _make_dt(d, mo, y, h_end)
+    return ParsedDate(dtstart=start, dtend=end, all_day=False, raw_text=raw)
+
+
 def _parse_multi_time(m: re.Match, raw: str) -> list[ParsedDate]:
     """'24/5/2026, 15 H / 16 H / 17 H' → one ParsedDate per time slot."""
     d, mo, y = int(m.group(1)), int(m.group(2)), int(m.group(3))
@@ -154,6 +169,7 @@ _PATTERNS: list[tuple[re.Pattern, callable]] = [
     (_RE_MULTI_DAY_TIME, _parse_multi_day_time),
     (_RE_MULTI_DAY,      _parse_multi_day),
     (_RE_SINGLE_HM,      _parse_single_hm),
+    (_RE_SINGLE_RANGE,   _parse_single_range),
     (_RE_MULTI_TIME,     _parse_multi_time),
     (_RE_SINGLE_H,       _parse_single_h),
     (_RE_DATE_ONLY,      _parse_date_only),

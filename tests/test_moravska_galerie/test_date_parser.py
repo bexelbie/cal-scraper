@@ -247,3 +247,31 @@ class TestPreprocessing:
         """raw_text should be the cleaned version (without bullet)."""
         result = parse_date("● 31/3/2026, 15 H")
         assert result.raw_text == "31/3/2026, 15 H"
+
+
+# ---------------------------------------------------------------------------
+# DATE-07: Single day + time range ("23/5/2026, 13–22 H")
+# ---------------------------------------------------------------------------
+
+class TestSingleDayTimeRange:
+    """DATE-07: D/M/YYYY, HH–HH H → timed event with explicit start/end hours."""
+
+    def test_basic(self):
+        result = parse_date("● 23/5/2026, 13\u201322 H")
+        assert result is not None
+        assert result.dtstart == datetime(2026, 5, 23, 13, 0, tzinfo=PRAGUE_TZ)
+        assert result.dtend == datetime(2026, 5, 23, 22, 0, tzinfo=PRAGUE_TZ)
+        assert result.all_day is False
+        assert result.raw_text == "23/5/2026, 13\u201322 H"
+
+    def test_not_estimated_end(self):
+        """End time is explicit, so estimated_end should be False."""
+        result = parse_date("23/5/2026, 13\u201322 H")
+        assert result.estimated_end is False
+
+    def test_short_range(self):
+        """Single-hour range like 9–10 H."""
+        result = parse_date("1/6/2026, 9\u201310 H")
+        assert result is not None
+        assert result.dtstart == datetime(2026, 6, 1, 9, 0, tzinfo=PRAGUE_TZ)
+        assert result.dtend == datetime(2026, 6, 1, 10, 0, tzinfo=PRAGUE_TZ)
