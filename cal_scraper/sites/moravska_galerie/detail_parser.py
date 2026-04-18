@@ -7,6 +7,7 @@ import time
 import requests
 from bs4 import BeautifulSoup
 
+from cal_scraper.http_client import fetch
 from cal_scraper.sites.moravska_galerie.fetcher import USER_AGENT
 from cal_scraper.models import Event
 
@@ -31,7 +32,7 @@ DETAIL_DELAY = 1.0  # seconds between detail page requests
 def _fetch_detail_html(url: str) -> str | None:
     """Fetch a single detail page. Returns HTML or None on failure."""
     try:
-        resp = requests.get(url, headers={"User-Agent": USER_AGENT}, timeout=15)
+        resp = fetch(url, headers={"User-Agent": USER_AGENT}, timeout=15)
         resp.raise_for_status()
         return resp.text
     except requests.RequestException as exc:

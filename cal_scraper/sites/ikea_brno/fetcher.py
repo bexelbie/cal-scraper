@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 
-import requests
+from cal_scraper.http_client import fetch
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +22,7 @@ def fetch_events(verbose: bool = False) -> list[dict]:
     Raises on non-200 HTTP status.
     """
     headers = {"REQUEST-ORIGIN": "iert-customer-fe"}
-    response = requests.get(API_URL, headers=headers, timeout=REQUEST_TIMEOUT)
+    response = fetch(API_URL, headers=headers, timeout=REQUEST_TIMEOUT)
     response.raise_for_status()
 
     events = response.json()

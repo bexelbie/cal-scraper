@@ -16,6 +16,8 @@ import time
 import requests
 from bs4 import BeautifulSoup
 
+from cal_scraper.http_client import fetch
+
 logger = logging.getLogger(__name__)
 
 BASE_URL = "https://www.moravska-galerie.cz/program/deti-a-rodiny/"
@@ -64,7 +66,7 @@ def fetch_page(url: str, session: requests.Session) -> str | None:
     Returns None and logs a warning on any network or HTTP error.
     """
     try:
-        response = session.get(url, timeout=REQUEST_TIMEOUT)
+        response = fetch(url, session=session, timeout=REQUEST_TIMEOUT)
         response.raise_for_status()
         return response.text
     except requests.RequestException as e:
