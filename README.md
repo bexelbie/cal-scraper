@@ -31,6 +31,9 @@ cal-scraper
 # Scrape a specific site
 cal-scraper --site hvezdarna
 
+# Scrape multiple specific sites
+cal-scraper --site hvezdarna vida
+
 # Specify output directory
 cal-scraper --output-dir /path/to/feeds
 
