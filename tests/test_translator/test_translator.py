@@ -236,7 +236,8 @@ class TestBuildBilingualDescription:
         assert "Datum:" in desc
         # Should not have empty sections with trailing whitespace
         lines = desc.split("\n\n")
-        assert lines[0] == "---"
+        # First part is the English disclaimer (no English desc to precede it)
+        assert "Unofficial source" in lines[0]
 
     def test_details_between_english_and_czech(self):
         desc = _build_bilingual_description(

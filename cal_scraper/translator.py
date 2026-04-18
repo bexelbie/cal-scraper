@@ -198,6 +198,11 @@ def _build_bilingual_description(
     if english_desc.strip():
         parts.append(english_desc.strip())
 
+    parts.append(
+        "⚠️ Unofficial source – verify details on the organizer's website. "
+        "Auto-translated via Azure OpenAI."
+    )
+
     # --- details block ---
     detail_lines: list[str] = []
     if event.sold_out:
@@ -219,6 +224,8 @@ def _build_bilingual_description(
     # Czech description (if non-empty)
     if czech_desc.strip():
         parts.append(czech_desc.strip())
+
+    parts.append("⚠️ Neoficiální zdroj – ověřte si detaily na webu pořadatele.")
 
     return "\n\n".join(parts)
 

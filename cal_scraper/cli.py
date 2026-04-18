@@ -23,11 +23,22 @@ from cal_scraper.models import Event
 from cal_scraper.sites import SITE_REGISTRY
 from cal_scraper.translator import TranslationError, load_azure_config, translate_events
 
+from dataclasses import replace as _replace
+
 # Trigger site registration on import
 import cal_scraper.sites.moravska_galerie  # noqa: F401
 import cal_scraper.sites.hvezdarna  # noqa: F401
 import cal_scraper.sites.ikea_brno  # noqa: F401
 import cal_scraper.sites.vida  # noqa: F401 — triggers registration
+
+
+# ---------------------------------------------------------------------------
+# Event description disclaimers
+# ---------------------------------------------------------------------------
+
+_DISCLAIMER_CZ = (
+    "⚠️ Neoficiální zdroj – ověřte si detaily na webu pořadatele."
+)
 
 
 # ---------------------------------------------------------------------------
@@ -48,6 +59,55 @@ def _summarize(events: list[Event], output_path: str) -> None:
     max_date = max(dates)
     print(f"Scraped {len(events)} events ({min_date} to {max_date})")
     print(f"Written to {output_path}")
+
+
+def _write_ics(
+    events: list[Event],
+    config,
+    output_dir: Path,
+    args: argparse.Namespace,
+    *,
+    suffix: str = "",
+    translated: bool = False,
+) -> None:
+    """Generate ICS content and write it to disk (or stdout for --dry-run)."""
+    cal_name = config.cal_name
+    cal_desc = config.cal_desc
+    if translated:
+        cal_name = cal_name.replace("in CZ", "EN, auto-translated from CZ")
+        cal_desc = f"Auto-translated to English via Azure OpenAI. {cal_desc}"
+    else:
+        footer = f"\n\n{_DISCLAIMER_CZ}"
+        events = [_replace(ev, description=ev.description + footer) for ev in events]
+
+    ics_content = events_to_ics(
+        events,
+        cal_name=cal_name,
+        source_url=config.source_url,
+        prodid=config.prodid,
+        cal_desc=cal_desc,
+    )
+
+    if args.dry_run:
+        print(ics_content)
+        _summarize(events, "(stdout)")
+    else:
+        base_name = config.default_filename
+        if suffix:
+            stem, ext = base_name.rsplit(".", 1)
+            base_name = f"{stem}{suffix}.{ext}"
+        out_path = output_dir / base_name
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        # Atomic write: tempfile + rename so readers never see a half-written file
+        fd, tmp = tempfile.mkstemp(dir=out_path.parent, suffix=".ics.tmp")
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8") as fh:
+                fh.write(ics_content)
+            os.replace(tmp, out_path)
+        except BaseException:
+            os.unlink(tmp)
+            raise
+        _summarize(events, str(out_path))
 
 
 # ---------------------------------------------------------------------------
@@ -102,13 +162,28 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Skip fetching individual event detail pages (faster, less data)",
     )
-    parser.add_argument(
+    translate_group = parser.add_mutually_exclusive_group()
+    translate_group.add_argument(
+        "--no-translate",
+        action="store_true",
+        help="Skip translation even when Azure OpenAI env vars are present.",
+    )
+    translate_group.add_argument(
+        "--translate-only",
         "--translate",
         action="store_true",
         help=(
-            "Translate events to bilingual English/Czech using Azure OpenAI. "
+            "Only produce translated output (no Czech files). "
             "Requires AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_KEY, "
             "AZURE_OPENAI_DEPLOYMENT, AZURE_OPENAI_API_VERSION env vars."
+        ),
+    )
+    parser.add_argument(
+        "--translate-suffix",
+        default="-en",
+        help=(
+            "Suffix for translated output filenames "
+            "(default: '-en' → moravska-galerie-en.ics)"
         ),
     )
     parser.add_argument(
@@ -116,7 +191,8 @@ def main(argv: list[str] | None = None) -> int:
         default="",
         help=(
             "Suffix to append to output filenames before .ics extension "
-            "(e.g., '--filename-suffix=-en' → moravska-galerie-en.ics)"
+            "(e.g., '--filename-suffix=-en' → moravska-galerie-en.ics). "
+            "For translated files, use --translate-suffix instead."
         ),
     )
     parser.add_argument(
@@ -139,14 +215,26 @@ def main(argv: list[str] | None = None) -> int:
     selected = args.site if args.site is not None else list(SITE_REGISTRY.keys())
     output_dir = Path(args.output_dir)
 
-    # Load translation config once if --translate is requested
+    # Resolve translation mode:
+    #   --translate-only  → translate required, Czech output suppressed
+    #   --no-translate    → translation suppressed
+    #   (default)         → auto-detect: translate if Azure vars are present
     azure_config: dict[str, str] | None = None
-    if args.translate:
+    translate_only = args.translate_only
+
+    if translate_only:
+        # Explicit --translate-only: Azure config is mandatory
         try:
             azure_config = load_azure_config()
         except TranslationError as exc:
             print(f"Error: {exc}", file=sys.stderr)
             return 1
+    elif not args.no_translate:
+        # Default: auto-detect Azure config (translate if available)
+        try:
+            azure_config = load_azure_config()
+        except TranslationError:
+            azure_config = None  # silently skip translation
 
     errors = 0
     succeeded: list[str] = []
@@ -176,10 +264,15 @@ def main(argv: list[str] | None = None) -> int:
             failed.append(site_name)
             continue
 
+        # --- Czech output (unless --translate-only) ---
+        if not translate_only:
+            _write_ics(events, config, output_dir, args, suffix=args.filename_suffix)
+
+        # --- Translated output (when Azure config is available) ---
         if azure_config is not None:
             print(f"Translating {len(events)} events for {site_name}...",
                   file=sys.stderr)
-            events, translation_ok = translate_events(events, azure_config)
+            translated, translation_ok = translate_events(events, azure_config)
             if not translation_ok:
                 print(
                     f"Error [{site_name}]: translation failed — "
@@ -187,43 +280,15 @@ def main(argv: list[str] | None = None) -> int:
                     file=sys.stderr,
                 )
                 errors += 1
-                failed.append(site_name)
-                continue
-
-        # When translation succeeded, update calendar name to reflect English content
-        cal_name = config.cal_name
-        if azure_config is not None:
-            cal_name = cal_name.replace("in CZ", "EN, auto-translated from CZ")
-
-        ics_content = events_to_ics(
-            events,
-            cal_name=cal_name,
-            source_url=config.source_url,
-            prodid=config.prodid,
-            cal_desc=config.cal_desc,
-        )
-
-        if args.dry_run:
-            print(ics_content)
-            _summarize(events, "(stdout)")
-        else:
-            # Apply filename suffix (e.g., moravska-galerie.ics → moravska-galerie-en.ics)
-            base_name = config.default_filename
-            if args.filename_suffix:
-                stem, ext = base_name.rsplit(".", 1)
-                base_name = f"{stem}{args.filename_suffix}.{ext}"
-            out_path = output_dir / base_name
-            out_path.parent.mkdir(parents=True, exist_ok=True)
-            # Atomic write: tempfile + rename so readers never see a half-written file
-            fd, tmp = tempfile.mkstemp(dir=out_path.parent, suffix=".ics.tmp")
-            try:
-                with os.fdopen(fd, "w", encoding="utf-8") as fh:
-                    fh.write(ics_content)
-                os.replace(tmp, out_path)
-            except BaseException:
-                os.unlink(tmp)
-                raise
-            _summarize(events, str(out_path))
+                if translate_only:
+                    failed.append(site_name)
+                    continue
+            else:
+                suffix = args.translate_suffix if not translate_only else args.filename_suffix
+                _write_ics(
+                    translated, config, output_dir, args,
+                    suffix=suffix, translated=True,
+                )
 
         succeeded.append(site_name)
 
