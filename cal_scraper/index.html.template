@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>$title</title>
+    <style>
+        :root {
+            --bg: #fbfaf7;
+            --surface: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e7e3db;
+            --shadow-sm: 0 6px 16px rgba(17, 24, 39, 0.08);
+            --accent: #0b7285;
+            --accent-soft: rgba(11, 114, 133, 0.10);
+            --radius: 14px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0b1220;
+                --surface: #0f1b2d;
+                --text: #e5e7eb;
+                --muted: #9ca3af;
+                --border: rgba(231, 227, 219, 0.14);
+                --shadow-sm: 0 10px 26px rgba(0, 0, 0, 0.35);
+                --accent: #2dd4bf;
+                --accent-soft: rgba(45, 212, 191, 0.12);
+            }
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+                         Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text);
+            line-height: 1.55;
+            background:
+                radial-gradient(1200px 600px at 20% 0%,
+                    rgba(11, 114, 133, 0.08), transparent 50%),
+                var(--bg);
+        }
+
+        .wrap {
+            max-width: 46rem;
+            margin: 0 auto;
+            padding: 2.25rem 1.1rem 2.5rem;
+        }
+
+        header {
+            padding: 1.25rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--surface);
+            box-shadow: var(--shadow-sm);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+        }
+
+        .subtitle {
+            margin: 0.55rem 0 0;
+            color: var(--muted);
+            font-size: 1.02rem;
+        }
+
+        main { margin-top: 1.25rem; }
+
+        .calendar {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--surface);
+            padding: 1.1rem 1.15rem;
+            margin: 0 0 0.9rem;
+            box-shadow: 0 1px 0 rgba(17, 24, 39, 0.02);
+            transition: transform 140ms ease, box-shadow 180ms ease,
+                        border-color 180ms ease;
+        }
+
+        .calendar:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+            border-color: color-mix(in srgb, var(--border) 70%, var(--accent));
+        }
+
+        .calendar h2 {
+            margin: 0 0 0.25rem;
+            font-size: 1.12rem;
+            letter-spacing: -0.01em;
+        }
+
+        .calendar p:not(.links) {
+            margin: 0.35rem 0 0;
+            color: color-mix(in srgb, var(--text) 78%, var(--muted));
+        }
+
+        .calendar .links {
+            margin-top: 0.85rem;
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        /* Primary action: subscribe */
+        .calendar .links a.subscribe {
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.5rem 0.85rem;
+            border-radius: 999px;
+            border: 1px solid var(--accent);
+            background: var(--accent);
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: transform 120ms ease, opacity 160ms ease;
+        }
+
+        .calendar .links a.subscribe:hover {
+            transform: translateY(-1px);
+            opacity: 0.88;
+        }
+
+        /* Secondary action: source website */
+        .calendar .links a.source {
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.5rem 0.72rem;
+            border-radius: 999px;
+            border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+            background: color-mix(in srgb, var(--surface) 90%, var(--accent-soft));
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: transform 120ms ease, background 160ms ease,
+                        border-color 160ms ease;
+        }
+
+        .calendar .links a.source:hover {
+            transform: translateY(-1px);
+            border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+            background: color-mix(in srgb, var(--surface) 82%, var(--accent-soft));
+        }
+
+        .calendar .links a:focus-visible {
+            outline: 3px solid color-mix(in srgb, var(--accent) 40%, transparent);
+            outline-offset: 2px;
+        }
+
+        footer {
+            margin-top: 1.6rem;
+            padding-top: 1.1rem;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        @media (max-width: 420px) {
+            .wrap { padding: 1.6rem 0.95rem 2rem; }
+            header { padding: 1.05rem; }
+            .calendar { padding: 1rem; }
+            .calendar .links a.subscribe,
+            .calendar .links a.source {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <h1>$title</h1>
+            <p class="subtitle">$subtitle</p>
+        </header>
+
+        <main>
+            $calendars
+        </main>
+
+        <footer>
+            Generated by cal-scraper on $generated_at
+        </footer>
+    </div>
+</body>
+</html>

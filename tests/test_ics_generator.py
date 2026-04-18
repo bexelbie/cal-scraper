@@ -289,8 +289,21 @@ class TestEventsToIcs:
         )
         # Unfold ICS line continuations for checking
         unfolded = ics.replace("\r\n ", "")
-        assert "Unofficial scrape of https://example.com/events/" in unfolded
         assert "not affiliated with the venue" in unfolded
+        assert "Source: https://example.com/events/" in unfolded
+
+    def test_source_url_custom_property(self):
+        """X-CAL-SOURCE-URL is emitted when source_url is given."""
+        ics = events_to_ics(
+            [], source_url="https://example.com/events/"
+        )
+        unfolded = ics.replace("\r\n ", "")
+        assert "X-CAL-SOURCE-URL:https://example.com/events/" in unfolded
+
+    def test_no_source_url_property_when_empty(self):
+        """X-CAL-SOURCE-URL is not present when source_url is empty."""
+        ics = events_to_ics([])
+        assert "X-CAL-SOURCE-URL" not in ics
 
     def test_caldesc_absent_without_source_url(self):
         """X-WR-CALDESC is not present when source_url is empty."""

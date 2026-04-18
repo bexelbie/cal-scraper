@@ -50,6 +50,40 @@ cal-scraper --verbose
 cal-scraper --translate
 ```
 
+### Index Page
+
+By default, each run generates an `index.html` alongside the `.ics` files. The
+index lists every calendar found in the output directory — including files from
+previous runs — with descriptions and subscribe links.
+
+```bash
+# Disable index generation
+cal-scraper --no-index
+
+# Use a custom HTML template
+cal-scraper --index-template /path/to/my-template.html
+```
+
+The default template uses `string.Template` placeholders:
+
+| Variable | Content |
+|----------|---------|
+| `$title` | Page heading (default: "Calendar Feeds") |
+| `$subtitle` | Subheading (default: "iCal feeds scraped by cal-scraper") |
+| `$calendars` | Auto-generated HTML blocks — one per `.ics` file |
+| `$generated_at` | Timestamp of generation |
+
+The index reads metadata directly from each `.ics` file's headers
+(`X-WR-CALNAME`, `X-WR-CALDESC`, `X-CAL-SOURCE-URL`), so it always reflects
+the full contents of the output directory regardless of which sites were
+scraped in the current run. This supports incremental workflows — run Czech
+feeds first, translated feeds second, and the index covers everything.
+
+Source URLs embedded in calendar descriptions (via the `Source:` convention)
+are stripped from the index display to avoid duplication, since they appear as
+dedicated clickable links instead.
+```
+
 ### Translation
 
 The `--translate` flag uses Azure OpenAI (gpt-4o-mini) to produce bilingual events:
@@ -65,9 +99,34 @@ export AZURE_OPENAI_DEPLOYMENT=gpt-4o-mini
 export AZURE_OPENAI_API_VERSION=2025-01-01-preview
 ```
 
-Output files: `moravska-galerie.ics`, `hvezdarna.ics`, `ikea-brno.ics`, `vida.ics`
+Output files: `moravska-galerie.ics`, `hvezdarna.ics`, `ikea-brno.ics`, `vida.ics`, `index.html`
 
-With `--filename-suffix=-en`, files become `moravska-galerie-en.ics`, etc.
+With `--filename-suffix=-en`, .ics files become `moravska-galerie-en.ics`, etc.
+
+### ICS Conventions
+
+Each generated `.ics` file includes calendar-level properties that the index
+generator (and other tools) can read:
+
+| Property | Standard? | Purpose |
+|----------|-----------|---------|
+| `X-WR-CALNAME` | De facto (Apple/Google) | Calendar display name |
+| `X-WR-CALDESC` | De facto (Apple/Google) | Calendar description shown by most clients |
+| `X-CAL-SOURCE-URL` | Custom (ours) | Original venue URL that was scraped |
+
+**Description format convention:** Calendar descriptions end with a
+`Source: <url>` clause so that the URL is visible in calendar clients that
+display `X-WR-CALDESC`. For example:
+
+```
+Unofficial scrape — kids events only. Source: https://www.ikea.com/cz/cs/stores/brno/
+```
+
+The index generator strips this trailing `Source: <url>` when rendering
+`index.html` (using a regex match on the pattern) to avoid showing the URL
+twice — once as description text and again as a clickable "Source website"
+link read from `X-CAL-SOURCE-URL`. When adding new sites, follow this
+convention so the stripping works automatically.
 
 ## Container Deployment
 
@@ -106,6 +165,9 @@ The container runs `cal-scraper` twice:
 1. **Czech feeds** — all sites → `moravska-galerie.ics`, `hvezdarna.ics`, etc.
 2. **Translated feeds** (if Azure env vars are set) — all sites → `moravska-galerie-en.ics`, etc.
 
+Each run regenerates `index.html` by scanning the full output directory, so
+the final index always lists both Czech and translated calendars.
+
 On failure (site down, template changed, translation error):
 - The failing site's file is **not overwritten** — the previous version stays
 - Exit code 1 is returned so systemd records the failure
@@ -120,8 +182,10 @@ journalctl --user -u cal-scraper --no-pager -n 50  # recent logs
 
 ### Serving the feeds
 
-Point a web server (nginx, caddy, etc.) at the output directory. Ensure `*.ics`
-files are served with `Content-Type: text/calendar` for calendar app subscriptions.
+Point a web server (nginx, caddy, etc.) at the output directory. The generated
+`index.html` serves as a landing page listing all available calendars. Ensure
+`*.ics` files are served with `Content-Type: text/calendar` for calendar app
+subscriptions.
 
 ## Development
 

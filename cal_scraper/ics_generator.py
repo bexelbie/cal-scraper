@@ -102,17 +102,28 @@ def events_to_ics(
     Returns a UTF-8 string suitable for writing to a .ics file.
     Includes VTIMEZONE for Europe/Prague when timed events are present.
     Uses a single DTSTAMP for all events so output is stable within a run.
+
+    Calendar-level properties written:
+        X-WR-CALNAME  — calendar display name (de facto standard)
+        X-WR-CALDESC  — calendar description (de facto standard)
+        X-CAL-SOURCE-URL — original venue URL (custom, used by index generator)
+
+    The description follows the convention ``... Source: <url>`` so that the
+    index generator can strip the URL for display while keeping it visible
+    in calendar clients that show X-WR-CALDESC.
     """
     cal = Calendar()
     cal.add("prodid", prodid)
     cal.add("version", "2.0")
     cal.add("x-wr-calname", cal_name)
     desc = cal_desc or (
-        f"Unofficial scrape of {source_url} — not affiliated with the venue."
+        f"Unofficial scrape — not affiliated with the venue. Source: {source_url}"
         if source_url else ""
     )
     if desc:
         cal.add("x-wr-caldesc", desc)
+    if source_url:
+        cal.add("x-cal-source-url", source_url)
 
     dtstamp = datetime.now(tz=PRAGUE_TZ)
     for event in events:

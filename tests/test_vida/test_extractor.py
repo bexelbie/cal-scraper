@@ -1,8 +1,10 @@
 """Tests for VIDA! extractor module."""
 
 from datetime import datetime, timedelta
+from unittest.mock import patch
 from zoneinfo import ZoneInfo
 
+import pytest
 
 from cal_scraper.sites.vida.extractor import (
     extract_events_from_listing,
@@ -11,6 +13,26 @@ from cal_scraper.sites.vida.extractor import (
 )
 
 PRAGUE_TZ = ZoneInfo("Europe/Prague")
+
+# All fixture dates are in 2026.  Freeze "today" to 2026-01-01 so they
+# remain in the future regardless of when the test suite actually runs.
+_real_datetime = datetime
+
+
+class _FrozenDatetime(_real_datetime):
+    """datetime subclass whose .now() always returns 2026-01-01."""
+
+    @classmethod
+    def now(cls, tz=None):
+        return _real_datetime(2026, 1, 1, 0, 0, tzinfo=tz)
+
+
+@pytest.fixture(autouse=True)
+def _freeze_today():
+    with patch(
+        "cal_scraper.sites.vida.extractor.datetime", _FrozenDatetime
+    ):
+        yield
 
 
 # ---------------------------------------------------------------------------
