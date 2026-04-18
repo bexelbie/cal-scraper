@@ -128,6 +128,22 @@ twice — once as description text and again as a clickable "Source website"
 link read from `X-CAL-SOURCE-URL`. When adding new sites, follow this
 convention so the stripping works automatically.
 
+### Date Parsing
+
+Moravská galerie event dates use Czech formatting (e.g. `23/5/2026, 13–22 H`).
+The parser handles seven known patterns via regex — see `date_parser.py` for
+the full list (DATE-01 through DATE-07).
+
+**LLM fallback:** When no regex pattern matches, the parser falls back to
+Azure OpenAI (if credentials are configured) to parse the date string into
+structured JSON. This avoids silently dropping events when the gallery
+introduces a new date format. The fallback:
+
+- Reuses the same Azure OpenAI credentials as `--translate`
+- Returns an empty list (same as today) when credentials are absent
+- Logs at INFO level when the LLM successfully parses a date
+- Is never called for known regex patterns (zero added latency for the common case)
+
 ## Container Deployment
 
 The project includes a `Containerfile` and systemd quadlet files for running

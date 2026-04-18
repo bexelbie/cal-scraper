@@ -11,8 +11,13 @@ Format variants handled (DATE-01 through DATE-07):
   - "7/7 – 11/7/2026"              → multi-day range (en-dash)
   - "27/7 – 31/7/2026, 9–16 H"    → multi-day + time range
   - "24/5/2026, 15 H / 16 H / 17 H" → multiple time slots (first used)
+
+Unrecognized formats fall back to Azure OpenAI when credentials are
+available.  The LLM is asked to return structured JSON which is then
+validated and converted to ParsedDate objects.
 """
 
+import json
 import logging
 import re
 from datetime import date, datetime, timedelta
@@ -195,6 +200,7 @@ def parse_dates(raw_text: str) -> list[ParsedDate]:
 
     Returns multiple results for multi-time-slot formats (e.g. "15 H / 16 H / 17 H").
     Returns a single-element list for all other recognized formats.
+    Falls back to LLM parsing when regex fails and Azure OpenAI is configured.
     Returns an empty list for unrecognized formats (with a logged warning).
     """
     cleaned = _clean(raw_text)
@@ -210,5 +216,126 @@ def parse_dates(raw_text: str) -> list[ParsedDate]:
                 return result
             return [result]
 
+    # Regex exhausted — try LLM fallback
+    llm_result = _llm_parse_date(cleaned)
+    if llm_result:
+        logger.info("LLM fallback parsed date: %r", raw_text)
+        return llm_result
+
     logger.warning("Unrecognized date format: %r", raw_text)
     return []
+
+
+# ---------------------------------------------------------------------------
+# LLM fallback for unrecognized date formats
+# ---------------------------------------------------------------------------
+
+_LLM_SYSTEM_PROMPT = """\
+You parse Czech date/time strings from event listings into structured JSON.
+Dates use European D/M/YYYY order.  Times use 24-hour format.
+"H" means hours (e.g. "15 H" = 15:00).  "–" (en-dash) separates ranges.
+
+Return a JSON array of objects.  Each object represents one time slot:
+{
+  "start_day": int, "start_month": int, "start_year": int,
+  "start_hour": int or null, "start_minute": int or null,
+  "end_day": int or null, "end_month": int or null, "end_year": int or null,
+  "end_hour": int or null, "end_minute": int or null,
+  "all_day": bool
+}
+
+Rules:
+- If only a start time is given (no end time), set end_hour/end_minute to null.
+- If the string has no time at all, set all_day=true, all hour/minute fields null.
+- For multi-day ranges without times, set all_day=true.
+- For multi-day ranges with daily hours, set all_day=true (calendar apps show them as banners).
+- Return ONLY the JSON array, no markdown fences, no explanation.
+"""
+
+
+def _llm_parse_date(cleaned: str) -> list[ParsedDate]:
+    """Attempt to parse a date string using Azure OpenAI.
+
+    Returns a list of ParsedDate objects on success, or an empty list if
+    LLM is unavailable or returns unparseable output.
+    """
+    try:
+        from cal_scraper.translator import TranslationError, load_azure_config, _call_azure_openai
+    except ImportError:
+        return []
+
+    try:
+        config = load_azure_config()
+    except (TranslationError, Exception):
+        return []
+
+    messages = [
+        {"role": "system", "content": _LLM_SYSTEM_PROMPT},
+        {"role": "user", "content": cleaned},
+    ]
+
+    try:
+        resp = _call_azure_openai(config, messages, max_tokens=300)
+        content = resp["choices"][0]["message"]["content"].strip()
+        # Strip markdown fences if the model wraps them anyway
+        if content.startswith("```"):
+            content = re.sub(r"^```\w*\n?", "", content)
+            content = re.sub(r"\n?```$", "", content)
+        slots = json.loads(content)
+    except (TranslationError, KeyError, json.JSONDecodeError, Exception) as exc:
+        logger.warning("LLM date parse failed for %r: %s", cleaned, exc)
+        return []
+
+    if not isinstance(slots, list):
+        slots = [slots]
+
+    results: list[ParsedDate] = []
+    for slot in slots:
+        try:
+            parsed = _slot_to_parsed_date(slot, cleaned)
+            if parsed:
+                results.append(parsed)
+        except (KeyError, ValueError, TypeError) as exc:
+            logger.warning("LLM returned invalid date slot for %r: %s", cleaned, exc)
+
+    return results
+
+
+def _slot_to_parsed_date(slot: dict, raw: str) -> ParsedDate | None:
+    """Convert a single LLM JSON slot to a ParsedDate, or None on bad data."""
+    sd = int(slot["start_day"])
+    sm = int(slot["start_month"])
+    sy = int(slot["start_year"])
+    all_day = bool(slot.get("all_day", False))
+
+    if all_day:
+        start = _make_date(sd, sm, sy)
+        ed = slot.get("end_day")
+        if ed is not None and slot.get("end_month") is not None:
+            ey = int(slot.get("end_year", sy))
+            end = _make_date(int(ed), int(slot["end_month"]), ey) + timedelta(days=1)
+        else:
+            end = start + timedelta(days=1)
+        return ParsedDate(dtstart=start, dtend=end, all_day=True, raw_text=raw)
+
+    sh = slot.get("start_hour")
+    smi = slot.get("start_minute") or 0
+    if sh is None:
+        # No time info but not marked all-day — treat as all-day
+        start = _make_date(sd, sm, sy)
+        end = start + timedelta(days=1)
+        return ParsedDate(dtstart=start, dtend=end, all_day=True, raw_text=raw)
+
+    start = _make_dt(sd, sm, sy, int(sh), int(smi))
+
+    eh = slot.get("end_hour")
+    if eh is not None:
+        emi = slot.get("end_minute") or 0
+        ed = slot.get("end_day") or sd
+        em = slot.get("end_month") or sm
+        ey = slot.get("end_year") or sy
+        end = _make_dt(int(ed), int(em), int(ey), int(eh), int(emi))
+        return ParsedDate(dtstart=start, dtend=end, all_day=False, raw_text=raw)
+
+    end = start + DEFAULT_DURATION
+    return ParsedDate(dtstart=start, dtend=end, all_day=False, raw_text=raw, estimated_end=True)

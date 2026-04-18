@@ -1,9 +1,11 @@
-"""Tests for Czech date/time parser — all 6+ format variants."""
+"""Tests for Czech date/time parser — all 6+ format variants + LLM fallback."""
 
+import json
 from datetime import date, datetime, timedelta
+from unittest.mock import patch
 
 
-from cal_scraper.sites.moravska_galerie.date_parser import parse_date
+from cal_scraper.sites.moravska_galerie.date_parser import parse_date, parse_dates
 from cal_scraper.models import PRAGUE_TZ
 
 
@@ -275,3 +277,148 @@ class TestSingleDayTimeRange:
         assert result is not None
         assert result.dtstart == datetime(2026, 6, 1, 9, 0, tzinfo=PRAGUE_TZ)
         assert result.dtend == datetime(2026, 6, 1, 10, 0, tzinfo=PRAGUE_TZ)
+
+
+# ---------------------------------------------------------------------------
+# LLM fallback tests
+# ---------------------------------------------------------------------------
+
+def _mock_openai_response(content: str) -> dict:
+    """Build a fake Azure OpenAI chat completion response."""
+    return {"choices": [{"message": {"content": content}}]}
+
+
+class TestLlmFallback:
+    """LLM fallback activates when no regex matches."""
+
+    def _patch_llm(self, json_content):
+        """Patch Azure OpenAI to return the given JSON content."""
+        resp_body = _mock_openai_response(json.dumps(json_content))
+        return patch(
+            "cal_scraper.translator._call_azure_openai",
+            return_value=resp_body,
+        )
+
+    def _patch_config(self):
+        """Patch load_azure_config to return dummy creds."""
+        return patch(
+            "cal_scraper.translator.load_azure_config",
+            return_value={
+                "azure_openai_endpoint": "https://fake",
+                "azure_openai_key": "fake",
+                "azure_openai_deployment": "fake",
+                "azure_openai_api_version": "2024-01-01",
+            },
+        )
+
+    def test_llm_parses_timed_event(self):
+        """LLM returns a timed event with explicit start and end."""
+        llm_response = [{
+            "start_day": 23, "start_month": 5, "start_year": 2026,
+            "start_hour": 13, "start_minute": 0,
+            "end_day": None, "end_month": None, "end_year": None,
+            "end_hour": 22, "end_minute": 0,
+            "all_day": False,
+        }]
+        # Use a format no regex handles — e.g. "23. května 2026, 13–22h"
+        with self._patch_config(), self._patch_llm(llm_response):
+            results = parse_dates("23. května 2026, 13–22h")
+        assert len(results) == 1
+        assert results[0].dtstart == datetime(2026, 5, 23, 13, 0, tzinfo=PRAGUE_TZ)
+        assert results[0].dtend == datetime(2026, 5, 23, 22, 0, tzinfo=PRAGUE_TZ)
+        assert results[0].all_day is False
+
+    def test_llm_parses_all_day_event(self):
+        """LLM returns an all-day event."""
+        llm_response = [{
+            "start_day": 1, "start_month": 6, "start_year": 2026,
+            "start_hour": None, "start_minute": None,
+            "end_day": None, "end_month": None, "end_year": None,
+            "end_hour": None, "end_minute": None,
+            "all_day": True,
+        }]
+        with self._patch_config(), self._patch_llm(llm_response):
+            results = parse_dates("1. června 2026")
+        assert len(results) == 1
+        assert results[0].dtstart == date(2026, 6, 1)
+        assert results[0].all_day is True
+
+    def test_llm_parses_multi_day_range(self):
+        """LLM returns a multi-day all-day range."""
+        llm_response = [{
+            "start_day": 7, "start_month": 7, "start_year": 2026,
+            "start_hour": None, "start_minute": None,
+            "end_day": 11, "end_month": 7, "end_year": 2026,
+            "end_hour": None, "end_minute": None,
+            "all_day": True,
+        }]
+        with self._patch_config(), self._patch_llm(llm_response):
+            results = parse_dates("7.–11. července 2026")
+        assert len(results) == 1
+        assert results[0].dtstart == date(2026, 7, 7)
+        # End is exclusive (day after last day)
+        assert results[0].dtend == date(2026, 7, 12)
+        assert results[0].all_day is True
+
+    def test_llm_start_only_uses_default_duration(self):
+        """When LLM gives start time but no end, default 2h duration applies."""
+        llm_response = [{
+            "start_day": 15, "start_month": 8, "start_year": 2026,
+            "start_hour": 19, "start_minute": 30,
+            "end_day": None, "end_month": None, "end_year": None,
+            "end_hour": None, "end_minute": None,
+            "all_day": False,
+        }]
+        with self._patch_config(), self._patch_llm(llm_response):
+            results = parse_dates("15. srpna 2026 v 19:30")
+        assert len(results) == 1
+        assert results[0].dtstart == datetime(2026, 8, 15, 19, 30, tzinfo=PRAGUE_TZ)
+        assert results[0].dtend == datetime(2026, 8, 15, 21, 30, tzinfo=PRAGUE_TZ)
+        assert results[0].estimated_end is True
+
+    def test_llm_not_called_when_regex_matches(self):
+        """LLM should never be called for a known regex format."""
+        with patch(
+            "cal_scraper.sites.moravska_galerie.date_parser._llm_parse_date"
+        ) as mock_llm:
+            result = parse_date("31/3/2026, 15 H")
+            mock_llm.assert_not_called()
+            assert result is not None
+
+    def test_no_credentials_returns_empty(self):
+        """When Azure creds are missing, fallback returns empty (no crash)."""
+        from cal_scraper.translator import TranslationError
+        with patch(
+            "cal_scraper.translator.load_azure_config",
+            side_effect=TranslationError("no creds"),
+        ):
+            results = parse_dates("something totally unknown")
+        assert results == []
+
+    def test_llm_bad_json_returns_empty(self):
+        """When LLM returns garbage, fallback returns empty (no crash)."""
+        bad_resp = _mock_openai_response("this is not json at all")
+        with self._patch_config(), patch(
+            "cal_scraper.translator._call_azure_openai",
+            return_value=bad_resp,
+        ):
+            results = parse_dates("something totally unknown")
+        assert results == []
+
+    def test_llm_markdown_fences_stripped(self):
+        """LLM sometimes wraps JSON in markdown code fences."""
+        llm_response = [{
+            "start_day": 5, "start_month": 5, "start_year": 2026,
+            "start_hour": 10, "start_minute": 0,
+            "end_hour": 12, "end_minute": 0,
+            "all_day": False,
+        }]
+        fenced = f"```json\n{json.dumps(llm_response)}\n```"
+        resp = _mock_openai_response(fenced)
+        with self._patch_config(), patch(
+            "cal_scraper.translator._call_azure_openai",
+            return_value=resp,
+        ):
+            results = parse_dates("5. května 2026, 10–12h")
+        assert len(results) == 1
+        assert results[0].dtstart == datetime(2026, 5, 5, 10, 0, tzinfo=PRAGUE_TZ)
