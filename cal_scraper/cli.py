@@ -190,9 +190,14 @@ def main(argv: list[str] | None = None) -> int:
                 failed.append(site_name)
                 continue
 
+        # When translation succeeded, update calendar name to reflect English content
+        cal_name = config.cal_name
+        if azure_config is not None:
+            cal_name = cal_name.replace("in CZ", "EN, auto-translated from CZ")
+
         ics_content = events_to_ics(
             events,
-            cal_name=config.cal_name,
+            cal_name=cal_name,
             source_url=config.source_url,
             prodid=config.prodid,
             cal_desc=config.cal_desc,

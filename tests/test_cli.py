@@ -327,6 +327,19 @@ class TestCliTranslateFlag:
             assert result == 0
             mock_trans.assert_called_once()
 
+    def test_translate_cal_name_says_en_auto_translated(self, tmp_path):
+        """--translate replaces 'in CZ' with 'EN, auto-translated from CZ' in cal_name."""
+        out_dir = tmp_path / "out"
+        out_dir.mkdir()
+        with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
+             patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS) as mock_ics, \
+             patch("cal_scraper.cli.load_azure_config", return_value={"k": "v"}), \
+             patch("cal_scraper.cli.translate_events", return_value=(MOCK_EVENTS, True)):
+            from cal_scraper.cli import main
+            main(["--translate", "--site", "moravska-galerie", "-d", str(out_dir)])
+            _, kwargs = mock_ics.call_args
+            assert kwargs["cal_name"] == "Moravská galerie – Children & Families (unofficial, EN, auto-translated from CZ)"
+
     def test_translate_missing_config_returns_1(self, tmp_path):
         """--translate without env vars returns error code 1."""
         from cal_scraper.translator import TranslationError
