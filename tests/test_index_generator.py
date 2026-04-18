@@ -233,6 +233,19 @@ class TestGenerateIndexContent:
         assert "&lt;script&gt;" in html_out
         assert "&amp;" in html_out
 
+    def test_webcal_links_with_base_url(self, tmp_path):
+        """CAL_BASE_URL produces webcal:// subscribe links."""
+        (tmp_path / "site-a.ics").write_text(ICS_STUB_A)
+        html_out = generate_index(tmp_path, base_url="cal.example.com")
+        assert 'href="webcal://cal.example.com/site-a.ics"' in html_out
+
+    def test_relative_links_without_base_url(self, tmp_path):
+        """Without CAL_BASE_URL, links stay relative."""
+        (tmp_path / "site-a.ics").write_text(ICS_STUB_A)
+        html_out = generate_index(tmp_path, base_url="")
+        assert 'href="site-a.ics"' in html_out
+        assert "webcal://" not in html_out
+
 
 # ---------------------------------------------------------------------------
 # Custom template

@@ -225,7 +225,10 @@ def main(argv: list[str] | None = None) -> int:
     # Generate index.html unless suppressed or dry-run
     if succeeded and not args.dry_run and not args.no_index:
         tpl_path = Path(args.index_template) if args.index_template else None
-        index_html = generate_index(output_dir, template_path=tpl_path)
+        cal_base_url = os.environ.get("CAL_BASE_URL", "").strip()
+        index_html = generate_index(
+            output_dir, template_path=tpl_path, base_url=cal_base_url,
+        )
         index_path = output_dir / "index.html"
         fd, tmp = tempfile.mkstemp(dir=index_path.parent, suffix=".html.tmp")
         try:

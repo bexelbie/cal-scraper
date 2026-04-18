@@ -79,6 +79,11 @@ the full contents of the output directory regardless of which sites were
 scraped in the current run. This supports incremental workflows — run Czech
 feeds first, translated feeds second, and the index covers everything.
 
+When the `CAL_BASE_URL` environment variable is set (e.g.
+`CAL_BASE_URL=cal.example.com`), subscribe links become
+`webcal://cal.example.com/ikea-brno-en.ics` for one-click calendar
+subscription. Without it, links are relative file paths.
+
 Source URLs embedded in calendar descriptions (via the `Source:` convention)
 are stripped from the index display to avoid duplication, since they appear as
 dedicated clickable links instead.

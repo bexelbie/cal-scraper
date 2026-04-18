@@ -119,13 +119,22 @@ def _strip_source_from_desc(desc: str, source_url: str) -> str:
     return desc
 
 
-def _render_calendar_block(info: CalendarInfo) -> str:
-    """Render the HTML snippet for a single calendar entry."""
+def _render_calendar_block(info: CalendarInfo, base_url: str = "") -> str:
+    """Render the HTML snippet for a single calendar entry.
+
+    When *base_url* is set (from ``CAL_BASE_URL``), the subscribe link
+    uses ``webcal://<base_url>/<filename>`` for one-click calendar
+    subscription.  Otherwise it falls back to a relative file link.
+    """
     name = html.escape(info.cal_name)
     clean_desc = _strip_source_from_desc(info.cal_desc, info.source_url)
     desc = html.escape(clean_desc) if clean_desc else ""
     source = html.escape(info.source_url) if info.source_url else ""
-    ics_href = html.escape(info.filename)
+
+    if base_url:
+        ics_href = html.escape(f"webcal://{base_url}/{info.filename}")
+    else:
+        ics_href = html.escape(info.filename)
 
     lines = [
         '<div class="calendar">',
@@ -148,6 +157,7 @@ def generate_index(
     template_path: Path | None = None,
     title: str = "Calendar Feeds",
     subtitle: str = "iCal feeds scraped by cal-scraper",
+    base_url: str = "",
 ) -> str:
     """Render the index HTML page listing all .ics files in output_dir.
 
@@ -161,6 +171,9 @@ def generate_index(
         Page title inserted as ``$title``.
     subtitle
         Page subtitle inserted as ``$subtitle``.
+    base_url
+        When set (e.g. ``cal.example.com``), subscribe links become
+        ``webcal://<base_url>/<filename>`` for one-click subscription.
 
     Returns
     -------
@@ -172,7 +185,7 @@ def generate_index(
     tpl = Template(tpl_text)
 
     calendars = discover_calendars(output_dir)
-    blocks = [_render_calendar_block(info) for info in calendars]
+    blocks = [_render_calendar_block(info, base_url=base_url) for info in calendars]
     calendars_html = "\n\n".join(blocks)
 
     now = datetime.now(tz=PRAGUE_TZ).strftime("%Y-%m-%d %H:%M %Z")
