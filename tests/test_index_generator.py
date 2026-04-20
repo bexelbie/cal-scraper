@@ -2,11 +2,17 @@
 
 from __future__ import annotations
 
+from datetime import datetime, timedelta, timezone
 from unittest.mock import patch
 
 import pytest
 
 from cal_scraper.index_generator import (
+    CalendarInfo,
+    _clean_group_title,
+    _format_updated,
+    _group_calendars,
+    _is_translation,
     _strip_source_from_desc,
     discover_calendars,
     generate_index,
@@ -117,6 +123,119 @@ class TestDiscoverCalendars:
         cals = discover_calendars(tmp_path)
         assert cals[0].cal_name == "Gallery (unofficial, in CZ)"
 
+    def test_updated_at_from_mtime(self, tmp_path):
+        """discover_calendars reads file modification time into updated_at."""
+        (tmp_path / "site-a.ics").write_text(ICS_STUB_A)
+        cals = discover_calendars(tmp_path)
+        assert cals[0].updated_at is not None
+        # Should be timezone-aware
+        assert cals[0].updated_at.tzinfo is not None
+
+
+# ---------------------------------------------------------------------------
+# _format_updated
+# ---------------------------------------------------------------------------
+
+
+class TestFormatUpdated:
+    """Timestamp always shows human-readable date/time."""
+
+    def test_recent_timestamp(self):
+        result = _format_updated(datetime.now(tz=timezone.utc))
+        assert "<time " in result
+        assert "datetime=" in result
+
+    def test_human_readable_format(self):
+        ts = datetime(2026, 4, 10, 14, 30, tzinfo=timezone.utc)
+        result = _format_updated(ts)
+        assert "10 Apr 2026" in result
+        assert "2:30 pm" in result
+
+    def test_am_time(self):
+        ts = datetime(2026, 4, 10, 2, 30, tzinfo=timezone.utc)
+        result = _format_updated(ts)
+        assert "2:30 am" in result
+
+
+# ---------------------------------------------------------------------------
+# _is_translation / _group_calendars
+# ---------------------------------------------------------------------------
+
+
+class TestCleanGroupTitle:
+    """Strip language suffix from grouped card titles."""
+
+    def test_strips_in_cz_suffix(self):
+        assert _clean_group_title("Galerie – Výstavy (in CZ)", True) == "Galerie – Výstavy"
+
+    def test_strips_cz_suffix(self):
+        assert _clean_group_title("Galerie (CZ)", True) == "Galerie"
+
+    def test_no_strip_when_ungrouped(self):
+        assert _clean_group_title("Galerie (in CZ)", False) == "Galerie (in CZ)"
+
+    def test_no_suffix_untouched(self):
+        assert _clean_group_title("Just a Name", True) == "Just a Name"
+
+    def test_strips_trailing_dash(self):
+        assert _clean_group_title("Site – (in CZ)", True) == "Site"
+
+
+class TestIsTranslation:
+    """Detect auto-translated calendar variants."""
+
+    def test_original_is_not_translation(self):
+        cal = CalendarInfo("a.ics", "Site (in CZ)", "Desc", "https://x.com")
+        assert not _is_translation(cal)
+
+    def test_translated_name_detected(self):
+        cal = CalendarInfo("a-en.ics", "Site (EN, auto-translated from CZ)", "", "")
+        assert _is_translation(cal)
+
+    def test_translated_desc_detected(self):
+        cal = CalendarInfo("a-en.ics", "Site", "Auto-translated to English. Desc", "")
+        assert _is_translation(cal)
+
+
+class TestGroupCalendars:
+    """Calendars with the same source_url are grouped together."""
+
+    def test_same_source_url_grouped(self):
+        cz = CalendarInfo("site.ics", "Site (in CZ)", "Desc", "https://x.com")
+        en = CalendarInfo(
+            "site-en.ics",
+            "Site (EN, auto-translated from CZ)",
+            "Auto-translated. Desc",
+            "https://x.com",
+        )
+        groups = _group_calendars([cz, en])
+        assert len(groups) == 1
+        assert len(groups[0]) == 2
+        assert groups[0][0] == cz  # original first
+        assert groups[0][1] == en
+
+    def test_different_source_urls_separate(self):
+        a = CalendarInfo("a.ics", "A", "", "https://a.com")
+        b = CalendarInfo("b.ics", "B", "", "https://b.com")
+        groups = _group_calendars([a, b])
+        assert len(groups) == 2
+
+    def test_no_source_url_stays_ungrouped(self):
+        a = CalendarInfo("a.ics", "A", "", "")
+        b = CalendarInfo("b.ics", "B", "", "")
+        groups = _group_calendars([a, b])
+        assert len(groups) == 2
+
+    def test_group_order_follows_first_file(self):
+        a = CalendarInfo("a.ics", "A", "", "https://a.com")
+        b = CalendarInfo("b.ics", "B", "", "https://b.com")
+        b_en = CalendarInfo("b-en.ics", "B EN", "Auto-translated", "https://b.com")
+        groups = _group_calendars([a, b, b_en])
+        assert len(groups) == 2
+        assert groups[0][0].filename == "a.ics"
+        assert groups[1][0].filename == "b.ics"
+        assert len(groups[1]) == 2
+
 
 # ---------------------------------------------------------------------------
 # _strip_source_from_desc
@@ -187,14 +306,14 @@ class TestGenerateIndexContent:
         (tmp_path / "site-a.ics").write_text(ICS_STUB_A)
         html_out = generate_index(tmp_path)
         assert 'href="https://site-a.example.com/events"' in html_out
-        assert "Source website" in html_out
+        assert "🔗 Source" in html_out
 
     def test_no_source_link_when_missing(self, tmp_path):
         (tmp_path / "bare.ics").write_text(
             "BEGIN:VCALENDAR\nVERSION:2.0\nX-WR-CALNAME:Bare\nEND:VCALENDAR\n"
         )
         html_out = generate_index(tmp_path)
-        assert "Source website" not in html_out
+        assert "🔗 Source" not in html_out
 
     def test_multiple_calendars(self, tmp_path):
         (tmp_path / "site-a.ics").write_text(ICS_STUB_A)
@@ -218,6 +337,19 @@ class TestGenerateIndexContent:
         (tmp_path / "site-a.ics").write_text(ICS_STUB_A)
         html_out = generate_index(tmp_path)
         assert "Generated by cal-scraper on" in html_out
+
+    def test_timezone_note_in_footer(self, tmp_path):
+        (tmp_path / "site-a.ics").write_text(ICS_STUB_A)
+        html_out = generate_index(tmp_path)
+        assert "All times shown in" in html_out
+
+    def test_updated_at_rendered(self, tmp_path):
+        """Each calendar card shows its file's last-updated time."""
+        (tmp_path / "site-a.ics").write_text(ICS_STUB_A)
+        html_out = generate_index(tmp_path)
+        assert "Updated " in html_out
+        assert "<time " in html_out
+        assert 'class="meta"' in html_out
 
     def test_html_escaping(self, tmp_path):
         """Special characters in ICS headers are HTML-escaped."""
@@ -399,3 +531,39 @@ class TestCliIndexGeneration:
         # Both should be listed
         assert 'href="moravska-galerie.ics"' in content
         assert 'href="moravska-galerie-en.ics"' in content
+
+    def test_index_only_generates_index_without_scraping(self, tmp_path):
+        """--index-only regenerates index.html from existing .ics files, no scraping."""
+        out = tmp_path / "out"
+        out.mkdir()
+        # Pre-populate with .ics files from a "prior run"
+        (out / "moravska-galerie.ics").write_text(MOCK_ICS)
+        from cal_scraper.cli import main
+        # No scrape mock needed — scraping should not be called
+        with patch("cal_scraper.sites.moravska_galerie.scrape") as mock_scrape:
+            result = main(["--index-only", "-d", str(out)])
+        assert result == 0
+        mock_scrape.assert_not_called()
+        index = out / "index.html"
+        assert index.exists()
+        content = index.read_text()
+        assert 'href="moravska-galerie.ics"' in content
+
+    def test_index_only_with_custom_template(self, tmp_path):
+        """--index-only respects --index-template."""
+        out = tmp_path / "out"
+        out.mkdir()
+        (out / "site.ics").write_text(MOCK_ICS)
+        tpl = tmp_path / "custom.html"
+        tpl.write_text("CUSTOM:$title|$calendars|$generated_at")
+        from cal_scraper.cli import main
+        result = main(["--index-only", "--index-template", str(tpl), "-d", str(out)])
+        assert result == 0
+        content = (out / "index.html").read_text()
+        assert content.startswith("CUSTOM:")
+
+    def test_index_only_and_no_index_mutually_exclusive(self):
+        """--index-only and --no-index cannot be used together."""
+        from cal_scraper.cli import main
+        with pytest.raises(SystemExit):
+            main(["--index-only", "--no-index"])
