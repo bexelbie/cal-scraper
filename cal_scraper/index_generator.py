@@ -88,7 +88,13 @@ def _read_ics_property(path: Path, prop: str) -> str:
 
 def _ics_unescape(value: str) -> str:
     """Unescape ICS text values (RFC 5545 §3.3.11)."""
-    return value.replace("\\,", ",").replace("\\;", ";").replace("\\\\", "\\")
+    return (
+        value.replace("\\n", "\n")
+        .replace("\\N", "\n")
+        .replace("\\,", ",")
+        .replace("\\;", ";")
+        .replace("\\\\", "\\")
+    )
 
 
 def discover_calendars(output_dir: Path) -> list[CalendarInfo]:
@@ -173,7 +179,12 @@ def _strip_source_from_desc(desc: str, source_url: str) -> str:
 
 def _human_datetime(dt: datetime) -> str:
     """Format *dt* as '20 Apr 2026, 10:00 am'."""
-    return dt.strftime("%-d %b %Y, %-I:%M ") + dt.strftime("%p").lower()
+    day = dt.day
+    month_year = dt.strftime("%b %Y")
+    hour = dt.hour % 12 or 12
+    minute = dt.strftime("%M")
+    ampm = "am" if dt.hour < 12 else "pm"
+    return f"{day} {month_year}, {hour}:{minute} {ampm}"
 
 
 def _format_updated(updated: datetime) -> str:
@@ -186,7 +197,9 @@ def _format_updated(updated: datetime) -> str:
 def _ics_href(cal: CalendarInfo, base_url: str) -> str:
     """Build the subscribe href for a calendar file."""
     if base_url:
-        return html.escape(f"webcal://{base_url}/{cal.filename}")
+        # Strip any scheme the user may have pasted in, and trailing slashes
+        clean = base_url.split("://", 1)[-1].rstrip("/")
+        return html.escape(f"webcal://{clean}/{cal.filename}")
     return html.escape(cal.filename)
 
 

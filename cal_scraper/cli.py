@@ -135,7 +135,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--site",
         "-s",
-        nargs="*",
+        nargs="+",
         choices=list(SITE_REGISTRY.keys()),
         default=None,
         help="Sites to scrape (default: all registered sites)",
@@ -216,6 +216,17 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
+    # Reject suffixes that could escape the output directory
+    import re
+    _SAFE_SUFFIX = re.compile(r"^[a-zA-Z0-9._-]*$")
+    for label, value in [
+        ("--filename-suffix", args.filename_suffix),
+        ("--translate-suffix", args.translate_suffix),
+    ]:
+        if not _SAFE_SUFFIX.match(value):
+            parser.error(f"{label} may only contain letters, digits, dots, hyphens, "
+                         f"and underscores (got {value!r})")
+
     logging.basicConfig(
         level=logging.DEBUG if args.verbose else logging.WARNING,
         format="%(levelname)s: %(message)s",
@@ -226,6 +237,8 @@ def main(argv: list[str] | None = None) -> int:
 
     # --index-only: regenerate index.html from existing .ics files and exit
     if args.index_only:
+        if not output_dir.is_dir():
+            parser.error(f"output directory does not exist: {output_dir}")
         tpl_path = Path(args.index_template) if args.index_template else None
         cal_base_url = os.environ.get("CAL_BASE_URL", "").strip()
         index_html = generate_index(

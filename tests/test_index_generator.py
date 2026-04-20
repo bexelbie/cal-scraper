@@ -12,6 +12,8 @@ from cal_scraper.index_generator import (
     _clean_group_title,
     _format_updated,
     _group_calendars,
+    _ics_href,
+    _ics_unescape,
     _is_translation,
     _strip_source_from_desc,
     discover_calendars,
@@ -265,6 +267,61 @@ class TestStripSourceFromDesc:
     def test_strips_http_and_https(self):
         desc = "Events. Source: http://vida.cz/program"
         assert _strip_source_from_desc(desc, "http://vida.cz/program") == "Events."
+
+
+# ---------------------------------------------------------------------------
+# _ics_unescape
+# ---------------------------------------------------------------------------
+
+
+class TestIcsUnescape:
+    """RFC 5545 text unescaping, including newlines."""
+
+    def test_escaped_newlines(self):
+        assert _ics_unescape("line1\\nline2") == "line1\nline2"
+
+    def test_escaped_newlines_uppercase(self):
+        assert _ics_unescape("line1\\Nline2") == "line1\nline2"
+
+    def test_escaped_comma_semicolon_backslash(self):
+        assert _ics_unescape("a\\,b\\;c\\\\d") == "a,b;c\\d"
+
+    def test_combined(self):
+        assert _ics_unescape("hello\\nworld\\, ok") == "hello\nworld, ok"
+
+
+# ---------------------------------------------------------------------------
+# _ics_href — CAL_BASE_URL normalization
+# ---------------------------------------------------------------------------
+
+
+class TestIcsHref:
+    """Subscribe link generation with base_url normalization."""
+
+    def test_plain_host(self):
+        cal = CalendarInfo("a.ics", "A", "", "")
+        assert _ics_href(cal, "cal.example.com") == "webcal://cal.example.com/a.ics"
+
+    def test_strips_https_scheme(self):
+        cal = CalendarInfo("a.ics", "A", "", "")
+        assert _ics_href(cal, "https://cal.example.com") == "webcal://cal.example.com/a.ics"
+
+    def test_strips_http_scheme(self):
+        cal = CalendarInfo("a.ics", "A", "", "")
+        assert _ics_href(cal, "http://cal.example.com") == "webcal://cal.example.com/a.ics"
+
+    def test_strips_trailing_slash(self):
+        cal = CalendarInfo("a.ics", "A", "", "")
+        assert _ics_href(cal, "cal.example.com/") == "webcal://cal.example.com/a.ics"
+
+    def test_scheme_and_trailing_slash(self):
+        cal = CalendarInfo("a.ics", "A", "", "")
+        result = _ics_href(cal, "https://cal.example.com/feeds/")
+        assert result == "webcal://cal.example.com/feeds/a.ics"
+
+    def test_no_base_url(self):
+        cal = CalendarInfo("a.ics", "A", "", "")
+        assert _ics_href(cal, "") == "a.ics"
 
 
 # ---------------------------------------------------------------------------
@@ -567,3 +624,21 @@ class TestCliIndexGeneration:
         from cal_scraper.cli import main
         with pytest.raises(SystemExit):
             main(["--index-only", "--no-index"])
+
+    def test_index_only_errors_on_missing_dir(self, tmp_path):
+        """--index-only with a non-existent directory gives a clear error."""
+        from cal_scraper.cli import main
+        with pytest.raises(SystemExit):
+            main(["--index-only", "-d", str(tmp_path / "nope")])
+
+    def test_filename_suffix_rejects_path_traversal(self):
+        """Suffixes with path separators are rejected."""
+        from cal_scraper.cli import main
+        with pytest.raises(SystemExit):
+            main(["--filename-suffix=../../etc/passwd", "--site", "moravska-galerie"])
+
+    def test_translate_suffix_rejects_path_traversal(self):
+        """Translate suffixes with path separators are rejected."""
+        from cal_scraper.cli import main
+        with pytest.raises(SystemExit):
+            main(["--translate-suffix=../bad", "--site", "moravska-galerie"])
