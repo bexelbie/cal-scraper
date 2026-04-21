@@ -203,11 +203,18 @@ def _ics_href(cal: CalendarInfo, base_url: str) -> str:
     return html.escape(cal.filename)
 
 
-_LANG_SUFFIX_RE = re.compile(r"\s*\((?:in )?CZ\)\s*$", re.IGNORECASE)
+_LANG_SUFFIX_RE = re.compile(
+    r",\s*in CZ(?=\)\s*$)|\s*\((?:in )?CZ\)\s*$",
+    re.IGNORECASE,
+)
 
 
 def _clean_group_title(name: str, is_group: bool) -> str:
-    """Strip the language suffix like '(in CZ)' when the card already has CZ/EN buttons."""
+    """Strip the language suffix when the card already has CZ/EN buttons.
+
+    Handles both standalone ``(in CZ)`` and embedded ``, in CZ`` inside a
+    larger parenthetical like ``(unofficial, in CZ)``.
+    """
     if is_group:
         return _LANG_SUFFIX_RE.sub("", name).rstrip(" –—-")
     return name

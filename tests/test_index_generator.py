@@ -179,6 +179,12 @@ class TestCleanGroupTitle:
     def test_no_suffix_untouched(self):
         assert _clean_group_title("Just a Name", True) == "Just a Name"
 
+    def test_strips_comma_in_cz_keeps_unofficial(self):
+        title = "VIDA! Science Center – Family Events (unofficial, in CZ)"
+        assert _clean_group_title(title, True) == (
+            "VIDA! Science Center – Family Events (unofficial)"
+        )
+
     def test_strips_trailing_dash(self):
         assert _clean_group_title("Site – (in CZ)", True) == "Site"
 

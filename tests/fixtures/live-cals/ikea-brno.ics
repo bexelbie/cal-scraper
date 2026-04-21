@@ -1,0 +1,30 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//cal-scraper//ikea-brno//CS
+X-WR-CALDESC:Unofficial scrape — kids events only (promotions and adult 
+ events excluded). Source: https://www.ikea.com/cz/cs/stores/brno/
+X-WR-CALNAME:IKEA Brno – Kids Events (unofficial\, in CZ)
+X-CAL-SOURCE-URL:https://www.ikea.com/cz/cs/stores/brno/
+BEGIN:VEVENT
+SUMMARY:Staňte se obyvateli SMÅLANDBYNU
+DTSTART;VALUE=DATE:20250909
+DTEND;VALUE=DATE:20260901
+DTSTAMP:20260421T040652Z
+UID:da52a4f62a812fea@cal-scraper
+DESCRIPTION:Věrnostní program pro děti\, které navštěvují dětský 
+ koutek IKEA Brno.\n\nMilé děti\, víte co je SMÅLANDBYN? To je vesničk
+ a ve které  bydlí náš medvídek FABLER BJÖRN. Chcete zde bydlet s ní
+ m?  Navštivte dětský koutek a za každou návštěvu získáte 1 razít
+ ko do Björnova pasu. Až jich nasbírate 12\, stanete se čestným obyvat
+ elem Smålandbynu. Ale nebojte\, už při 1.\, 3.\, 6. a 9. návštěvě m
+ á pro vás Björn překvapení. Tak pojďte do koutku ještě dnes.\n\nPr
+ ogram je určený pro děti ve věku od 3 do 9 let. Do Björnova pasu se z
+ apočítávají návštěvy pouze ve všední dny. Pro pobyt v dětském k
+ outku platí provozní řád dětského koutku.\n\n⚠️ Neoficiální zd
+ roj – ověřte si detaily na webu pořadatele.\nCena: zdarma\nDatum: 202
+ 5-09-09T10:00:00
+LOCATION:IKEA Brno\, Brno-Dolní Heršpice
+URL:https://www.ikea.com/stores/events/ikea-brno/872aeb45-83ee-4d59-8a28-b
+ 93957c00f97
+END:VEVENT
+END:VCALENDAR

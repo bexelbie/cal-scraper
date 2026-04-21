@@ -1,0 +1,862 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//cal-scraper//moravska-galerie//CS
+X-WR-CALDESC:Auto-translated to English via Azure OpenAI. Unofficial scrap
+ e — children & family events only. Source: https://moravska-galerie.cz/p
+ rogram/deti-a-rodiny/
+X-WR-CALNAME:Moravská galerie – Children & Families (unofficial\, EN\, 
+ auto-translated from CZ)
+X-CAL-SOURCE-URL:https://moravska-galerie.cz/program/deti-a-rodiny/
+BEGIN:VTIMEZONE
+TZID:Europe/Prague
+COMMENT:This timezone only works from 1970-01-01 to 2038-01-01.
+BEGIN:STANDARD
+DTSTART:19700101T000000
+TZNAME:CET
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0100
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:19790401T030000
+RDATE:19800406T030000,19810329T030000,19820328T030000,19830327T030000,1984
+ 0325T030000,19850331T030000,19860330T030000,19870329T030000,19880327T03000
+ 0,19890326T030000,19900325T030000,19910331T030000,19920329T030000,19930328
+ T030000,19940327T030000,19950326T030000,19960331T030000,19970330T030000,19
+ 980329T030000,19990328T030000,20000326T030000,20010325T030000,20020331T030
+ 000,20030330T030000,20040328T030000,20050327T030000,20060326T030000,200703
+ 25T030000,20080330T030000,20090329T030000,20100328T030000,20110327T030000,
+ 20120325T030000,20130331T030000,20140330T030000,20150329T030000,20160327T0
+ 30000,20170326T030000,20180325T030000,20190331T030000,20200329T030000,2021
+ 0328T030000,20220327T030000,20230326T030000,20240331T030000,20250330T03000
+ 0,20260329T030000,20270328T030000,20280326T030000,20290325T030000,20300331
+ T030000,20310330T030000,20320328T030000,20330327T030000,20340326T030000,20
+ 350325T030000,20360330T030000,20370329T030000
+TZNAME:CEST
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+END:DAYLIGHT
+BEGIN:STANDARD
+DTSTART:19790930T030000
+RDATE:19800928T030000,19810927T030000,19820926T030000,19830925T030000,1984
+ 0930T030000,19850929T030000,19860928T030000,19870927T030000,19880925T03000
+ 0,19890924T030000,19900930T030000,19910929T030000,19920927T030000,19930926
+ T030000,19940925T030000,19950924T030000,19961027T030000,19971026T030000,19
+ 981025T030000,19991031T030000,20001029T030000,20011028T030000,20021027T030
+ 000,20031026T030000,20041031T030000,20051030T030000,20061029T030000,200710
+ 28T030000,20081026T030000,20091025T030000,20101031T030000,20111030T030000,
+ 20121028T030000,20131027T030000,20141026T030000,20151025T030000,20161030T0
+ 30000,20171029T030000,20181028T030000,20191027T030000,20201025T030000,2021
+ 1031T030000,20221030T030000,20231029T030000,20241027T030000,20251026T03000
+ 0,20261025T030000,20271031T030000,20281029T030000,20291028T030000,20301027
+ T030000,20311026T030000,20321031T030000,20331030T030000,20341029T030000,20
+ 351028T030000,20361026T030000,20371025T030000
+TZNAME:CET
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+SUMMARY:Colorful Morning: The Ancient Charm of Porcelain / Barevné dopole
+ dne: Dávné kouzlo porcelánu
+DTSTART;TZID=Europe/Prague:20260423T100000
+DTEND;TZID=Europe/Prague:20260423T120000
+DTSTAMP:20260421T040215Z
+UID:a06643c46f2f8e58@cal-scraper
+DESCRIPTION:In the open ceramics and porcelain depot\, we will be enchante
+ d by various shapes of mugs\, bowls\, and figurines. To discover where the
+ y traveled from\, we will need to travel a bit ourselves\, albeit just aro
+ und a globe. Perhaps to China or the Netherlands. After all\, it was from 
+ here that not only porcelain spread but also the very custom of drinking t
+ ea. All of this will serve as our great creative inspiration. Program for 
+ children aged 2−6 years with parents. Limited capacity\, tickets availab
+ le via GoOut\, MG website\, or at the ticket office of the Museum of Appli
+ ed Arts.\n\n⚠️ Unofficial source – verify details on the organizer's
+  website. Auto-translated via Azure OpenAI.\n\n---\n\nPrice/Cena: V – 10
+ 0 / 50 Kč sourozenec\nNote: End time is approximate (duration estimated a
+ t 2h)\nDatum: 23/4/2026\, 10 H\n\n---\n\nV otevřeném depozitáři kerami
+ ky a porcelánu se necháme okouzlit nejrůznějšími tvary hrníčků\, 
+ mís a figurek. Abychom zjistili\, odkud k nám doputovaly\, budeme muset 
+ trochu cestovat\, i když jen po glóbusu. Třeba do Číny nebo Holandska
+ . Odtud se k nám totiž rozšířil nejen porcelán\, ale třeba i samotn
+ ý zvyk pití čaje. A to vše bude naší velkou tvůrčí inspirací. Pr
+ ogram pro děti 2−6 let s rodiči. Omezená kapacita\, prodej vstupenek 
+ přes GoOut\, web MG nebo na pokladně Uměleckoprůmyslového muzea.\n\n
+ ⚠️ Neoficiální zdroj – ověřte si detaily na webu pořadatele.
+LOCATION:Uměleckoprůmyslové muzeum
+URL:https://moravska-galerie.cz/program/barevne-dopoledne-davne-kouzlo-por
+ celanu/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Nutrition: Rudolf Sikora / Výživa: Rudolf Sikora
+DTSTART;TZID=Europe/Prague:20260424T100000
+DTEND;TZID=Europe/Prague:20260424T120000
+DTSTAMP:20260421T040215Z
+UID:8827beaf35d721ec@cal-scraper
+DESCRIPTION:Morning guided tour with lecturer Robert Spurný for parents o
+ n maternity and parental leave will introduce you to the work of Slovak pa
+ inter\, draftsman\, graphic artist\, photographer\, sculptor\, and educato
+ r Rudolf Sikora. His work opens contemporary and timeless reflections on h
+ umanity\, society\, and responsibility for the world we inhabit through pr
+ ecise gestures\, symbols\, and spatial manipulation. Ticket sales via GoOu
+ t\, MG website\, or at the ticket office of Pražák Palace.\n\n⚠️ Uno
+ fficial source – verify details on the organizer's website. Auto-transla
+ ted via Azure OpenAI.\n\n---\n\nPrice/Cena: V – 30 Kč / děti zdarma\nN
+ ote: End time is approximate (duration estimated at 2h)\nDatum: 24/4/2026\
+ , 10 H\n\n---\n\nDopolední komentovaná prohlídka s lektorem Robertem Sp
+ urným pro rodiče na mateřské a rodičovské dovolené vás seznámí s
+  tvorbou slovenského malíře\, kreslíře\, grafika\, fotografa\, socha
+ ře a pedagoga Rudolfa Sikory. Jeho tvorba otevírá prostřednictvím př
+ esných gest\, symbolů a práce s prostorem aktuální i nadčasové refl
+ exe o člověku\, společnosti a odpovědnosti za svět\, který obýváme
+ . Prodej vstupenek přes GoOut\, web MG nebo na pokladně Pražákova pal
+ áce.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu pořad
+ atele.
+LOCATION:Pražákův palác
+URL:https://moravska-galerie.cz/program/vyziva-rudolf-sikora/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Saturday Workshop: Pros and Cons / Sobotní ateliér: Za a proti
+DTSTART;TZID=Europe/Prague:20260425T100000
+DTEND;TZID=Europe/Prague:20260425T120000
+DTSTAMP:20260421T040215Z
+UID:e610a9bd1a66be96@cal-scraper
+DESCRIPTION:A star\, a cross\, a plus\, and a minus. Simple but striking g
+ estures have accompanied Rudolf Sikora's work for over 50 years. The cross
+ es with stars in the shapes of constellations remind us of the mysteries o
+ f the cosmos and the creation of the world\, while topological drawings an
+ d photo montages of landscapes urge us to care for our planet and return b
+ alance to the environment. The program for children aged 6−12 years with
+  Robert Spurný will guide us through the diverse work of one of the most 
+ significant figures in Slovak conceptual art\, encompassing photographs\, 
+ drawings\, paintings\, graphics\, and performance art. The program is part
+  of Brno Art Week 2026. Limited capacity\, tickets available via GoOut\, M
+ G website\, or at the ticket office of Pražák Palace.\n\n⚠️ Unoffici
+ al source – verify details on the organizer's website. Auto-translated v
+ ia Azure OpenAI.\n\n---\n\nPrice/Cena: V – 100 Kč\nNote: End time is ap
+ proximate (duration estimated at 2h)\nDatum: 25/4/2026\, 10 H\n\n---\n\nHv
+ ězdička\, křížek\, plus a mínus. Jednoduchá\, ale výrazná gesta p
+ rovázejí tvorbu Rudolfa Sikory už více než 50 let. Křížky s hvězd
+ ičkami ve tvarech souhvězdí připomínají záhady kosmu a vzniku svět
+ a\, topologické kresby a fotomontáže krajiny zase apelují na starost o
+  naši planetu a navrácení rovnováhy do životního prostředí. Progra
+ m pro děti 6−12 let s Robertem Spurným nás provede pestrou tvorbou je
+ dné z nejvýznamnějších postav slovenského konceptuálního umění\,
+  která zahrnuje fotografie\, kresby\, malby\, grafiku i umění akce. Pro
+ gram je součástí \nBrno Art Week 2026\n. Omezená kapacita\, prodej vst
+ upenek přes GoOut\, web MG nebo na pokladně Pražákova paláce.\n\n⚠
+ ️ Neoficiální zdroj – ověřte si detaily na webu pořadatele.
+LOCATION:Pražákův palác
+URL:https://moravska-galerie.cz/program/sobotni-atelier-za-a-proti/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Colorful Morning: Flowers in the Museum / Barevné dopoledne: Kvě
+ tiny v muzeu
+DTSTART;TZID=Europe/Prague:20260430T100000
+DTEND;TZID=Europe/Prague:20260430T120000
+DTSTAMP:20260421T040215Z
+UID:0a489eef630dbe4c@cal-scraper
+DESCRIPTION:The month of May\, full of colors and scents\, begins tomorrow
+ . We will try to bring this beauty into the museum's spaces. We will exper
+ ience the wonderful feeling of planting a little plant into the soil and w
+ atching it grow into its full beauty. We will see if we can also find flow
+ ers in the museum and attempt to create one ourselves. Program for childre
+ n aged 2−6 years with parents. Limited capacity\, tickets available via 
+ GoOut\, MG website\, or at the ticket office of the Museum of Applied Arts
+ .\n\n⚠️ Unofficial source – verify details on the organizer's websit
+ e. Auto-translated via Azure OpenAI.\n\n---\n\nPrice/Cena: V – 100 / 50 
+ Kč sourozenec\nNote: End time is approximate (duration estimated at 2h)\n
+ Datum: 30/4/2026\, 10 H\n\n---\n\nMěsíc květen plný barev a vůní za
+ číná už zítra. Pokusíme se tuto krásu vnést do prostor muzea. Zaž
+ ijeme ten báječný pocit\, kdy zasadíme do hlíny rostlinku a ona poros
+ te do své plné krásy. Podíváme se\, jestli květiny najdeme i v muzeu
+  a nějakou si zkusíme sami vytvořit. Program pro děti 2−6 let s rodi
+ či. Omezená kapacita\, prodej vstupenek přes GoOut\, web MG nebo na pok
+ ladně Uměleckoprůmyslového muzea.\n\n⚠️ Neoficiální zdroj – ov
+ ěřte si detaily na webu pořadatele.
+LOCATION:Uměleckoprůmyslové muzeum
+URL:https://moravska-galerie.cz/program/barevne-dopoledne-kvetiny-v-muzeu/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Colorful Morning: The Secret Message / Barevné dopoledne: Tajný 
+ vzkaz
+DTSTART;TZID=Europe/Prague:20260507T100000
+DTEND;TZID=Europe/Prague:20260507T120000
+DTSTAMP:20260421T040215Z
+UID:907e334c0b3e1185@cal-scraper
+DESCRIPTION:How adventurous it would be to find a secret message! And what
+  if we created such a message and hid it for someone else? Receiving a let
+ ter or postcard is a wonderful feeling because someone is thinking of us. 
+ At the Museum of Applied Arts\, there is an exhibition telling stories of 
+ various encounters and relationships. We will walk through it\, and who kn
+ ows\, perhaps we will also find a message or a new friend along the way. P
+ rogram for children aged 2−6 years with parents. Limited capacity\, tick
+ ets available via GoOut\, MG website\, or at the ticket office of the Muse
+ um of Applied Arts.\n\n⚠️ Unofficial source – verify details on the 
+ organizer's website. Auto-translated via Azure OpenAI.\n\n---\n\nPrice/Cen
+ a: V – 100 / 50 Kč sourozenec\nNote: End time is approximate (duration 
+ estimated at 2h)\nDatum: 7/5/2026\, 10 H\n\n---\n\nJak dobrodružné by by
+ lo najít tajný vzkaz! A co třeba takový vzkaz vytvořit a pro někoho 
+ schovat? Dostat dopis či pohled je skvělý pocit\, protože na nás něk
+ do myslí. V Uměleckoprůmyslovém muzeu je výstava\, která vypráví p
+ říběhy různých setkání a vztahů. My ji projdeme\, a kdoví\, třeb
+ a při tom také najdeme nějaký vzkaz nebo nového kamaráda. Program pr
+ o děti 2−6 let s rodiči. Omezená kapacita\, prodej vstupenek přes Go
+ Out\, web MG nebo na pokladně Uměleckoprůmyslového muzea.\n\n⚠️ Ne
+ oficiální zdroj – ověřte si detaily na webu pořadatele.
+LOCATION:Uměleckoprůmyslové muzeum
+URL:https://moravska-galerie.cz/program/barevne-dopoledne-tajny-vzkaz/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Book Club: Story &?
+DTSTART;TZID=Europe/Prague:20260513T163000
+DTEND;TZID=Europe/Prague:20260513T183000
+DTSTAMP:20260421T040215Z
+UID:9d653f0ab60fa1b7@cal-scraper
+DESCRIPTION:Suzy the Goose sometimes gets slightly wild ideas – and this
+  time she’s decided that being a goose is just boring. So she tries hang
+ ing upside down like a bat\, jumping like a kangaroo\, and roaring like a 
+ lion. What do you think – is that a good idea? We’ll find out together
+  at our May Book Club\, where we’ll read from Silly Suzy Goose by Petr H
+ oráček. And of course\, we’ll also have a go at creating some wonderfu
+ lly unusual animals of our own! This program in English with lecturer Jana
+  Repelová is perfect for kids from 3 to 8 years of age. Tickets sale via 
+ GoOut\, MG web or at the Pražák Palace´s ticket office. Limited capacit
+ y. Admission – 100 / 50 czk sibling / parents free.\n\n⚠️ Unofficial
+  source – verify details on the organizer's website. Auto-translated via
+  Azure OpenAI.\n\n---\n\nNote: End time is approximate (duration estimated
+  at 2h)\nDatum: 13/5/2026\, 16.30 H\n\n---\n\nSuzy the Goose sometimes get
+ s slightly wild ideas – and this time she’s decided that being a goose
+  is just boring. So she tries hanging upside down like a bat\, jumping lik
+ e a kangaroo\, and roaring like a lion. What do you think – is that a go
+ od idea? We’ll find out together at our May Book Club\, where we’ll re
+ ad from \nSilly Suzy Goose\n by Petr Horáček. And of course\, we’ll al
+ so have a go at creating some wonderfully unusual animals of our own! This
+  program in English with lecturer Jana Repelová is perfect for kids from 
+ 3 to 8 years of age. Tickets sale via GoOut\, MG web or at the Pražák Pa
+ lace´s ticket office. Limited capacity.\n\nAdmission – 100 / 50 czk sib
+ ling / parents free\n\n⚠️ Neoficiální zdroj – ověřte si detaily 
+ na webu pořadatele.
+LOCATION:Pražákův palác\, Knihovna
+URL:https://moravska-galerie.cz/program/book-club-story-8/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Colorful Morning: Movement and Visual Arts / Barevné dopoledne: P
+ ohyb a výtvarné umění
+DTSTART;TZID=Europe/Prague:20260514T100000
+DTEND;TZID=Europe/Prague:20260514T120000
+DTSTAMP:20260421T040215Z
+UID:b6f0bc90667edd49@cal-scraper
+DESCRIPTION:As part of the nationwide event Family Week\, which this year 
+ carries the motto "Family\, Move!" we will be dealing with movement\, spor
+ ts\, and dynamic drawing at the Colorful Morning. Movement and human creat
+ ivity simply belong together\, and we can prove it together. Program for c
+ hildren aged 2−6 years with parents. Limited capacity\, tickets availabl
+ e via GoOut\, MG website\, or at the ticket office of the Museum of Applie
+ d Arts.\n\n⚠️ Unofficial source – verify details on the organizer's 
+ website. Auto-translated via Azure OpenAI.\n\n---\n\nPrice/Cena: V – 100
+  / 50 Kč sourozenec\nNote: End time is approximate (duration estimated at
+  2h)\nDatum: 14/5/2026\, 10 H\n\n---\n\nV rámci celostátní akce Týden 
+ pro rodinu\, která letos nese motto „Rodino\, pohni se!“ se v Barevn
+ ém dopoledni budeme zabývat pohybem\, sportem a dynamickou kresbou. Pohy
+ b a lidská tvořivost k sobě prostě patří a my to společně dokáže
+ me. Program pro děti 2−6 let s rodiči. Omezená kapacita\, prodej vstu
+ penek přes GoOut\, web MG nebo na pokladně Uměleckoprůmyslového muzea
+ .\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu pořadatel
+ e.
+LOCATION:Uměleckoprůmyslové muzeum
+URL:https://moravska-galerie.cz/program/barevne-dopoledne-pohyb-a-vytvarne
+ -umeni/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Colorful Morning: From Tailor to Fashion Salon / Barevné dopoledn
+ e: Od krejčího do módního salonu
+DTSTART;TZID=Europe/Prague:20260521T100000
+DTEND;TZID=Europe/Prague:20260521T120000
+DTSTAMP:20260421T040215Z
+UID:7f6235b5035f05d5@cal-scraper
+DESCRIPTION:The Museum of Applied Arts is bustling with fashion and artist
+ ic creations. Here we will find the work of many designers. We will take a
+ n exciting journey through the history of fashion from the Cave exhibition
+  section to contemporary fashion shows. In the Designlab\, we will then tr
+ y to design our own clothes. Program for children aged 2−6 years with pa
+ rents. Limited capacity\, tickets available via GoOut\, MG website\, or at
+  the ticket office of the Museum of Applied Arts.\n\n⚠️ Unofficial sou
+ rce – verify details on the organizer's website. Auto-translated via Azu
+ re OpenAI.\n\n---\n\nPrice/Cena: V – 100 / 50 Kč sourozenec\nNote: End 
+ time is approximate (duration estimated at 2h)\nDatum: 21/5/2026\, 10 H\n\
+ n---\n\nV Uměleckoprůmyslovém muzeu se to hemží módními a výtvarn
+ ými kreacemi. Nalezneme zde tvorbu mnoha návrhářů. Vzrušujícím př
+ íběhem módy se projdeme od části expozice Jeskyně až po módní mol
+ a současnosti. V Designlabu si pak zkusíme vymyslet vlastní šaty. Prog
+ ram pro děti 2−6 let s rodiči. Omezená kapacita\, prodej vstupenek p
+ řes GoOut\, web MG nebo na pokladně Uměleckoprůmyslového muzea.\n\n
+ ⚠️ Neoficiální zdroj – ověřte si detaily na webu pořadatele.
+LOCATION:Uměleckoprůmyslové muzeum
+URL:https://moravska-galerie.cz/program/barevne-dopoledne-od-krejciho-do-m
+ odniho-salonu/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:2nd Annual OPEN DEPO FEST / 2. ročník OPEN DEPO FEST
+DTSTART;TZID=Europe/Prague:20260523T130000
+DTEND;TZID=Europe/Prague:20260523T220000
+DTSTAMP:20260421T040215Z
+UID:a21bd35b0e20aec9@cal-scraper
+DESCRIPTION:Come spend a spring afternoon at the second annual OPEN DEPO F
+ EST – a festival full of art\, design\, music\, and creativity for young
+  and old alike. You will experience the unique atmosphere of the first ope
+ n depot in the Czech Republic\, where you can peek behind the scenes of th
+ e museum and experience art differently. This year's theme connects materi
+ al and contemporary artistic approach – you can look forward to workshop
+ s\, craft demonstrations\, meetings with creators\, and a rich cultural pr
+ ogram throughout the day. 🎨 PROGRAM 🏛️ Tours and Art guided depot 
+ tours for adults and children meetings with curators\, educators\, and col
+ lection managers presentation of new acquisitions to the contemporary art 
+ and design collections peek behind the scenes of how the museum operates 
+ ✨ Workshops and Creation (selected workshops have limited capacity – w
+ e recommend purchasing tickets in advance) 🔥 RAKU pottery workshop (UMP
+ RUM) with Milan Pekař\, Tereza Sluková\, and students traditional Japane
+ se firing technique starts: 1:00 PM / 2:30 PM / 3:30 PM duration: approx. 
+ 60 min (firing approx. 2 hours) for participants aged 12 and older 🎭 Pa
+ inting a Pimprle Figure (Tititi) with designer Tereza Talichová create yo
+ ur own original figure inspired by Commedia dell’arte starts: 1:00 PM / 
+ 4:00 PM duration: approx. 2 hours for participants aged 10 and older 🎨 
+ Other activities art workshop – drawing and painting still lifes (Domini
+ k Forman) creative station for children glassmaking demonstrations (Květn
+ á 1794\, including glass furnace) RAKU workshop Painting figures Tititi R
+ AKU workshop 🎭 Music\, Theatre\, and Fun theatre performances: Divadlo 
+ DIP\, Divadlo Kjógen concert by the band Páni na hlídání evening show
+  by Kapitán Demo DJ set throughout the day games and activities for child
+ ren rides on flying swans 🍔 Relax & Gastro DEPO park with seating gastr
+ o zone throughout the day 🎤 Hosted by Barbora Seidlová and Nikola Zbyt
+ ovská 🎟️ Tickets Some workshops have limited capacity and require a 
+ special ticket. 👉 We recommend purchasing tickets in advance to secure 
+ your spot in selected activities. Guided tour Performance of Divadlo Kjóg
+ en.\n\n⚠️ Unofficial source – verify details on the organizer's webs
+ ite. Auto-translated via Azure OpenAI.\n\n---\n\nDatum: 23/5/2026\, 13–2
+ 2 H\n\n---\n\nPřijďte strávit jarní odpoledne na druhém ročníku OPE
+ N DEPO FESTU – festivalu plného umění\, designu\, hudby a tvoření p
+ ro malé i velké. Čeká vás jedinečná atmosféra prvního otevřenéh
+ o depozitáře v České republice\, kde můžete nahlédnout do zákulis
+ í muzea a zažít umění jinak.\n\nLetošní ročník propojuje téma \n
+ materiálu a současného uměleckého přístupu\n – těšit se můžet
+ e na workshopy\, ukázky řemesel\, setkání s tvůrci i bohatý kulturn
+ í program po celý den.\n\n🎨 PROGRAM\n\n🏛️ Prohlídky a umění\n
+ \nkomentované prohlídky depozitáře pro dospělé i děti\n\nsetkání 
+ s kurátory\, lektory a správci sbírek\n\nprezentace nových přírůstk
+ ů do sbírek současného umění a designu\n\nnahlédnutí do zákulisí
+  fungování muzea\n\n✨ Workshopy a tvoření\n\n(vybrané workshopy maj
+ í omezenou kapacitu – doporučujeme včas zakoupit vstupenku)\n\n🔥 W
+ orkshop RAKU keramiky (UMPRUM)\n\ns Milanem Pekařem\, Terezou Slukovou a 
+ studenty\n\ntradiční japonská technika výpalu v ohni\n\nzačátky: 13.
+ 00 / 14.30 / 15.30\n\ndélka: cca 60 min (výpal cca 2 hodiny)\n\npro úč
+ astníky od 12 let\n\n🎭 Malování figurky Pimprle (Tititi)\n\ns design
+ érkou Terezou Talichovou\n\nvytvořte si vlastní autorskou figurku inspi
+ rovanou Commedia dell’arte\n\nzačátky: 13.00 / 16.00\n\ndélka: cca 2 
+ hodiny\n\npro účastníky od 10 let\n\n🎨 Další aktivity\n\nvýtvarn
+ á dílna – kresba a malba zátiší (Dominik Forman)\n\ntvůrčí stano
+ viště pro děti\n\nukázky sklářské tvorby (Květná 1794\, včetně 
+ sklářské pece)\n\nWorkshop RAKU\n\nMalování figurek Tititi\n\nWorksho
+ p Tititi\n\nWorkshop RAKU\n\n🎭 Hudba\, divadlo a zábava\n\ndivadelní 
+ představení: Divadlo DIP\, Divadlo Kjógen\n\nkoncert kapely Páni na hl
+ ídání\n\nvečerní show Kapitána Demo\n\nDJ set po celý den\n\nhry a 
+ aktivity pro děti\n\njízda na létajících labutích\n\n🍔 Relax & ga
+ stro\n\nDEPO park s posezením\n\ngastro zóna po celý den\n\n🎤 Moderu
+ jí\n\nBarbora Seidlová a Nikola Zbytovská\n\n🎟️ Vstupenky\n\nNěkt
+ eré workshopy mají omezenou kapacitu a vyžadují \nspeciální vstupenk
+ u\n.\n👉 Doporučujeme zakoupit vstupenky včas a zajistit si místo na 
+ vybraných aktivitách.\n\nKomentovaná prohlídka \n\nDivadlo Kjógen\n\n
+ ⚠️ Neoficiální zdroj – ověřte si detaily na webu pořadatele.
+LOCATION:Otevřený depozitář
+URL:https://moravska-galerie.cz/program/2-rocnik-open-depo-fest/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:The Secret of the Web / Tajemství pavučiny
+DTSTART;TZID=Europe/Prague:20260524T150000
+DTEND;TZID=Europe/Prague:20260524T170000
+DTSTAMP:20260421T040215Z
+UID:2303f1e298be264b@cal-scraper
+DESCRIPTION:Program for families with children aged 4–9 inspired by the 
+ life of architect Dušan Jurkovič and the people who inhabited Jurkovič'
+ s villa in Brno-Žabovřesky over time. In addition to the experience\, ch
+ ildren will take home a booklet of stories about beings from the villa\, w
+ orksheets\, and create their own tangled toy – a toy that develops logic
+ al thinking and fine motor skills. The event is organized by Lužánky –
+  Leisure Center Brno\, LATA workplace. More information and reservations a
+ t https://www.luzanky.cz/aktivity.\n\n⚠️ Unofficial source – verify 
+ details on the organizer's website. Auto-translated via Azure OpenAI.\n\n-
+ --\n\nNote: End time is approximate (duration estimated at 2h)\nDatum: 24/
+ 5/2026\, 15 H / 16 H / 17 H\n\n---\n\nProgram pro rodiny s dětmi 4–9 le
+ t inspirovaný životem architekta Dušana Jurkoviče a lidmi\, kteří v 
+ průběhu času obývali Jurkovičovu vilu v Brně-Žabovřeskách. Děti 
+ si kromě zážitku odnesou také sešit pohádek o bytostech z vily\, pra
+ covní listy a vytvoří si vlastní motanici – hračku\, která rozvíj
+ í logické myšlení i jemnou motoriku. Akci pořádají Lužánky – St
+ ředisko volného času Brno\, pracoviště LATA. Vice informací a rezerv
+ ace místa na \nhttps://www.luzanky.cz/aktivity\n\n⚠️ Neoficiální zd
+ roj – ověřte si detaily na webu pořadatele.
+LOCATION:Jurkovičova vila
+URL:https://moravska-galerie.cz/program/tajemstvi-pavuciny/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:The Secret of the Web / Tajemství pavučiny
+DTSTART;TZID=Europe/Prague:20260524T160000
+DTEND;TZID=Europe/Prague:20260524T180000
+DTSTAMP:20260421T040215Z
+UID:2303f1e298be264b@cal-scraper
+DESCRIPTION:Program for families with children aged 4–9 inspired by the 
+ life of architect Dušan Jurkovič and the people who inhabited Jurkovič'
+ s villa in Brno-Žabovřesky over time. In addition to the experience\, ch
+ ildren will take home a booklet of stories about beings from the villa\, w
+ orksheets\, and create their own tangled toy – a toy that develops logic
+ al thinking and fine motor skills. The event is organized by Lužánky –
+  Leisure Center Brno\, LATA workplace. More information and reservations a
+ t https://www.luzanky.cz/aktivity.\n\n⚠️ Unofficial source – verify 
+ details on the organizer's website. Auto-translated via Azure OpenAI.\n\n-
+ --\n\nNote: End time is approximate (duration estimated at 2h)\nDatum: 24/
+ 5/2026\, 15 H / 16 H / 17 H\n\n---\n\nProgram pro rodiny s dětmi 4–9 le
+ t inspirovaný životem architekta Dušana Jurkoviče a lidmi\, kteří v 
+ průběhu času obývali Jurkovičovu vilu v Brně-Žabovřeskách. Děti 
+ si kromě zážitku odnesou také sešit pohádek o bytostech z vily\, pra
+ covní listy a vytvoří si vlastní motanici – hračku\, která rozvíj
+ í logické myšlení i jemnou motoriku. Akci pořádají Lužánky – St
+ ředisko volného času Brno\, pracoviště LATA. Vice informací a rezerv
+ ace místa na \nhttps://www.luzanky.cz/aktivity\n\n⚠️ Neoficiální zd
+ roj – ověřte si detaily na webu pořadatele.
+LOCATION:Jurkovičova vila
+URL:https://moravska-galerie.cz/program/tajemstvi-pavuciny/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:The Secret of the Web / Tajemství pavučiny
+DTSTART;TZID=Europe/Prague:20260524T170000
+DTEND;TZID=Europe/Prague:20260524T190000
+DTSTAMP:20260421T040215Z
+UID:2303f1e298be264b@cal-scraper
+DESCRIPTION:Program for families with children aged 4–9 inspired by the 
+ life of architect Dušan Jurkovič and the people who inhabited Jurkovič'
+ s villa in Brno-Žabovřesky over time. In addition to the experience\, ch
+ ildren will take home a booklet of stories about beings from the villa\, w
+ orksheets\, and create their own tangled toy – a toy that develops logic
+ al thinking and fine motor skills. The event is organized by Lužánky –
+  Leisure Center Brno\, LATA workplace. More information and reservations a
+ t https://www.luzanky.cz/aktivity.\n\n⚠️ Unofficial source – verify 
+ details on the organizer's website. Auto-translated via Azure OpenAI.\n\n-
+ --\n\nNote: End time is approximate (duration estimated at 2h)\nDatum: 24/
+ 5/2026\, 15 H / 16 H / 17 H\n\n---\n\nProgram pro rodiny s dětmi 4–9 le
+ t inspirovaný životem architekta Dušana Jurkoviče a lidmi\, kteří v 
+ průběhu času obývali Jurkovičovu vilu v Brně-Žabovřeskách. Děti 
+ si kromě zážitku odnesou také sešit pohádek o bytostech z vily\, pra
+ covní listy a vytvoří si vlastní motanici – hračku\, která rozvíj
+ í logické myšlení i jemnou motoriku. Akci pořádají Lužánky – St
+ ředisko volného času Brno\, pracoviště LATA. Vice informací a rezerv
+ ace místa na \nhttps://www.luzanky.cz/aktivity\n\n⚠️ Neoficiální zd
+ roj – ověřte si detaily na webu pořadatele.
+LOCATION:Jurkovičova vila
+URL:https://moravska-galerie.cz/program/tajemstvi-pavuciny/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Colorful Morning: Explorers of New Worlds / Barevné dopoledne: Pr
+ ůzkumníci nových světů
+DTSTART;TZID=Europe/Prague:20260528T100000
+DTEND;TZID=Europe/Prague:20260528T120000
+DTSTAMP:20260421T040215Z
+UID:563bebb64eb05b75@cal-scraper
+DESCRIPTION:The World Expo Brussels 58 supported the expansion of producti
+ on and use of plastics. Space travel\, science\, and the structure of atom
+ s became an inspiration for architecture\, product design\, and fashion. T
+ his resulted in a shape and color-specific "Brussels style." We will also 
+ become designers and create our own car\, rocket\, table\, or ski suit. Pr
+ ogram for children aged 2−6 years with parents. Limited capacity\, ticke
+ ts available via GoOut\, MG website\, or at the ticket office of the Museu
+ m of Applied Arts.\n\n⚠️ Unofficial source – verify details on the o
+ rganizer's website. Auto-translated via Azure OpenAI.\n\n---\n\nPrice/Cena
+ : V – 100 / 50 Kč sourozenec\nNote: End time is approximate (duration e
+ stimated at 2h)\nDatum: 28/5/2026\, 10 H\n\n---\n\nSvětová výstava Brus
+ el 58 podpořila rozšíření výroby a využití umělých hmot. Lety do
+  kosmu\, věda nebo struktura atomů se staly inspirací pro stavby\, prod
+ uktový design i módu. Vznikl tak tvarově a barevně specifický „brus
+ elský styl“. My se také staneme designéry a navrhneme si svůj automo
+ bil\, raketu\, stůl nebo lyžařskou kombinézu. Program pro děti 2−6 
+ let s rodiči. Omezená kapacita\, prodej vstupenek přes GoOut\, web MG n
+ ebo na pokladně Uměleckoprůmyslového muzea.\n\n⚠️ Neoficiální zd
+ roj – ověřte si detaily na webu pořadatele.
+LOCATION:Uměleckoprůmyslové muzeum
+URL:https://moravska-galerie.cz/program/barevne-dopoledne-pruzkumnici-novy
+ ch-svetu/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Festival VÝTVARKA!!!
+DTSTART;TZID=Europe/Prague:20260530T100000
+DTEND;TZID=Europe/Prague:20260530T120000
+DTSTAMP:20260421T040215Z
+UID:cc48752dac1dfdd5@cal-scraper
+DESCRIPTION:The one-day festival of visual arts will take place for the fi
+ rst time this year in Brno at the former prison. The all-day program will 
+ offer children\, parents\, and educators art workshops\, experimentation w
+ ith contemporary art\, and shared encounters. Alongside activities for chi
+ ldren\, there will also be workshops and discussions for teachers focused 
+ on contemporary approaches to art education. The Moravská galerie will pa
+ rticipate with an educational exhibition Art in Your Pocket through art ac
+ tivities about the transformations of art and the ways we think about it. 
+ Visitors can look forward to more creative stations\, discussions\, and a 
+ performative program throughout the entire prison area. The event is organ
+ ized by Holubník studio. V – voluntary.\n\n⚠️ Unofficial source –
+  verify details on the organizer's website. Auto-translated via Azure Open
+ AI.\n\n---\n\nNote: End time is approximate (duration estimated at 2h)\nDa
+ tum: 30/5/2026\, 10 H\n\n---\n\nJednodenní festival výtvarného umění 
+ proběhne letos poprvé v Brně v prostorách bývalé Káznice. Celodenn
+ í program nabídne dětem\, rodičům i pedagogům výtvarné dílny\, ex
+ perimentování se současným uměním i společné setkávání. Vedle a
+ ktivit pro děti proběhnou také workshopy a diskuse pro učitele zaměř
+ ené na současné přístupy ve výtvarné výchově. \nDo programu se za
+ pojí také Moravská galerie\, která představí edukační expozici \nU
+ mění do kapsy\n prostřednictvím výtvarných aktivit o proměnách um
+ ění a způsobech\, jak o něm přemýšlíme. \nNávštěvníci se mohou
+  těšit i na další kreativní stanoviště\, rozhovory a performativní
+  program v prostoru celé Káznice. Akci pořádá Holubník studio.\n\nV 
+ – dobrovolné\n\n⚠️ Neoficiální zdroj – ověřte si detaily na w
+ ebu pořadatele.
+LOCATION:Káznice
+URL:https://moravska-galerie.cz/program/festival-vytvarka/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:SUMMER ARTCAMP: The Legend of Brtnice - SOLD OUT / LETNÍ ARTCAMP:
+  Legenda o Brtnici – VYPRODÁNO
+DTSTART;VALUE=DATE:20260707
+DTEND;VALUE=DATE:20260712
+DTSTAMP:20260421T040215Z
+UID:76eed970e69dc056@cal-scraper
+DESCRIPTION:At first glance\, the quiet and picturesque town of Brtnice co
+ nceals an unexpected secret. The archive of the Josef Hoffmann Museum has 
+ revealed records of a long-forgotten chapter of the town – a time when a
+  community of knights\, scholars\, musicians\, artists\, alchemists\, and 
+ strange beings from the dark corners of the Middle Ages was emerging here.
+  The Moravská galerie in Brno and the Brno Philharmonic have decided to r
+ evive this chapter. Join us for the fourth residential art camp and become
+  part of a live game (larp) inspired by the medieval world. We will face b
+ attles\, expeditions\, tests of courage\, cooperation\, and festivities. Y
+ ou can look forward to period costumes\, food\, and medieval entertainment
+  – because music and art belong to every age. Guided by: Michaela Gerich
+ ová\, Kristýna Drášilová\, Magdalena Dostálová\, Robert Spurný\, P
+ avel Šindelář. Price: 5\,500 CZK (includes all-day meals and accommodat
+ ion). For children aged 8-14 years. More information at: lucie.hlavonova@f
+ ilharmonie-brno.cz or at 539 092 854. Venue: Brtnice near Jihlava.\n\n⚠
+ ️ Unofficial source – verify details on the organizer's website. Auto-
+ translated via Azure OpenAI.\n\n---\n\n[VYPRODÁNO / SOLD OUT]\nReservatio
+ n: lucie.hlavonova@filharmonie-brno.cz\, 539 092 854\nDatum: 7/7 – 11/7/
+ 2026\n\n---\n\nNa první pohled klidné a malebné město Brtnice skrývá
+  nečekané tajemství. Archiv Muzea Josefa Hoffmanna totiž odhalil zázn
+ amy o dávno zapomenuté kapitole města – o časech\, kdy zde vznikalo 
+ společenství rytířů\, učenců\, hudebníků\, umělců\, alchymistů
+  i podivných bytostí z temných koutů středověku. Moravská galerie v
+  Brně a Filharmonie Brno se rozhodly tuto kapitolu znovu oživit.\n\nVyde
+ jte se s námi již na čtvrtý pobytový artcamp a staňte se součástí
+  živé hry (larpu) inspirované středověkým světem. Čekají nás sou
+ boje\, výpravy\, zkoušky odvahy\, spolupráce i slavnosti. Těšit se m
+ ůžete také na dobové kostýmy\, jídlo a středověkou zábavu – pro
+ tože hudba a umění patří ke každé době.\n\nLektorské vedení: Mic
+ haela Gerichová\, Kristýna Drášilová\, Magdalena Dostálová\, Robert
+  Spurný\, Pavel Šindelář\n\nCena: 5.500 Kč (zahrnuje i celodenní jí
+ dlo a ubytování)\n\nPro děti od 8-14 let\n\nVíce informací na: \nluci
+ e.hlavonova@filharmonie-brno.cz\n nebo na 539 092 854.\n\nMísto konání:
+  Brtnice u Jihlavy\n\n⚠️ Neoficiální zdroj – ověřte si detaily n
+ a webu pořadatele.
+LOCATION:Muzeum Josefa Hoffmanna
+URL:https://moravska-galerie.cz/program/letni-artcamp-legenda-o-brtnici/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:SUMMER ARTCAMP: Dream of Sound and Shape I - SOLD OUT / LETNÍ ART
+ CAMP: Sen o zvuku a tvaru I. – VYPRODÁNO
+DTSTART;VALUE=DATE:20260713
+DTEND;VALUE=DATE:20260718
+DTSTAMP:20260421T040215Z
+UID:ac74ffc6941b83af@cal-scraper
+DESCRIPTION:Did you know that dreams have no rules? You can fly in them\, 
+ things can change shape\, sounds resonate differently than during the day\
+ , statues come to life\, and music can hide in the treetops or under the w
+ ater surface. At the day art camp of the Moravská galerie in Brno and the
+  Brno Philharmonic\, we will explore the world of dreams\, fantasy\, and s
+ urrealism. We will be inspired by visual art\, shapes\, objects\, and scul
+ ptures\, as well as music\, sound\, and rhythm. Come with us on a journey 
+ into the landscape of dreams\, where nothing is as it seems at first glanc
+ e. Guided by: Michaela Gerichová\, Kristýna Drášilová\, Olga Búciov
+ á\, and Philippe Zajíček. Price: 3\,500 CZK / 3\,200 sibling (includes 
+ lunches). For children aged 6-14 years. More information at: lucie.hlavono
+ va@filharmonie-brno.cz or at 539 092 854. Venue: Místodržitelský palác
+ \, Besední dům.\n\n⚠️ Unofficial source – verify details on the or
+ ganizer's website. Auto-translated via Azure OpenAI.\n\n---\n\n[VYPRODÁNO
+  / SOLD OUT]\nReservation: lucie.hlavonova@filharmonie-brno.cz\, 539 092 8
+ 54\nDatum: 13/7 – 17/7/2026\, 9–16 H\n\n---\n\nVěděli jste\, že sny
+  nemají žádná pravidla? Můžete v nich létat\, věci v nich mění t
+ var\, zvuky zní úplně jinak než ve dne\, sochy ožívají a hudba se m
+ ůže schovávat i v koruně stromu nebo pod vodní hladinou.\n\nNa přím
+ ěstském artcampu Moravské galerie v Brně a Filharmonie Brno budeme zko
+ umat svět snů\, fantazie a surrealismu. Necháme se inspirovat výtvarn
+ ým uměním\, tvary\, objekty a sochami\, ale také hudbou\, zvukem a ryt
+ mem. Pojďte společně s námi na výlet do krajiny snů\, kde nic není 
+ takové\, jak se na první pohled zdá.\n\nLektorské vedení: Michaela Ge
+ richová\, Kristýna Drášilová\, Olga Búciová a Philippe Zajíček\n\
+ nCena: 3.500 Kč / 3.200 sourozenec (zahrnuje i obědy)\n\nPro děti od 6-
+ 14 let\nVíce informací na: \nlucie.hlavonova@filharmonie-brno.cz\n nebo 
+ na 539 092 854.\nMísto konání: Místodržitelský palác\, Besední dů
+ m\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu pořadatel
+ e.
+LOCATION:Místodržitelský palác\, Besední dům
+URL:https://moravska-galerie.cz/program/letni-artcamp-sen-o-zvuku-a-tvaru-
+ vyprodano/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:SUMMER ARTCAMP: Tangled Summer I / LETNÍ ARTCAMP: Zamotané léto
+  I
+DTSTART;VALUE=DATE:20260713
+DTEND;VALUE=DATE:20260718
+DTSTAMP:20260421T040215Z
+UID:96738dbaffd4d5c1@cal-scraper
+DESCRIPTION:What can be tangled up? A ball of yarn\, a tongue in your mout
+ h\, or words in a fairy tale? We can try it all. Our summer art camp will 
+ focus\, among other things\, on textile creation. After all\, even Josef H
+ offmann himself\, whose birthplace and garden we will be using as our base
+ \, designed patterns for fabrics\, for example. While creating\, we will e
+ nhance our fine motor skills\, develop our imagination\, and learn many ne
+ w things. In addition to artistic activities\, we will fill these days wit
+ h music\, games\, walks around Brtnice\, and free fun. Guided by: Eva Koud
+ elová and Eva Ampapová. More information at poklbrt@moravska-galerie.cz\
+ , or 724 543 722 or in person at the Josef Hoffmann Museum. For children a
+ ged 4–11 years.\n\n⚠️ Unofficial source – verify details on the or
+ ganizer's website. Auto-translated via Azure OpenAI.\n\n---\n\nPrice/Cena:
+  V – 250 Kč (na den)\nReservation: poklbrt@moravska-galerie.cz\, 724 54
+ 3 722\nDatum: 13/7 – 17/7/2026\, 9–16 H\n\n---\n\nCo všechno se dá z
+ amotat? Klubko příze\, jazyk v puse nebo slova v pohádce? My si můžem
+ e vyzkoušet všechno. Náš letní artcamp se zaměří mimo jiné na tex
+ tilní tvorbu. Vždyť i sám Josef Hoffmann\, v jehož rodném domě a za
+ hradě budeme mít své zázemí\, navrhoval například vzory látek. Př
+ i tvoření zdokonalíme jemnou motoriku\, rozvineme fantazii a dozvíme s
+ e ledacos nového. Kromě výtvarné činnosti naplníme tyto dny také hu
+ dbou\, hrami\, procházkami po Brtnici i volnou zábavou. Lektorské veden
+ í: Eva Koudelová a Eva Ampapová. Více informací na \npoklbrt@moravska
+ -galerie.cz\n\, nebo 724 543 722 či osobně v \nMuzeu Josefa Hoffmanna\n.
+ \n\nPro děti ve věku 4–11 let.\n\n⚠️ Neoficiální zdroj – ově
+ řte si detaily na webu pořadatele.
+LOCATION:Muzeum Josefa Hoffmanna
+URL:https://moravska-galerie.cz/program/letni-artcamp-zamotane-leto-i/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:SUMMER ARTCAMP: Dream of Sound and Shape II - SOLD OUT / LETNÍ AR
+ TCAMP: Sen o zvuku a tvaru II. – VYPRODÁNO
+DTSTART;VALUE=DATE:20260720
+DTEND;VALUE=DATE:20260725
+DTSTAMP:20260421T040215Z
+UID:82f29c3411fff1e9@cal-scraper
+DESCRIPTION:Did you know that dreams have no rules? You can fly in them\, 
+ things can change shape\, sounds resonate differently than during the day\
+ , statues come to life\, and music can hide in the treetops or under the w
+ ater surface. At the day art camp of the Moravská galerie in Brno and the
+  Brno Philharmonic\, we will explore the world of dreams\, fantasy\, and s
+ urrealism. We will be inspired by visual art\, shapes\, objects\, and scul
+ ptures\, as well as music\, sound\, and rhythm. Come with us on a journey 
+ into the landscape of dreams\, where nothing is as it seems at first glanc
+ e. Guided by: Michaela Gerichová\, Kristýna Drášilová\, Olga Búciov
+ á\, and Philippe Zajíček. Price: 3\,500 CZK / 3\,200 sibling (includes 
+ lunches). For children aged 6-14 years. More information at: lucie.hlavono
+ va@filharmonie-brno.cz or at 539 092 854. Venue: Místodržitelský palác
+ \, Besední dům.\n\n⚠️ Unofficial source – verify details on the or
+ ganizer's website. Auto-translated via Azure OpenAI.\n\n---\n\n[VYPRODÁNO
+  / SOLD OUT]\nReservation: lucie.hlavonova@filharmonie-brno.cz\, 539 092 8
+ 54\nDatum: 20/7 – 24/7/2026\, 9–16 H\n\n---\n\nVěděli jste\, že sny
+  nemají žádná pravidla? Můžete v nich létat\, věci v nich mění t
+ var\, zvuky zní úplně jinak než ve dne\, sochy ožívají a hudba se m
+ ůže schovávat i v koruně stromu nebo pod vodní hladinou.\n\nNa přím
+ ěstském artcampu Moravské galerie v Brně a Filharmonie Brno budeme zko
+ umat svět snů\, fantazie a surrealismu. Necháme se inspirovat výtvarn
+ ým uměním\, tvary\, objekty a sochami\, ale také hudbou\, zvukem a ryt
+ mem. Pojďte společně s námi na výlet do krajiny snů\, kde nic není 
+ takové\, jak se na první pohled zdá.\nLektorské vedení: Michaela Geri
+ chová\, Kristýna Drášilová\, Olga Búciová a Philippe Zajíček\n\nC
+ ena: 3.500 Kč / 3.200 sourozenec (zahrnuje i obědy)\n\nPro děti od 6-14
+  let\n\nVíce informací na: lucie.hlavonova@filharmonie-brno.cz nebo na 5
+ 39 092 854.\n\nMísto konání: Místodržitelský palác\, Besední dům\
+ n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu pořadatele.
+LOCATION:Místodržitelský palác\, Besední dům
+URL:https://moravska-galerie.cz/program/letni-artcamp-sen-o-zvuku-a-tvaru-
+ ii/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:SUMMER ARTCAMP: Tangled Summer II / LETNÍ ARTCAMP: Zamotané lét
+ o II
+DTSTART;VALUE=DATE:20260720
+DTEND;VALUE=DATE:20260725
+DTSTAMP:20260421T040215Z
+UID:b84d109d033b569c@cal-scraper
+DESCRIPTION:What can be tangled up? A ball of yarn\, a tongue in your mout
+ h\, or words in a fairy tale? We can try it all. Our summer art camp will 
+ focus\, among other things\, on textile creation. After all\, even Josef H
+ offmann himself\, whose birthplace and garden we will be using as our base
+ \, designed patterns for fabrics\, for example. While creating\, we will e
+ nhance our fine motor skills\, develop our imagination\, and learn many ne
+ w things. In addition to artistic activities\, we will fill these days wit
+ h music\, games\, walks around Brtnice\, and free fun. Guided by: Eva Koud
+ elová and Eva Ampapová. More information at poklbrt@moravska-galerie.cz\
+ , or 724 543 722 or in person at the Josef Hoffmann Museum. For children a
+ ged 4–11 years.\n\n⚠️ Unofficial source – verify details on the or
+ ganizer's website. Auto-translated via Azure OpenAI.\n\n---\n\nPrice/Cena:
+  V – 250 Kč (na den)\nReservation: poklbrt@moravska-galerie.cz\, 724 54
+ 3 722\nDatum: 20/7 – 24/7/2026\, 9–16 H\n\n---\n\nCo všechno se dá z
+ amotat? Klubko příze\, jazyk v puse nebo slova v pohádce? My si můžem
+ e vyzkoušet všechno. Náš letní artcamp se zaměří mimo jiné na tex
+ tilní tvorbu. Vždyť i sám Josef Hoffmann\, v jehož rodném domě a za
+ hradě budeme mít své zázemí\, navrhoval například vzory látek. Př
+ i tvoření zdokonalíme jemnou motoriku\, rozvineme fantazii a dozvíme s
+ e ledacos nového. Kromě výtvarné činnosti naplníme tyto dny také hu
+ dbou\, hrami\, procházkami po Brtnici i volnou zábavou. Lektorské veden
+ í: Eva Koudelová a Eva Ampapová. Více informací na \npoklbrt@moravska
+ -galerie.cz\n\, nebo 724 543 722 či osobně v Muzeu Josefa Hoffmanna.\n\n
+ Pro děti 4–11 let.\n\n⚠️ Neoficiální zdroj – ověřte si detail
+ y na webu pořadatele.
+LOCATION:Muzeum Josefa Hoffmana
+URL:https://moravska-galerie.cz/program/letni-artcamp-zamotane-leto-ii/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:TEENCAMP: Fashion Lovers - SOLD OUT / TEENCAMP: Fashion lovers –
+  VYPRODÁNO
+DTSTART;VALUE=DATE:20260727
+DTEND;VALUE=DATE:20260801
+DTSTAMP:20260421T040215Z
+UID:bd53bdc8e2ea4ec8@cal-scraper
+DESCRIPTION:Space in clothing\, clothing in space. Let's bring our vision 
+ to life! We will spend several days turning our ideas into a clothing expe
+ riment. We will focus on how to work with materials to make the most of th
+ eir potential. The work of fashion designers Liběna Rochová and Jan Čer
+ ný\, who exhibit in the spaces of the Museum of Applied Arts\, can also s
+ erve as inspiration. We will learn to sew\, utilize old items\, and transf
+ orm them into something entirely different. We will cut\, combine\, and at
+  the end\, we will present a grand fashion show. For youth aged 13-19 year
+ s. Guided by: Alena Lokosová. Price: 3\,500 CZK / 3\,200 sibling (include
+ s lunches). More information and reservations at: edukace@moravska-galerie
+ .cz or at 532 169 177. Venue: Museum of Applied Arts.\n\n⚠️ Unofficial
+  source – verify details on the organizer's website. Auto-translated via
+  Azure OpenAI.\n\n---\n\n[VYPRODÁNO / SOLD OUT]\nReservation: edukace@mor
+ avska-galerie.cz\, 532 169 177\nDatum: 27/7 – 31/7/2026\, 9–16 H\n\n--
+ -\n\nProstor v oděvu\, oděv v prostoru. Pojďme zhmotnit naši vizi! Če
+ ká nás několik dní\, během kterých přetavíme své nápady do oděv
+ ního experimentu. Zaměříme se na to\, jak pracovat s materiálem\, aby
+ chom co nejlépe uplatnili jeho potenciál. Vzorem nám může být i prá
+ ce módních návrhářů Liběny Rochové nebo Jana Černého\, vystavuj
+ ících v prostorách Uměleckoprůmyslového muzea. Naučíme se šít\, 
+ využijeme staré věci a vykouzlíme z nich něco zcela jiného. Budeme 
+ řádit\, stříhat\, kombinovat a na závěr předvedeme pořádnou módn
+ í show.\n\nPro mládež ve věku 13-19 let.\n\nLektorské vedení: Alena 
+ Lokosová\n\nCena: 3.500 Kč / 3.200 sourozenec (zahrnuje i obědy)\n\nVí
+ ce informací a rezervace místa na: \nedukace@moravska-galerie.cz\n nebo 
+ na 532 169 177.\n\nMísto konání: Uměleckoprůmyslové muzeum\n\n⚠️
+  Neoficiální zdroj – ověřte si detaily na webu pořadatele.
+LOCATION:Uměleckoprůmyslové muzeum
+URL:https://moravska-galerie.cz/program/teencamp-fashion-lovers-4/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:SUMMER ARTCAMP: Mimesis / LETNÍ ARTCAMP: Mimésis
+DTSTART;VALUE=DATE:20260810
+DTEND;VALUE=DATE:20260815
+DTSTAMP:20260421T040215Z
+UID:09936e80cf00de2a@cal-scraper
+DESCRIPTION:The word mimesis comes from Greek and refers to the imitation 
+ of reality in art. We have art in our fingers and are no rookies in the ar
+ eas of drawing\, painting\, applied arts\, music\, or theater. This artist
+ ic-theatrical camp will connect handicraft creation with theater\, history
+  with the present\, and drama with comedy so that none of us will be bored
+ . The art camp is aimed at older children who are not afraid to create\, s
+ peak\, and entertain others. Guided by: Eva Koudelová and Eva Ampapová. 
+ More information at poklbrt@moravska-galerie.cz\, or 724 543 722 or in per
+ son at the Josef Hoffmann Museum. For children aged 9–14 years.\n\n⚠
+ ️ Unofficial source – verify details on the organizer's website. Auto-
+ translated via Azure OpenAI.\n\n---\n\nPrice/Cena: V – 250 Kč (na den)\
+ nReservation: poklbrt@moravska-galerie.cz\, 724 543 722\nDatum: 10/8 – 1
+ 4/8/2026\, 9–15 H\n\n---\n\nSlovo mimésis pochází z řečtiny a ozna
+ čuje napodobení reality v umění. My máme umění v malíčku a v obla
+ stech kresby\, malby\, užitého umění\, hudby nebo divadla už nejsme 
+ žádní nováčci. Tento výtvarně-divadelní artcamp propojí rukoděln
+ ou tvorbu s divadlem\, historii se současností a drama s komedií tak\, 
+ že se nikdo z nás nebude nudit. Artcamp je určen pro větší děti\, k
+ teré se nebojí tvořit\, mluvit a bavit ostatní. Lektorské vedení: Ev
+ a Koudelová a Eva Ampapová. Více informací na \npoklbrt@moravska-galer
+ ie.cz\n\, nebo 724 543 722 či osobně v Muzeu Josefa Hoffmanna.\n\nPro d
+ ěti 9–14 let.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na 
+ webu pořadatele.
+LOCATION:Muzeum Josefa Hoffmanna
+URL:https://moravska-galerie.cz/program/letni-artcamp-mimesis/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:SUMMER ARTCAMP: The Mystery of Slavic Myths and Fairy Tales - SOLD
+  OUT / LETNÍ ARTCAMP: Za tajemstvím slovanských mýtů a pohádek – V
+ YPRODÁNO
+DTSTART;VALUE=DATE:20260817
+DTEND;VALUE=DATE:20260822
+DTSTAMP:20260421T040215Z
+UID:379338d2b36fe072@cal-scraper
+DESCRIPTION:This year’s art camp at Jurkovič's villa will be inspired b
+ y the fairy-tale mosaic that once adorned the facade of the villa. Togethe
+ r\, we will explore the world of Slavic mythology\, full of magical beings
+  and natural forces. We will get to know not only the character of the Sna
+ ke King in detail but also other powers and entities\, among which everyon
+ e can find their favorite. In addition to many fairy tales\, we will work 
+ on costume designs\, puppets\, and various artistic activities based on ha
+ lf-forgotten customs and traditions. Guided by: Olga Búciová and Alena L
+ okosová. Price: 3\,500 CZK / 3\,200 sibling (includes lunches). For child
+ ren aged 6-12 years. More information and reservations at: edukace@moravsk
+ a-galerie.cz or at 532 169 177. Venue: Jurkovič's villa.\n\n⚠️ Unoffi
+ cial source – verify details on the organizer's website. Auto-translated
+  via Azure OpenAI.\n\n---\n\n[VYPRODÁNO / SOLD OUT]\nReservation: edukace
+ @moravska-galerie.cz\, 532 169 177\nDatum: 17/8 – 21/8/2026\, 9–16 H\n
+ \n---\n\nLetošní artcamp v Jurkovičově vile bude inspirován pohádkov
+ ou mozaikou\, která v minulosti zdobila fasádu vily. Společně se vydá
+ me světem slovanské mytologie plné magických bytostí a přírodních 
+ sil. Podrobněji se seznámíme nejen s postavou Hadího krále\, ale tak
+ é s dalšími mocnostmi a entitami\, mezi nimiž si každý může najít
+  svého oblíbence. Kromě spousty pohádek nás čekají návrhy kostým
+ ů\, loutky a řada dalších výtvarných aktivit vycházejících z polo
+ zapomenutých zvyklostí a tradic.\n\nLektorské vedení: Olga Búciová a
+  Alena Lokosová\n\nCena: 3.500 Kč / 3.200 sourozenec (zahrnuje i obědy)
+ \n\nPro děti od 6-12 let.\n\nVíce informací a rezervace místa na: \ned
+ ukace@moravska-galerie.cz\n nebo na 532 169 177.\n\nMísto konání: Jurko
+ vičova vila\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu
+  pořadatele.
+LOCATION:Jurkovičova vila
+URL:https://moravska-galerie.cz/program/letni-artcamp-za-tajemstvim-slovan
+ skych-mytu-a-pohadek/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:SOUNDCAMP: In the Waves / SOUNDCAMP: Ve vlnách
+DTSTART;VALUE=DATE:20260824
+DTEND;VALUE=DATE:20260829
+DTSTAMP:20260421T040215Z
+UID:8c2ac8078524fd60@cal-scraper
+DESCRIPTION:Sound are waves. Waves that can be heard and sometimes seen\, 
+ can be created\, transformed\, and recorded. The second edition of Soundca
+ mp will dive back into these waves and\, of course\, stir them up well. Wh
+ at wave does a cactus have\, and what wave does a passing tram have? And h
+ ow many of these waves surround us\, even when our ears can’t hear them?
+  We will listen to the voices of plants\, create our own musical instrumen
+ t\, and in the end\, perhaps each of us will become one of those waves. We
+  will flow together through places where sound and image meet\, mix\, and 
+ complement each other. Guided by: Robert Spurný and Philippe Zajíček. P
+ rice: 3\,500 CZK / 3\,200 sibling (includes lunches). For children aged 8-
+ 14 years. More information and reservations at: edukace@moravska-galerie.c
+ z or at 532 169 177. Venue: Museum of Applied Arts.\n\n⚠️ Unofficial s
+ ource – verify details on the organizer's website. Auto-translated via A
+ zure OpenAI.\n\n---\n\nReservation: edukace@moravska-galerie.cz\, 532 169 
+ 177\nDatum: 24/8 – 28/8/2026\, 9–16 H\n\n---\n\nZvuk jsou vlny. Vlny\,
+  které jdou slyšet a někdy vidět\, lze je vytvářet\, přetvářet a 
+ zaznamenat. Druhý ročník Soundcampu se do těchto vln opět naplno pono
+ ří a samozřejmě je i pořádně rozvíří. Jakou vlnu má třeba tako
+ vý kaktus a jakou kolemjedoucí šalina? A kolik takových vln nás ve sk
+ utečnosti obklopuje i když je naše ucho neslyší? Poslechneme si hlasy
+  rostlin\, vytvoříme vlastní hudební nástroj\, a nakonec se možná k
+ aždý z nás jednou takovou vlnou stane. Proplujeme společně místy\, k
+ de se zvuk a obraz potkává\, mísí a doplňuje..\n\nLektorské vedení:
+  Robert Spurný a Philippe Zajíček\n\nCena: 3.500 Kč / 3.200 sourozenec
+  (zahrnuje i obědy).\n\nPro děti od 8-14 let\n\nVíce informací a rezer
+ vace místa na: \nedukace@moravska-galerie.cz\n nebo na 532 169 177.\n\nM
+ ísto konání: Uměleckoprůmyslové muzeum\n\n⚠️ Neoficiální zdroj
+  – ověřte si detaily na webu pořadatele.
+LOCATION:Uměleckoprůmyslové muzeum
+URL:https://moravska-galerie.cz/program/soundcamp-ve-vlnach/
+END:VEVENT
+END:VCALENDAR

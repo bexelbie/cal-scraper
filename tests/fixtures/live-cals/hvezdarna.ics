@@ -1,0 +1,1629 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//cal-scraper//hvezdarna//CS
+X-WR-CALDESC:Unofficial scrape — public shows only (school programs excl
+ uded). Source: https://www.hvezdarna.cz/
+X-WR-CALNAME:Hvězdárna Brno – Public Shows (unofficial\, in CZ)
+X-CAL-SOURCE-URL:https://www.hvezdarna.cz/
+BEGIN:VTIMEZONE
+TZID:Europe/Prague
+COMMENT:This timezone only works from 1970-01-01 to 2038-01-01.
+BEGIN:STANDARD
+DTSTART:19700101T000000
+TZNAME:CET
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0100
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:19790401T030000
+RDATE:19800406T030000,19810329T030000,19820328T030000,19830327T030000,1984
+ 0325T030000,19850331T030000,19860330T030000,19870329T030000,19880327T03000
+ 0,19890326T030000,19900325T030000,19910331T030000,19920329T030000,19930328
+ T030000,19940327T030000,19950326T030000,19960331T030000,19970330T030000,19
+ 980329T030000,19990328T030000,20000326T030000,20010325T030000,20020331T030
+ 000,20030330T030000,20040328T030000,20050327T030000,20060326T030000,200703
+ 25T030000,20080330T030000,20090329T030000,20100328T030000,20110327T030000,
+ 20120325T030000,20130331T030000,20140330T030000,20150329T030000,20160327T0
+ 30000,20170326T030000,20180325T030000,20190331T030000,20200329T030000,2021
+ 0328T030000,20220327T030000,20230326T030000,20240331T030000,20250330T03000
+ 0,20260329T030000,20270328T030000,20280326T030000,20290325T030000,20300331
+ T030000,20310330T030000,20320328T030000,20330327T030000,20340326T030000,20
+ 350325T030000,20360330T030000,20370329T030000
+TZNAME:CEST
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+END:DAYLIGHT
+BEGIN:STANDARD
+DTSTART:19790930T030000
+RDATE:19800928T030000,19810927T030000,19820926T030000,19830925T030000,1984
+ 0930T030000,19850929T030000,19860928T030000,19870927T030000,19880925T03000
+ 0,19890924T030000,19900930T030000,19910929T030000,19920927T030000,19930926
+ T030000,19940925T030000,19950924T030000,19961027T030000,19971026T030000,19
+ 981025T030000,19991031T030000,20001029T030000,20011028T030000,20021027T030
+ 000,20031026T030000,20041031T030000,20051030T030000,20061029T030000,200710
+ 28T030000,20081026T030000,20091025T030000,20101031T030000,20111030T030000,
+ 20121028T030000,20131027T030000,20141026T030000,20151025T030000,20161030T0
+ 30000,20171029T030000,20181028T030000,20191027T030000,20201025T030000,2021
+ 1031T030000,20221030T030000,20231029T030000,20241027T030000,20251026T03000
+ 0,20261025T030000,20271031T030000,20281029T030000,20291028T030000,20301027
+ T030000,20311026T030000,20321031T030000,20331030T030000,20341029T030000,20
+ 351028T030000,20361026T030000,20371025T030000
+TZNAME:CET
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+SUMMARY:Přednáška
+DTSTART;TZID=Europe/Prague:20260421T180000
+DTEND;TZID=Europe/Prague:20260421T194000
+DTSTAMP:20260421T040451Z
+UID:21db3a02d582b613@cal-scraper
+DESCRIPTION:RNDr. Vladimír Sedláček\, Ph.D.\, Příběhy matematických
+  důkazů aneb Anatomie jistotyMatematický důkaz je nástroj\, kterým l
+ ze potvrdit – nebo navždy vyvrátit – i ta nejodvážnější tvrzen
+ í. Společně nahlédneme do zákulisí matematické jistoty\, kde prozko
+ umáme důkazy mnoha tvarů a příchutí: elegantně nekonstruktivní\, a
+ bsurdně komplikované\, počítačově ověřené\, monstrózně dlouhé\
+ , i svůdně nekorektní. Těšte se i na úkazy kazů důkazů.\nvhodné 
+ pro vážné zájemce o přírodní vědy\nVstupenky: https://www.brnoid.c
+ z/cs/hvezdarna-vstupenky?e=32152\n\n⚠️ Neoficiální zdroj – ověřt
+ e si detaily na webu pořadatele.\nCena: cena: 150\nDatum: 21/4/2026\, 18:
+ 00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/odborne-prednasky/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Pozorování večerní oblohy
+DTSTART;TZID=Europe/Prague:20260421T210000
+DTEND;TZID=Europe/Prague:20260421T220000
+DTSTAMP:20260421T040451Z
+UID:00c5f16d04f3416b@cal-scraper
+DESCRIPTION:Už jste na vlastní oči spatřili krátery na Měsíci\, Sat
+ urnův prstenec\, Jupiterovy bouře a satelity\, srpek Venuše\, barevné 
+ dvojhvězdy\, jiskřivé hvězdokupy\, jemné mlhoviny anebo galaxie vzdá
+ lené miliony světelných roků? To všechno můžeme pohodlně ukázat p
+ omocí moderních automaticky naváděných dalekohledů. V případě šp
+ atného počasí nabízíme náhradní program s ukázkou umělé hvězdn
+ é oblohy v malém planetáriu.\nvhodné od 10 let\npořad se odehrává v
+  astronomické pozorovatelně\nnezapomeňte se teple obléci\nVstupenky: h
+ ttps://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32247\n\n⚠️ Neoficiáln
+ í zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 150\nDa
+ tum: 21/4/2026\, 21:00
+LOCATION:astronomická pozorovatelna
+URL:https://www.hvezdarna.cz/porad/pozorovani-vecerni-oblohy/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Přednáška
+DTSTART;TZID=Europe/Prague:20260423T180000
+DTEND;TZID=Europe/Prague:20260423T194000
+DTSTAMP:20260421T040451Z
+UID:21db3a02d582b613@cal-scraper
+DESCRIPTION:RNDr. Tomáš Petrásek\, Ph.D.\, Mgr. Jan Toman\, Ph.D.\, Mgr
+ . Julie Nekola Nováková\, Příliš vzdálení sousedé: Existují mimoz
+ emské civilizace?Jsme ve vesmíru skutečně sami? A pokud nejsme\, nakol
+ ik je reálné\, že jednoho dne poznáme své sousedy tváří v tvář? 
+ Můžeme alespoň odhadnout\, jak dalekou cestu by museli urazit\, aby nav
+ štívili naši planetu? S trojicí astrobiologů z Přírodovědecké fak
+ ulty UK se podíváme nejen na to\, co k těmto otázkám může říct so
+ učasná věda\, ale také co si o nich myslí veřejnost. Po přednášce
+  bude následovat panelová diskuse.\nvhodné pro vážné zájemce o př
+ írodní vědy\nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=
+ 32153\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu pořad
+ atele.\nCena: cena: 170\nDatum: 23/4/2026\, 18:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/odborne-prednasky/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Pozorování večerní oblohy
+DTSTART;TZID=Europe/Prague:20260423T210000
+DTEND;TZID=Europe/Prague:20260423T220000
+DTSTAMP:20260421T040451Z
+UID:00c5f16d04f3416b@cal-scraper
+DESCRIPTION:Už jste na vlastní oči spatřili krátery na Měsíci\, Sat
+ urnův prstenec\, Jupiterovy bouře a satelity\, srpek Venuše\, barevné 
+ dvojhvězdy\, jiskřivé hvězdokupy\, jemné mlhoviny anebo galaxie vzdá
+ lené miliony světelných roků? To všechno můžeme pohodlně ukázat p
+ omocí moderních automaticky naváděných dalekohledů. V případě šp
+ atného počasí nabízíme náhradní program s ukázkou umělé hvězdn
+ é oblohy v malém planetáriu.\nvhodné od 10 let\npořad se odehrává v
+  astronomické pozorovatelně\nnezapomeňte se teple obléci\nVstupenky: h
+ ttps://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32211\n\n⚠️ Neoficiáln
+ í zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 150\nDa
+ tum: 23/4/2026\, 21:00
+LOCATION:astronomická pozorovatelna
+URL:https://www.hvezdarna.cz/porad/pozorovani-vecerni-oblohy/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Relaxace pod hvězdami
+DTSTART;TZID=Europe/Prague:20260424T171500
+DTEND;TZID=Europe/Prague:20260424T174500
+DTSTAMP:20260421T040451Z
+UID:4104579574d921c6@cal-scraper
+DESCRIPTION:Pozor\, pořad se neodehrává v novém digitáriu\, nýbrž m
+ além planetáriu. Ač je již stařečkem\, umí vykouzlit nádhernou hv
+ ězdnou oblohu\, kterou v přesvětleném Brně nikde nespatříte. Přij
+ ďte si odpočinout a chvíli\, občas i v tichosti\, posedět pod hvězda
+ mi ...\npřístupné od 15 let\npořad probíhá v malém planetáriu\nVst
+ upenky: https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32212\n\n⚠️ Neo
+ ficiální zdroj – ověřte si detaily na webu pořadatele.\nCena: cena:
+  100\nDatum: 24/4/2026\, 17:15
+LOCATION:malé planetárium - veřejnost
+URL:
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Cesta na Mars: Další velký skok pro lidstvo 3D
+DTSTART;TZID=Europe/Prague:20260424T180000
+DTEND;TZID=Europe/Prague:20260424T185500
+DTSTAMP:20260421T040451Z
+UID:5152d99867c8307e@cal-scraper
+DESCRIPTION:Jeden malý krok byl pouhým začátkem. Teď se vydáváme je
+ ště dál – vedeni neuhasitelnou zvědavostí\, s pohledem upřeným k 
+ Marsu a s odhodláním napsat nejodvážnější kapitolu lidského putov
+ ání\nvhodné od 10 let\nEnglish audio availableThe show is simultaneousl
+ y projected with English audio in headphones. It may\, however\, contain a
+  live part presented in Czech language exclusively. Headphones are availab
+ le on request at the ticket desk. The deposit for headphones is 100 CZK pe
+ r piece (cash only).\n3D stereoskopický pořad\nVstupenky: https://www.br
+ noid.cz/cs/hvezdarna-vstupenky?e=32213\n\n⚠️ Neoficiální zdroj – o
+ věřte si detaily na webu pořadatele.\nCena: cena: 200/150\nDatum: 24/4/
+ 2026\, 18:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/cesta-na-mars-dalsi-velky-skok-pro-lids
+ tvo-3d/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Vesmír všemi smysly 3D
+DTSTART;TZID=Europe/Prague:20260424T200000
+DTEND;TZID=Europe/Prague:20260424T205500
+DTSTAMP:20260421T040451Z
+UID:ce89ce454e3bcf8f@cal-scraper
+DESCRIPTION:Poznejte vesmír všemi smysly! Dozvíte se\, jaké to je dot
+ ýkat se vesmíru\, jak voní kometa či kosmický prostor i jakou přích
+ uť má Saturnův měsíc Enceladus nebo planeta Mars. A aby toho nebylo m
+ álo\, nasadíme vám k tomu speciální 3D brýle\, které celkový záž
+ itek ještě umocní.\nvhodné od 12 let\nEnglish audio availableThe show 
+ is simultaneously projected with English audio in headphones. It may\, how
+ ever\, contain a live part presented in Czech language exclusively. Headph
+ ones are available on request at the ticket desk. The deposit for headphon
+ es is 100 CZK per piece (cash only).\n3D stereoskopický pořad\nVstupenky
+ : https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32214\n\n⚠️ Neoficiá
+ lní zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 200/1
+ 50\nDatum: 24/4/2026\, 20:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/vesmir-vsemi-smysly-3d/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Pozorování večerní oblohy
+DTSTART;TZID=Europe/Prague:20260424T210000
+DTEND;TZID=Europe/Prague:20260424T220000
+DTSTAMP:20260421T040451Z
+UID:00c5f16d04f3416b@cal-scraper
+DESCRIPTION:Už jste na vlastní oči spatřili krátery na Měsíci\, Sat
+ urnův prstenec\, Jupiterovy bouře a satelity\, srpek Venuše\, barevné 
+ dvojhvězdy\, jiskřivé hvězdokupy\, jemné mlhoviny anebo galaxie vzdá
+ lené miliony světelných roků? To všechno můžeme pohodlně ukázat p
+ omocí moderních automaticky naváděných dalekohledů. V případě šp
+ atného počasí nabízíme náhradní program s ukázkou umělé hvězdn
+ é oblohy v malém planetáriu.\nvhodné od 10 let\npořad se odehrává v
+  astronomické pozorovatelně\nnezapomeňte se teple obléci\nVstupenky: h
+ ttps://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32215\n\n⚠️ Neoficiáln
+ í zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 150\nDa
+ tum: 24/4/2026\, 21:00
+LOCATION:astronomická pozorovatelna
+URL:https://www.hvezdarna.cz/porad/pozorovani-vecerni-oblohy/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Cestopisná přednáška
+DTSTART;TZID=Europe/Prague:20260428T180000
+DTEND;TZID=Europe/Prague:20260428T194000
+DTSTAMP:20260421T040451Z
+UID:4104579574d921c6@cal-scraper
+DESCRIPTION:Mgr. Petr Horálek\, Zázrak ve stínu MěsíceÚplné zatměn
+ í Slunce. Úkaz\, který lidstvo fascinoval už od nepaměti\, ať již s
+ vou krásou nebo jako nebeské znamení. V minulosti se ho lidé obávali\
+ , nyní je studnicí nespočtu vědeckých objevů. Za úkazem ale cestuj
+ í i nadšenci z celého světa\, kteří vědě neholdují. Každý výle
+ t za úplným zatměním Slunce je zároveň mnohdy úžasný příběh a 
+ lidé příběhy milují. Jeden z nich se také odehrál během strastipln
+ é expedice za úplným zatměním Slunce 8. dubna 2024 do Mexika. Tříč
+ lenná skupina českých astronomů nejen že za úkazem vycestovala\, ale
+  natočila i krátký autorský dokumentární film\, který formou tří 
+ dějových rovin zprostředkovává autenticky zachycenou atmosféru při 
+ pozorování tohoto podmanivého úkazu. A právě tento dokument na před
+ nášce uvidíte.\nvhodné pro zájemce o krásy naší planety\nVstupenky
+ : https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32154\n\n⚠️ Neoficiá
+ lní zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 150\n
+ Datum: 28/4/2026\, 18:00
+LOCATION:digitárium - veřejnost
+URL:
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Pozorování večerní oblohy
+DTSTART;TZID=Europe/Prague:20260428T210000
+DTEND;TZID=Europe/Prague:20260428T220000
+DTSTAMP:20260421T040451Z
+UID:00c5f16d04f3416b@cal-scraper
+DESCRIPTION:Už jste na vlastní oči spatřili krátery na Měsíci\, Sat
+ urnův prstenec\, Jupiterovy bouře a satelity\, srpek Venuše\, barevné 
+ dvojhvězdy\, jiskřivé hvězdokupy\, jemné mlhoviny anebo galaxie vzdá
+ lené miliony světelných roků? To všechno můžeme pohodlně ukázat p
+ omocí moderních automaticky naváděných dalekohledů. V případě šp
+ atného počasí nabízíme náhradní program s ukázkou umělé hvězdn
+ é oblohy v malém planetáriu.\nvhodné od 10 let\npořad se odehrává v
+  astronomické pozorovatelně\nnezapomeňte se teple obléci\nVstupenky: h
+ ttps://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32249\n\n⚠️ Neoficiáln
+ í zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 150\nDa
+ tum: 28/4/2026\, 21:00
+LOCATION:astronomická pozorovatelna
+URL:https://www.hvezdarna.cz/porad/pozorovani-vecerni-oblohy/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Pozorování večerní oblohy
+DTSTART;TZID=Europe/Prague:20260428T223000
+DTEND;TZID=Europe/Prague:20260428T233000
+DTSTAMP:20260421T040451Z
+UID:00c5f16d04f3416b@cal-scraper
+DESCRIPTION:Už jste na vlastní oči spatřili krátery na Měsíci\, Sat
+ urnův prstenec\, Jupiterovy bouře a satelity\, srpek Venuše\, barevné 
+ dvojhvězdy\, jiskřivé hvězdokupy\, jemné mlhoviny anebo galaxie vzdá
+ lené miliony světelných roků? To všechno můžeme pohodlně ukázat p
+ omocí moderních automaticky naváděných dalekohledů. V případě šp
+ atného počasí nabízíme náhradní program s ukázkou umělé hvězdn
+ é oblohy v malém planetáriu.\nvhodné od 10 let\npořad se odehrává v
+  astronomické pozorovatelně\nnezapomeňte se teple obléci\nVstupenky: h
+ ttps://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32250\n\n⚠️ Neoficiáln
+ í zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 150\nDa
+ tum: 28/4/2026\, 22:30
+LOCATION:astronomická pozorovatelna
+URL:https://www.hvezdarna.cz/porad/pozorovani-vecerni-oblohy/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Příběh nekonečných poutníků: Voyager 3D
+DTSTART;TZID=Europe/Prague:20260429T160000
+DTEND;TZID=Europe/Prague:20260429T165500
+DTSTAMP:20260421T040451Z
+UID:be48104df3ffa17e@cal-scraper
+DESCRIPTION:Sluneční soustava je dnes důvěrně známým koutkem v obro
+ vsky rozlehlém vesmíru. Jistě\, má své skryté záhady a překvapení
+ \, ale v hrubých rysech ji známe docela dobře.  Není to ale tak dávno
+ \, kdy tomu bylo úplně jinak. Náš svět končil někde u Měsíce\, p
+ ři troše dobré vůle u Marsu. Vše se změnilo v okamžiku\, kdy se na 
+ cestu vydali dva nekoneční poutníci…\nvhodné od 10 let\n3D (stereosk
+ opické) představení v sále digitária\nEnglish audio availableThe show
+  is simultaneously projected with English audio in headphones. It may\, ho
+ wever\, contain a live part presented in Czech language exclusively. Headp
+ hones are available on request at the ticket desk. The deposit for headpho
+ nes is 100 CZK per piece (cash only).\n3D stereoskopický pořad\nVstupenk
+ y: https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32225\n\n⚠️ Neofici
+ ální zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 200
+ /150\nDatum: 29/4/2026\, 16:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/pribeh-nekonecnych-poutniku-voyager/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Cesta na Mars: Další velký skok pro lidstvo 3D
+DTSTART;TZID=Europe/Prague:20260429T180000
+DTEND;TZID=Europe/Prague:20260429T185500
+DTSTAMP:20260421T040451Z
+UID:5152d99867c8307e@cal-scraper
+DESCRIPTION:Jeden malý krok byl pouhým začátkem. Teď se vydáváme je
+ ště dál – vedeni neuhasitelnou zvědavostí\, s pohledem upřeným k 
+ Marsu a s odhodláním napsat nejodvážnější kapitolu lidského putov
+ ání\nvhodné od 10 let\nEnglish audio availableThe show is simultaneousl
+ y projected with English audio in headphones. It may\, however\, contain a
+  live part presented in Czech language exclusively. Headphones are availab
+ le on request at the ticket desk. The deposit for headphones is 100 CZK pe
+ r piece (cash only).\n3D stereoskopický pořad\nVstupenky: https://www.br
+ noid.cz/cs/hvezdarna-vstupenky?e=32220\n\n⚠️ Neoficiální zdroj – o
+ věřte si detaily na webu pořadatele.\nCena: cena: 200/150\nDatum: 29/4/
+ 2026\, 18:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/cesta-na-mars-dalsi-velky-skok-pro-lids
+ tvo-3d/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Jóga
+DTSTART;TZID=Europe/Prague:20260429T183000
+DTEND;TZID=Europe/Prague:20260429T193000
+DTSTAMP:20260421T040451Z
+UID:4104579574d921c6@cal-scraper
+DESCRIPTION:Vyzkoušejte jógu pod vedením Lucie Chlubné netradičně na
+  terase nebo v prostorách Hvězdárny a planetária Brno. www.namoment.cz
+ \nbez věkového omezení\npodložky k dispozici u nás\n\n⚠️ Neofici
+ ální zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 200
+ \nDatum: 29/4/2026\, 18:30
+LOCATION:exploratorium - speciální pořad
+URL:
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Vesmír všemi smysly 3D
+DTSTART;TZID=Europe/Prague:20260429T200000
+DTEND;TZID=Europe/Prague:20260429T205500
+DTSTAMP:20260421T040451Z
+UID:ce89ce454e3bcf8f@cal-scraper
+DESCRIPTION:Poznejte vesmír všemi smysly! Dozvíte se\, jaké to je dot
+ ýkat se vesmíru\, jak voní kometa či kosmický prostor i jakou přích
+ uť má Saturnův měsíc Enceladus nebo planeta Mars. A aby toho nebylo m
+ álo\, nasadíme vám k tomu speciální 3D brýle\, které celkový záž
+ itek ještě umocní.\nvhodné od 12 let\nEnglish audio availableThe show 
+ is simultaneously projected with English audio in headphones. It may\, how
+ ever\, contain a live part presented in Czech language exclusively. Headph
+ ones are available on request at the ticket desk. The deposit for headphon
+ es is 100 CZK per piece (cash only).\n3D stereoskopický pořad\nVstupenky
+ : https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32222\n\n⚠️ Neoficiá
+ lní zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 200/1
+ 50\nDatum: 29/4/2026\, 20:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/vesmir-vsemi-smysly-3d/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Pozorování večerní oblohy
+DTSTART;TZID=Europe/Prague:20260429T210000
+DTEND;TZID=Europe/Prague:20260429T220000
+DTSTAMP:20260421T040451Z
+UID:00c5f16d04f3416b@cal-scraper
+DESCRIPTION:Už jste na vlastní oči spatřili krátery na Měsíci\, Sat
+ urnův prstenec\, Jupiterovy bouře a satelity\, srpek Venuše\, barevné 
+ dvojhvězdy\, jiskřivé hvězdokupy\, jemné mlhoviny anebo galaxie vzdá
+ lené miliony světelných roků? To všechno můžeme pohodlně ukázat p
+ omocí moderních automaticky naváděných dalekohledů. V případě šp
+ atného počasí nabízíme náhradní program s ukázkou umělé hvězdn
+ é oblohy v malém planetáriu.\nvhodné od 10 let\npořad se odehrává v
+  astronomické pozorovatelně\nnezapomeňte se teple obléci\nVstupenky: h
+ ttps://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32223\n\n⚠️ Neoficiáln
+ í zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 150\nDa
+ tum: 29/4/2026\, 21:00
+LOCATION:astronomická pozorovatelna
+URL:https://www.hvezdarna.cz/porad/pozorovani-vecerni-oblohy/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Pozorování večerní oblohy
+DTSTART;TZID=Europe/Prague:20260429T223000
+DTEND;TZID=Europe/Prague:20260429T233000
+DTSTAMP:20260421T040451Z
+UID:00c5f16d04f3416b@cal-scraper
+DESCRIPTION:Už jste na vlastní oči spatřili krátery na Měsíci\, Sat
+ urnův prstenec\, Jupiterovy bouře a satelity\, srpek Venuše\, barevné 
+ dvojhvězdy\, jiskřivé hvězdokupy\, jemné mlhoviny anebo galaxie vzdá
+ lené miliony světelných roků? To všechno můžeme pohodlně ukázat p
+ omocí moderních automaticky naváděných dalekohledů. V případě šp
+ atného počasí nabízíme náhradní program s ukázkou umělé hvězdn
+ é oblohy v malém planetáriu.\nvhodné od 10 let\npořad se odehrává v
+  astronomické pozorovatelně\nnezapomeňte se teple obléci\nVstupenky: h
+ ttps://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32251\n\n⚠️ Neoficiáln
+ í zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 150\nDa
+ tum: 29/4/2026\, 22:30
+LOCATION:astronomická pozorovatelna
+URL:https://www.hvezdarna.cz/porad/pozorovani-vecerni-oblohy/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Přednáška
+DTSTART;TZID=Europe/Prague:20260430T180000
+DTEND;TZID=Europe/Prague:20260430T194000
+DTSTAMP:20260421T040451Z
+UID:21db3a02d582b613@cal-scraper
+DESCRIPTION:prof. RNDr. Petr Kulhánek\, CSc.\, Žhavé výstřikyVesmír 
+ je plný ionizované látky – plazmatu\, ovládaného magnetickými poli
+ . Výstřiky žhavé látky unikají do okolního prostoru nejen ze Slunce
+ \, ale i z ostatních hvězd\, galaktických jader\, ale i celých galaxi
+ í. Plazmové chuchvalce a provazce pak ovlivňují děje v okolním vesm
+ íru a dokážou připravit nejednu atraktivní podívanou.\nvhodné pro v
+ ážné zájemce o přírodní vědy\n\n⚠️ Neoficiální zdroj – ov
+ ěřte si detaily na webu pořadatele.\nCena: cena: 150\nDatum: 30/4/2026\
+ , 18:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/odborne-prednasky/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Pozorování večerní oblohy
+DTSTART;TZID=Europe/Prague:20260430T210000
+DTEND;TZID=Europe/Prague:20260430T220000
+DTSTAMP:20260421T040451Z
+UID:00c5f16d04f3416b@cal-scraper
+DESCRIPTION:Už jste na vlastní oči spatřili krátery na Měsíci\, Sat
+ urnův prstenec\, Jupiterovy bouře a satelity\, srpek Venuše\, barevné 
+ dvojhvězdy\, jiskřivé hvězdokupy\, jemné mlhoviny anebo galaxie vzdá
+ lené miliony světelných roků? To všechno můžeme pohodlně ukázat p
+ omocí moderních automaticky naváděných dalekohledů. V případě šp
+ atného počasí nabízíme náhradní program s ukázkou umělé hvězdn
+ é oblohy v malém planetáriu.\nvhodné od 10 let\npořad se odehrává v
+  astronomické pozorovatelně\nnezapomeňte se teple obléci\nVstupenky: h
+ ttps://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32224\n\n⚠️ Neoficiáln
+ í zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 150\nDa
+ tum: 30/4/2026\, 21:00
+LOCATION:astronomická pozorovatelna
+URL:https://www.hvezdarna.cz/porad/pozorovani-vecerni-oblohy/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Pozorování večerní oblohy
+DTSTART;TZID=Europe/Prague:20260430T223000
+DTEND;TZID=Europe/Prague:20260430T233000
+DTSTAMP:20260421T040451Z
+UID:00c5f16d04f3416b@cal-scraper
+DESCRIPTION:Už jste na vlastní oči spatřili krátery na Měsíci\, Sat
+ urnův prstenec\, Jupiterovy bouře a satelity\, srpek Venuše\, barevné 
+ dvojhvězdy\, jiskřivé hvězdokupy\, jemné mlhoviny anebo galaxie vzdá
+ lené miliony světelných roků? To všechno můžeme pohodlně ukázat p
+ omocí moderních automaticky naváděných dalekohledů. V případě šp
+ atného počasí nabízíme náhradní program s ukázkou umělé hvězdn
+ é oblohy v malém planetáriu.\nvhodné od 10 let\npořad se odehrává v
+  astronomické pozorovatelně\nnezapomeňte se teple obléci\nVstupenky: h
+ ttps://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32252\n\n⚠️ Neoficiáln
+ í zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 150\nDa
+ tum: 30/4/2026\, 22:30
+LOCATION:astronomická pozorovatelna
+URL:https://www.hvezdarna.cz/porad/pozorovani-vecerni-oblohy/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Kočičí dobrodružství za superúplňku I 2D
+DTSTART;TZID=Europe/Prague:20260501T100000
+DTEND;TZID=Europe/Prague:20260501T105500
+DTSTAMP:20260421T040451Z
+UID:572d98e736bb81d2@cal-scraper
+DESCRIPTION:Představte si budoucnost\, kde už nejsou žádní lidé – 
+ zůstaly jen kočky. Ale ne ty\, co se válí na gauči. Tyhle mají skafa
+ ndry\, raketoplány a pořádnou kuráž! Kiki\, Tutti a Pepe – kočič
+ í mňaukonauti – dostanou úkol\, který zní dost obyčejně: uklidit 
+ kosmické smetí. Jenže když si pořídíte Galaktický smeták (ano\, r
+ aketoplán\, co zametá)\, nikdy to není jen o úklidu. Právě o tom vš
+ em a mnohém dalším je nejnovější představení Kočičí dobrodružs
+ tví za superúplňku\, určené těm nejmenším kosmonautům.\nvhodné o
+ d 5 let\nEnglish audio availableThe show is simultaneously projected with 
+ English audio in headphones. It may\, however\, contain a live part presen
+ ted in Czech language exclusively. Headphones are available on request at 
+ the ticket desk. The deposit for headphones is 100 CZK per piece (cash onl
+ y).\nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32328\n\n
+ ⚠️ Neoficiální zdroj – ověřte si detaily na webu pořadatele.\nC
+ ena: cena: 170/120\nDatum: 1/5/2026\, 10:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/kocici-dobrodruzstvi-za-superuplnku/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Kočičí dobrodružství na vesmírné stanici II 2D
+DTSTART;TZID=Europe/Prague:20260501T140000
+DTEND;TZID=Europe/Prague:20260501T145500
+DTSTAMP:20260421T040451Z
+UID:0fa80fdc4b76d5a8@cal-scraper
+DESCRIPTION:Představte si budoucnost\, kde už nejsou žádní lidé – 
+ zůstaly jen kočky. Ale ne ty\, co se válí na gauči. Tyhle mají skafa
+ ndry\, raketoplány a pořádnou kuráž! Kiki\, Tutti a Pepe – kočič
+ í mňaukonauti!\nvhodné od 5 let\nEnglish audio availableThe show is sim
+ ultaneously projected with English audio in headphones. It may\, however\,
+  contain a live part presented in Czech language exclusively. Headphones a
+ re available on request at the ticket desk. The deposit for headphones is 
+ 100 CZK per piece (cash only).\nVstupenky: https://www.brnoid.cz/cs/hvezda
+ rna-vstupenky?e=32329\n\n⚠️ Neoficiální zdroj – ověřte si detail
+ y na webu pořadatele.\nCena: cena: 170/120\nDatum: 1/5/2026\, 14:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/kocici-dobrodruzstvi-na-vesmirne-stanic
+ i/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Velké dobrodružství v malé Sluneční soustavě 3D
+DTSTART;TZID=Europe/Prague:20260501T160000
+DTEND;TZID=Europe/Prague:20260501T165500
+DTSTAMP:20260421T040451Z
+UID:b174c0e9dfd4e48f@cal-scraper
+DESCRIPTION:Velevážení pozemšťané\, dychtíte po zázracích\, napě
+ tí a nebezpečí? Chcete objevit\, co je tam nahoře?  Pokud ano\, pak p
+ řistupte k našemu planetostroji a spolu s poněkud výstředním Schiapa
+ rellim\, vaším průvodcem\, vykonejte prohlídku Sluneční soustavy. Na
+  výpravě plné podivuhodností\, si vysvětlíme nevysvětlitelné\, obj
+ asníme neobjasnitelné.\nvhodné od 6 let\nEnglish audio availableThe sho
+ w is simultaneously projected with English audio in headphones. It may\, h
+ owever\, contain a live part presented in Czech language exclusively. Head
+ phones are available on request at the ticket desk. The deposit for headph
+ ones is 100 CZK per piece (cash only).\n3D stereoskopický pořad\nVstupen
+ ky: https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32330\n\n⚠️ Neofici
+ ální zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 200
+ /150\nDatum: 1/5/2026\, 16:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/velke-dobrodruzstvi-v-male-slunecni-sou
+ stave/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Relaxace pod hvězdami
+DTSTART;TZID=Europe/Prague:20260501T171500
+DTEND;TZID=Europe/Prague:20260501T174500
+DTSTAMP:20260421T040451Z
+UID:4104579574d921c6@cal-scraper
+DESCRIPTION:Pozor\, pořad se neodehrává v novém digitáriu\, nýbrž m
+ além planetáriu. Ač je již stařečkem\, umí vykouzlit nádhernou hv
+ ězdnou oblohu\, kterou v přesvětleném Brně nikde nespatříte. Přij
+ ďte si odpočinout a chvíli\, občas i v tichosti\, posedět pod hvězda
+ mi ...\npřístupné od 15 let\npořad probíhá v malém planetáriu\nVst
+ upenky: https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32331\n\n⚠️ Neo
+ ficiální zdroj – ověřte si detaily na webu pořadatele.\nCena: cena:
+  100\nDatum: 1/5/2026\, 17:15
+LOCATION:malé planetárium - veřejnost
+URL:
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Cesta na Mars: Další velký skok pro lidstvo 3D
+DTSTART;TZID=Europe/Prague:20260501T180000
+DTEND;TZID=Europe/Prague:20260501T185500
+DTSTAMP:20260421T040451Z
+UID:5152d99867c8307e@cal-scraper
+DESCRIPTION:Jeden malý krok byl pouhým začátkem. Teď se vydáváme je
+ ště dál – vedeni neuhasitelnou zvědavostí\, s pohledem upřeným k 
+ Marsu a s odhodláním napsat nejodvážnější kapitolu lidského putov
+ ání\nvhodné od 10 let\nEnglish audio availableThe show is simultaneousl
+ y projected with English audio in headphones. It may\, however\, contain a
+  live part presented in Czech language exclusively. Headphones are availab
+ le on request at the ticket desk. The deposit for headphones is 100 CZK pe
+ r piece (cash only).\n3D stereoskopický pořad\nVstupenky: https://www.br
+ noid.cz/cs/hvezdarna-vstupenky?e=32332\n\n⚠️ Neoficiální zdroj – o
+ věřte si detaily na webu pořadatele.\nCena: cena: 200/150\nDatum: 1/5/2
+ 026\, 18:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/cesta-na-mars-dalsi-velky-skok-pro-lids
+ tvo-3d/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Cesta na Mars: Další velký skok pro lidstvo 3D
+DTSTART;TZID=Europe/Prague:20260501T200000
+DTEND;TZID=Europe/Prague:20260501T205500
+DTSTAMP:20260421T040451Z
+UID:5152d99867c8307e@cal-scraper
+DESCRIPTION:Jeden malý krok byl pouhým začátkem. Teď se vydáváme je
+ ště dál – vedeni neuhasitelnou zvědavostí\, s pohledem upřeným k 
+ Marsu a s odhodláním napsat nejodvážnější kapitolu lidského putov
+ ání\nvhodné od 10 let\nEnglish audio availableThe show is simultaneousl
+ y projected with English audio in headphones. It may\, however\, contain a
+  live part presented in Czech language exclusively. Headphones are availab
+ le on request at the ticket desk. The deposit for headphones is 100 CZK pe
+ r piece (cash only).\n3D stereoskopický pořad\nVstupenky: https://www.br
+ noid.cz/cs/hvezdarna-vstupenky?e=32333\n\n⚠️ Neoficiální zdroj – o
+ věřte si detaily na webu pořadatele.\nCena: cena: 200/150\nDatum: 1/5/2
+ 026\, 20:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/cesta-na-mars-dalsi-velky-skok-pro-lids
+ tvo-3d/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Kočičí dobrodružství za superúplňku I 2D
+DTSTART;TZID=Europe/Prague:20260502T100000
+DTEND;TZID=Europe/Prague:20260502T105500
+DTSTAMP:20260421T040451Z
+UID:572d98e736bb81d2@cal-scraper
+DESCRIPTION:Představte si budoucnost\, kde už nejsou žádní lidé – 
+ zůstaly jen kočky. Ale ne ty\, co se válí na gauči. Tyhle mají skafa
+ ndry\, raketoplány a pořádnou kuráž! Kiki\, Tutti a Pepe – kočič
+ í mňaukonauti – dostanou úkol\, který zní dost obyčejně: uklidit 
+ kosmické smetí. Jenže když si pořídíte Galaktický smeták (ano\, r
+ aketoplán\, co zametá)\, nikdy to není jen o úklidu. Právě o tom vš
+ em a mnohém dalším je nejnovější představení Kočičí dobrodružs
+ tví za superúplňku\, určené těm nejmenším kosmonautům.\nvhodné o
+ d 5 let\nEnglish audio availableThe show is simultaneously projected with 
+ English audio in headphones. It may\, however\, contain a live part presen
+ ted in Czech language exclusively. Headphones are available on request at 
+ the ticket desk. The deposit for headphones is 100 CZK per piece (cash onl
+ y).\nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32334\n\n
+ ⚠️ Neoficiální zdroj – ověřte si detaily na webu pořadatele.\nC
+ ena: cena: 170/120\nDatum: 2/5/2026\, 10:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/kocici-dobrodruzstvi-za-superuplnku/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Kočičí dobrodružství na vesmírné stanici II 2D
+DTSTART;TZID=Europe/Prague:20260502T140000
+DTEND;TZID=Europe/Prague:20260502T145500
+DTSTAMP:20260421T040451Z
+UID:0fa80fdc4b76d5a8@cal-scraper
+DESCRIPTION:Představte si budoucnost\, kde už nejsou žádní lidé – 
+ zůstaly jen kočky. Ale ne ty\, co se válí na gauči. Tyhle mají skafa
+ ndry\, raketoplány a pořádnou kuráž! Kiki\, Tutti a Pepe – kočič
+ í mňaukonauti!\nvhodné od 5 let\nEnglish audio availableThe show is sim
+ ultaneously projected with English audio in headphones. It may\, however\,
+  contain a live part presented in Czech language exclusively. Headphones a
+ re available on request at the ticket desk. The deposit for headphones is 
+ 100 CZK per piece (cash only).\nVstupenky: https://www.brnoid.cz/cs/hvezda
+ rna-vstupenky?e=32336\n\n⚠️ Neoficiální zdroj – ověřte si detail
+ y na webu pořadatele.\nCena: cena: 170/120\nDatum: 2/5/2026\, 14:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/kocici-dobrodruzstvi-na-vesmirne-stanic
+ i/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Velké dobrodružství v malé Sluneční soustavě 3D
+DTSTART;TZID=Europe/Prague:20260502T160000
+DTEND;TZID=Europe/Prague:20260502T165500
+DTSTAMP:20260421T040451Z
+UID:b174c0e9dfd4e48f@cal-scraper
+DESCRIPTION:Velevážení pozemšťané\, dychtíte po zázracích\, napě
+ tí a nebezpečí? Chcete objevit\, co je tam nahoře?  Pokud ano\, pak p
+ řistupte k našemu planetostroji a spolu s poněkud výstředním Schiapa
+ rellim\, vaším průvodcem\, vykonejte prohlídku Sluneční soustavy. Na
+  výpravě plné podivuhodností\, si vysvětlíme nevysvětlitelné\, obj
+ asníme neobjasnitelné.\nvhodné od 6 let\nEnglish audio availableThe sho
+ w is simultaneously projected with English audio in headphones. It may\, h
+ owever\, contain a live part presented in Czech language exclusively. Head
+ phones are available on request at the ticket desk. The deposit for headph
+ ones is 100 CZK per piece (cash only).\n3D stereoskopický pořad\nVstupen
+ ky: https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32338\n\n⚠️ Neofici
+ ální zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 200
+ /150\nDatum: 2/5/2026\, 16:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/velke-dobrodruzstvi-v-male-slunecni-sou
+ stave/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Cesta na Mars: Další velký skok pro lidstvo 3D
+DTSTART;TZID=Europe/Prague:20260502T180000
+DTEND;TZID=Europe/Prague:20260502T185500
+DTSTAMP:20260421T040451Z
+UID:5152d99867c8307e@cal-scraper
+DESCRIPTION:Jeden malý krok byl pouhým začátkem. Teď se vydáváme je
+ ště dál – vedeni neuhasitelnou zvědavostí\, s pohledem upřeným k 
+ Marsu a s odhodláním napsat nejodvážnější kapitolu lidského putov
+ ání\nvhodné od 10 let\nEnglish audio availableThe show is simultaneousl
+ y projected with English audio in headphones. It may\, however\, contain a
+  live part presented in Czech language exclusively. Headphones are availab
+ le on request at the ticket desk. The deposit for headphones is 100 CZK pe
+ r piece (cash only).\n3D stereoskopický pořad\nVstupenky: https://www.br
+ noid.cz/cs/hvezdarna-vstupenky?e=32340\n\n⚠️ Neoficiální zdroj – o
+ věřte si detaily na webu pořadatele.\nCena: cena: 200/150\nDatum: 2/5/2
+ 026\, 18:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/cesta-na-mars-dalsi-velky-skok-pro-lids
+ tvo-3d/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Vesmír všemi smysly 3D
+DTSTART;TZID=Europe/Prague:20260502T200000
+DTEND;TZID=Europe/Prague:20260502T205500
+DTSTAMP:20260421T040451Z
+UID:ce89ce454e3bcf8f@cal-scraper
+DESCRIPTION:Poznejte vesmír všemi smysly! Dozvíte se\, jaké to je dot
+ ýkat se vesmíru\, jak voní kometa či kosmický prostor i jakou přích
+ uť má Saturnův měsíc Enceladus nebo planeta Mars. A aby toho nebylo m
+ álo\, nasadíme vám k tomu speciální 3D brýle\, které celkový záž
+ itek ještě umocní.\nvhodné od 12 let\nEnglish audio availableThe show 
+ is simultaneously projected with English audio in headphones. It may\, how
+ ever\, contain a live part presented in Czech language exclusively. Headph
+ ones are available on request at the ticket desk. The deposit for headphon
+ es is 100 CZK per piece (cash only).\n3D stereoskopický pořad\nVstupenky
+ : https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32342\n\n⚠️ Neoficiá
+ lní zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 200/1
+ 50\nDatum: 2/5/2026\, 20:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/vesmir-vsemi-smysly-3d/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Pozorování večerní oblohy
+DTSTART;TZID=Europe/Prague:20260502T213000
+DTEND;TZID=Europe/Prague:20260502T223000
+DTSTAMP:20260421T040451Z
+UID:00c5f16d04f3416b@cal-scraper
+DESCRIPTION:Už jste na vlastní oči spatřili krátery na Měsíci\, Sat
+ urnův prstenec\, Jupiterovy bouře a satelity\, srpek Venuše\, barevné 
+ dvojhvězdy\, jiskřivé hvězdokupy\, jemné mlhoviny anebo galaxie vzdá
+ lené miliony světelných roků? To všechno můžeme pohodlně ukázat p
+ omocí moderních automaticky naváděných dalekohledů. V případě šp
+ atného počasí nabízíme náhradní program s ukázkou umělé hvězdn
+ é oblohy v malém planetáriu.\nvhodné od 10 let\npořad se odehrává v
+  astronomické pozorovatelně\nnezapomeňte se teple obléci\nVstupenky: h
+ ttps://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32343\n\n⚠️ Neoficiáln
+ í zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 150\nDa
+ tum: 2/5/2026\, 21:30
+LOCATION:astronomická pozorovatelna
+URL:https://www.hvezdarna.cz/porad/pozorovani-vecerni-oblohy/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Kočičí dobrodružství za superúplňku I 2D
+DTSTART;TZID=Europe/Prague:20260503T100000
+DTEND;TZID=Europe/Prague:20260503T105500
+DTSTAMP:20260421T040451Z
+UID:572d98e736bb81d2@cal-scraper
+DESCRIPTION:Představte si budoucnost\, kde už nejsou žádní lidé – 
+ zůstaly jen kočky. Ale ne ty\, co se válí na gauči. Tyhle mají skafa
+ ndry\, raketoplány a pořádnou kuráž! Kiki\, Tutti a Pepe – kočič
+ í mňaukonauti – dostanou úkol\, který zní dost obyčejně: uklidit 
+ kosmické smetí. Jenže když si pořídíte Galaktický smeták (ano\, r
+ aketoplán\, co zametá)\, nikdy to není jen o úklidu. Právě o tom vš
+ em a mnohém dalším je nejnovější představení Kočičí dobrodružs
+ tví za superúplňku\, určené těm nejmenším kosmonautům.\nvhodné o
+ d 5 let\nEnglish audio availableThe show is simultaneously projected with 
+ English audio in headphones. It may\, however\, contain a live part presen
+ ted in Czech language exclusively. Headphones are available on request at 
+ the ticket desk. The deposit for headphones is 100 CZK per piece (cash onl
+ y).\nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32335\n\n
+ ⚠️ Neoficiální zdroj – ověřte si detaily na webu pořadatele.\nC
+ ena: cena: 170/120\nDatum: 3/5/2026\, 10:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/kocici-dobrodruzstvi-za-superuplnku/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Kočičí dobrodružství na vesmírné stanici II 2D
+DTSTART;TZID=Europe/Prague:20260503T140000
+DTEND;TZID=Europe/Prague:20260503T145500
+DTSTAMP:20260421T040451Z
+UID:0fa80fdc4b76d5a8@cal-scraper
+DESCRIPTION:Představte si budoucnost\, kde už nejsou žádní lidé – 
+ zůstaly jen kočky. Ale ne ty\, co se válí na gauči. Tyhle mají skafa
+ ndry\, raketoplány a pořádnou kuráž! Kiki\, Tutti a Pepe – kočič
+ í mňaukonauti!\nvhodné od 5 let\nEnglish audio availableThe show is sim
+ ultaneously projected with English audio in headphones. It may\, however\,
+  contain a live part presented in Czech language exclusively. Headphones a
+ re available on request at the ticket desk. The deposit for headphones is 
+ 100 CZK per piece (cash only).\nVstupenky: https://www.brnoid.cz/cs/hvezda
+ rna-vstupenky?e=32337\n\n⚠️ Neoficiální zdroj – ověřte si detail
+ y na webu pořadatele.\nCena: cena: 170/120\nDatum: 3/5/2026\, 14:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/kocici-dobrodruzstvi-na-vesmirne-stanic
+ i/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Velké dobrodružství v malé Sluneční soustavě 3D
+DTSTART;TZID=Europe/Prague:20260503T160000
+DTEND;TZID=Europe/Prague:20260503T165500
+DTSTAMP:20260421T040451Z
+UID:b174c0e9dfd4e48f@cal-scraper
+DESCRIPTION:Velevážení pozemšťané\, dychtíte po zázracích\, napě
+ tí a nebezpečí? Chcete objevit\, co je tam nahoře?  Pokud ano\, pak p
+ řistupte k našemu planetostroji a spolu s poněkud výstředním Schiapa
+ rellim\, vaším průvodcem\, vykonejte prohlídku Sluneční soustavy. Na
+  výpravě plné podivuhodností\, si vysvětlíme nevysvětlitelné\, obj
+ asníme neobjasnitelné.\nvhodné od 6 let\nEnglish audio availableThe sho
+ w is simultaneously projected with English audio in headphones. It may\, h
+ owever\, contain a live part presented in Czech language exclusively. Head
+ phones are available on request at the ticket desk. The deposit for headph
+ ones is 100 CZK per piece (cash only).\n3D stereoskopický pořad\nVstupen
+ ky: https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32339\n\n⚠️ Neofici
+ ální zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 200
+ /150\nDatum: 3/5/2026\, 16:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/velke-dobrodruzstvi-v-male-slunecni-sou
+ stave/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Cesta na Mars: Další velký skok pro lidstvo 3D
+DTSTART;TZID=Europe/Prague:20260503T180000
+DTEND;TZID=Europe/Prague:20260503T185500
+DTSTAMP:20260421T040451Z
+UID:5152d99867c8307e@cal-scraper
+DESCRIPTION:Jeden malý krok byl pouhým začátkem. Teď se vydáváme je
+ ště dál – vedeni neuhasitelnou zvědavostí\, s pohledem upřeným k 
+ Marsu a s odhodláním napsat nejodvážnější kapitolu lidského putov
+ ání\nvhodné od 10 let\nEnglish audio availableThe show is simultaneousl
+ y projected with English audio in headphones. It may\, however\, contain a
+  live part presented in Czech language exclusively. Headphones are availab
+ le on request at the ticket desk. The deposit for headphones is 100 CZK pe
+ r piece (cash only).\n3D stereoskopický pořad\nVstupenky: https://www.br
+ noid.cz/cs/hvezdarna-vstupenky?e=32341\n\n⚠️ Neoficiální zdroj – o
+ věřte si detaily na webu pořadatele.\nCena: cena: 200/150\nDatum: 3/5/2
+ 026\, 18:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/cesta-na-mars-dalsi-velky-skok-pro-lids
+ tvo-3d/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Koncert
+DTSTART;TZID=Europe/Prague:20260505T190000
+DTEND;TZID=Europe/Prague:20260505T195500
+DTSTAMP:20260421T040451Z
+UID:8911ba34d9a9c034@cal-scraper
+DESCRIPTION:Koncert VESMÍŘENÍ s Patrikem KeeMáte rádi vesMíR? Teď s
+ i představte jak v planetáriu pozorujete dechberoucí záběry kosmu\, z
+  kterého je všechno stvořeno.V atomech našeho těla je totiž uchován
+ a celá historie vesmíru. A díky živé hudbě\, která vzniká přímo 
+ na místě\, je tato kombinace audiovizuálního zážitku jedinečná. Ce
+ lým tělem můžeme vnímat vesmírné tóny\, hudební vlny a ozvěny\, 
+ které Patrik tvoří improvizovaně díky Loopstation a také naladěním
+  se na publikum.\nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupenky?
+ e=32130\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu poř
+ adatele.\nCena: cena: 370\nNote: End time is approximate (duration estimat
+ ed at 55min)\nDatum: 5/5/2026\, 19:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/koncert/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Cesta na Mars: Další velký skok pro lidstvo 3D
+DTSTART;TZID=Europe/Prague:20260506T180000
+DTEND;TZID=Europe/Prague:20260506T185500
+DTSTAMP:20260421T040451Z
+UID:5152d99867c8307e@cal-scraper
+DESCRIPTION:Jeden malý krok byl pouhým začátkem. Teď se vydáváme je
+ ště dál – vedeni neuhasitelnou zvědavostí\, s pohledem upřeným k 
+ Marsu a s odhodláním napsat nejodvážnější kapitolu lidského putov
+ ání\nvhodné od 10 let\nEnglish audio availableThe show is simultaneousl
+ y projected with English audio in headphones. It may\, however\, contain a
+  live part presented in Czech language exclusively. Headphones are availab
+ le on request at the ticket desk. The deposit for headphones is 100 CZK pe
+ r piece (cash only).\n3D stereoskopický pořad\nVstupenky: https://www.br
+ noid.cz/cs/hvezdarna-vstupenky?e=32344\n\n⚠️ Neoficiální zdroj – o
+ věřte si detaily na webu pořadatele.\nCena: cena: 200/150\nDatum: 6/5/2
+ 026\, 18:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/cesta-na-mars-dalsi-velky-skok-pro-lids
+ tvo-3d/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Jóga
+DTSTART;TZID=Europe/Prague:20260506T183000
+DTEND;TZID=Europe/Prague:20260506T193000
+DTSTAMP:20260421T040451Z
+UID:4104579574d921c6@cal-scraper
+DESCRIPTION:Vyzkoušejte jógu pod vedením Lucie Chlubné netradičně na
+  terase nebo v prostorách Hvězdárny a planetária Brno. www.namoment.cz
+ \nbez věkového omezení\npodložky k dispozici u nás\nVstupenky: https:
+ //www.brnoid.cz/cs/hvezdarna-vstupenky?e=32345\n\n⚠️ Neoficiální zdr
+ oj – ověřte si detaily na webu pořadatele.\nCena: cena: 200\nDatum: 6
+ /5/2026\, 18:30
+LOCATION:exploratorium - speciální pořad
+URL:
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Cesta na Mars: Další velký skok pro lidstvo 3D
+DTSTART;TZID=Europe/Prague:20260506T200000
+DTEND;TZID=Europe/Prague:20260506T205500
+DTSTAMP:20260421T040451Z
+UID:5152d99867c8307e@cal-scraper
+DESCRIPTION:Jeden malý krok byl pouhým začátkem. Teď se vydáváme je
+ ště dál – vedeni neuhasitelnou zvědavostí\, s pohledem upřeným k 
+ Marsu a s odhodláním napsat nejodvážnější kapitolu lidského putov
+ ání\nvhodné od 10 let\nEnglish audio availableThe show is simultaneousl
+ y projected with English audio in headphones. It may\, however\, contain a
+  live part presented in Czech language exclusively. Headphones are availab
+ le on request at the ticket desk. The deposit for headphones is 100 CZK pe
+ r piece (cash only).\n3D stereoskopický pořad\nVstupenky: https://www.br
+ noid.cz/cs/hvezdarna-vstupenky?e=32346\n\n⚠️ Neoficiální zdroj – o
+ věřte si detaily na webu pořadatele.\nCena: cena: 200/150\nDatum: 6/5/2
+ 026\, 20:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/cesta-na-mars-dalsi-velky-skok-pro-lids
+ tvo-3d/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Pozorování večerní oblohy
+DTSTART;TZID=Europe/Prague:20260506T213000
+DTEND;TZID=Europe/Prague:20260506T223000
+DTSTAMP:20260421T040451Z
+UID:00c5f16d04f3416b@cal-scraper
+DESCRIPTION:Už jste na vlastní oči spatřili krátery na Měsíci\, Sat
+ urnův prstenec\, Jupiterovy bouře a satelity\, srpek Venuše\, barevné 
+ dvojhvězdy\, jiskřivé hvězdokupy\, jemné mlhoviny anebo galaxie vzdá
+ lené miliony světelných roků? To všechno můžeme pohodlně ukázat p
+ omocí moderních automaticky naváděných dalekohledů. V případě šp
+ atného počasí nabízíme náhradní program s ukázkou umělé hvězdn
+ é oblohy v malém planetáriu.\nvhodné od 10 let\npořad se odehrává v
+  astronomické pozorovatelně\nnezapomeňte se teple obléci\nVstupenky: h
+ ttps://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32347\n\n⚠️ Neoficiáln
+ í zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 150\nDa
+ tum: 6/5/2026\, 21:30
+LOCATION:astronomická pozorovatelna
+URL:https://www.hvezdarna.cz/porad/pozorovani-vecerni-oblohy/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:IShorts: Výběr roku – animované
+DTSTART;TZID=Europe/Prague:20260507T180000
+DTEND;TZID=Europe/Prague:20260507T185500
+DTSTAMP:20260421T040451Z
+UID:4104579574d921c6@cal-scraper
+DESCRIPTION:Pět filmů z Kanady\, USA\, Irska\, Francie a Izraele\, nomin
+ ovaných na Oscara a žádný není jako ten druhý. Někdy stačí čára
+  tužkou\, pár loutek z hlíny nebo hrstka pixelů — a příběh vás z
+ asáhne víc než celé hollywoodské spektákly. Medvídě vychované str
+ omem\, který ho miluje víc\, než si zaslouží. Chlapec\, který prodá
+ val dívčiny slzy a nevěděl\, co vlastně prodává. Muž\, co celý ž
+ ivot odkládá to nejdůležitější na důchod. Tři sestry na ostrově\
+ , do jejichž života vpluje námořník a způsobí láskyplný chaos. A 
+ motýlek\, v jehož silných pažích se skrývá jeden celý lidský živ
+ ot.\nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32313\n\n
+ ⚠️ Neoficiální zdroj – ověřte si detaily na webu pořadatele.\nC
+ ena: cena: 150\nNote: End time is approximate (duration estimated at 55min
+ )\nDatum: 7/5/2026\, 18:00
+LOCATION:digitárium - veřejnost
+URL:
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Pozorování večerní oblohy
+DTSTART;TZID=Europe/Prague:20260507T213000
+DTEND;TZID=Europe/Prague:20260507T223000
+DTSTAMP:20260421T040451Z
+UID:00c5f16d04f3416b@cal-scraper
+DESCRIPTION:Už jste na vlastní oči spatřili krátery na Měsíci\, Sat
+ urnův prstenec\, Jupiterovy bouře a satelity\, srpek Venuše\, barevné 
+ dvojhvězdy\, jiskřivé hvězdokupy\, jemné mlhoviny anebo galaxie vzdá
+ lené miliony světelných roků? To všechno můžeme pohodlně ukázat p
+ omocí moderních automaticky naváděných dalekohledů. V případě šp
+ atného počasí nabízíme náhradní program s ukázkou umělé hvězdn
+ é oblohy v malém planetáriu.\nvhodné od 10 let\npořad se odehrává v
+  astronomické pozorovatelně\nnezapomeňte se teple obléci\nVstupenky: h
+ ttps://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32348\n\n⚠️ Neoficiáln
+ í zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 150\nDa
+ tum: 7/5/2026\, 21:30
+LOCATION:astronomická pozorovatelna
+URL:https://www.hvezdarna.cz/porad/pozorovani-vecerni-oblohy/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Kočičí dobrodružství za superúplňku I 2D
+DTSTART;TZID=Europe/Prague:20260508T100000
+DTEND;TZID=Europe/Prague:20260508T105500
+DTSTAMP:20260421T040451Z
+UID:572d98e736bb81d2@cal-scraper
+DESCRIPTION:Představte si budoucnost\, kde už nejsou žádní lidé – 
+ zůstaly jen kočky. Ale ne ty\, co se válí na gauči. Tyhle mají skafa
+ ndry\, raketoplány a pořádnou kuráž! Kiki\, Tutti a Pepe – kočič
+ í mňaukonauti – dostanou úkol\, který zní dost obyčejně: uklidit 
+ kosmické smetí. Jenže když si pořídíte Galaktický smeták (ano\, r
+ aketoplán\, co zametá)\, nikdy to není jen o úklidu. Právě o tom vš
+ em a mnohém dalším je nejnovější představení Kočičí dobrodružs
+ tví za superúplňku\, určené těm nejmenším kosmonautům.\nvhodné o
+ d 5 let\nEnglish audio availableThe show is simultaneously projected with 
+ English audio in headphones. It may\, however\, contain a live part presen
+ ted in Czech language exclusively. Headphones are available on request at 
+ the ticket desk. The deposit for headphones is 100 CZK per piece (cash onl
+ y).\nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32349\n\n
+ ⚠️ Neoficiální zdroj – ověřte si detaily na webu pořadatele.\nC
+ ena: cena: 170/120\nDatum: 8/5/2026\, 10:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/kocici-dobrodruzstvi-za-superuplnku/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Kočičí dobrodružství na vesmírné stanici II 2D
+DTSTART;TZID=Europe/Prague:20260508T140000
+DTEND;TZID=Europe/Prague:20260508T145500
+DTSTAMP:20260421T040451Z
+UID:0fa80fdc4b76d5a8@cal-scraper
+DESCRIPTION:Představte si budoucnost\, kde už nejsou žádní lidé – 
+ zůstaly jen kočky. Ale ne ty\, co se válí na gauči. Tyhle mají skafa
+ ndry\, raketoplány a pořádnou kuráž! Kiki\, Tutti a Pepe – kočič
+ í mňaukonauti!\nvhodné od 5 let\nEnglish audio availableThe show is sim
+ ultaneously projected with English audio in headphones. It may\, however\,
+  contain a live part presented in Czech language exclusively. Headphones a
+ re available on request at the ticket desk. The deposit for headphones is 
+ 100 CZK per piece (cash only).\nVstupenky: https://www.brnoid.cz/cs/hvezda
+ rna-vstupenky?e=32350\n\n⚠️ Neoficiální zdroj – ověřte si detail
+ y na webu pořadatele.\nCena: cena: 170/120\nDatum: 8/5/2026\, 14:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/kocici-dobrodruzstvi-na-vesmirne-stanic
+ i/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Velké dobrodružství v malé Sluneční soustavě 3D
+DTSTART;TZID=Europe/Prague:20260508T160000
+DTEND;TZID=Europe/Prague:20260508T165500
+DTSTAMP:20260421T040451Z
+UID:b174c0e9dfd4e48f@cal-scraper
+DESCRIPTION:Velevážení pozemšťané\, dychtíte po zázracích\, napě
+ tí a nebezpečí? Chcete objevit\, co je tam nahoře?  Pokud ano\, pak p
+ řistupte k našemu planetostroji a spolu s poněkud výstředním Schiapa
+ rellim\, vaším průvodcem\, vykonejte prohlídku Sluneční soustavy. Na
+  výpravě plné podivuhodností\, si vysvětlíme nevysvětlitelné\, obj
+ asníme neobjasnitelné.\nvhodné od 6 let\nEnglish audio availableThe sho
+ w is simultaneously projected with English audio in headphones. It may\, h
+ owever\, contain a live part presented in Czech language exclusively. Head
+ phones are available on request at the ticket desk. The deposit for headph
+ ones is 100 CZK per piece (cash only).\n3D stereoskopický pořad\nVstupen
+ ky: https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32351\n\n⚠️ Neofici
+ ální zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 200
+ /150\nDatum: 8/5/2026\, 16:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/velke-dobrodruzstvi-v-male-slunecni-sou
+ stave/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Relaxace pod hvězdami
+DTSTART;TZID=Europe/Prague:20260508T171500
+DTEND;TZID=Europe/Prague:20260508T174500
+DTSTAMP:20260421T040451Z
+UID:4104579574d921c6@cal-scraper
+DESCRIPTION:Pozor\, pořad se neodehrává v novém digitáriu\, nýbrž m
+ além planetáriu. Ač je již stařečkem\, umí vykouzlit nádhernou hv
+ ězdnou oblohu\, kterou v přesvětleném Brně nikde nespatříte. Přij
+ ďte si odpočinout a chvíli\, občas i v tichosti\, posedět pod hvězda
+ mi ...\npřístupné od 15 let\npořad probíhá v malém planetáriu\nVst
+ upenky: https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32355\n\n⚠️ Neo
+ ficiální zdroj – ověřte si detaily na webu pořadatele.\nCena: cena:
+  100\nDatum: 8/5/2026\, 17:15
+LOCATION:malé planetárium - veřejnost
+URL:
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Cesta na Mars: Další velký skok pro lidstvo 3D
+DTSTART;TZID=Europe/Prague:20260508T180000
+DTEND;TZID=Europe/Prague:20260508T185500
+DTSTAMP:20260421T040451Z
+UID:5152d99867c8307e@cal-scraper
+DESCRIPTION:Jeden malý krok byl pouhým začátkem. Teď se vydáváme je
+ ště dál – vedeni neuhasitelnou zvědavostí\, s pohledem upřeným k 
+ Marsu a s odhodláním napsat nejodvážnější kapitolu lidského putov
+ ání\nvhodné od 10 let\nEnglish audio availableThe show is simultaneousl
+ y projected with English audio in headphones. It may\, however\, contain a
+  live part presented in Czech language exclusively. Headphones are availab
+ le on request at the ticket desk. The deposit for headphones is 100 CZK pe
+ r piece (cash only).\n3D stereoskopický pořad\nVstupenky: https://www.br
+ noid.cz/cs/hvezdarna-vstupenky?e=32356\n\n⚠️ Neoficiální zdroj – o
+ věřte si detaily na webu pořadatele.\nCena: cena: 200/150\nDatum: 8/5/2
+ 026\, 18:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/cesta-na-mars-dalsi-velky-skok-pro-lids
+ tvo-3d/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Cesta na Mars: Další velký skok pro lidstvo 3D
+DTSTART;TZID=Europe/Prague:20260508T200000
+DTEND;TZID=Europe/Prague:20260508T205500
+DTSTAMP:20260421T040451Z
+UID:5152d99867c8307e@cal-scraper
+DESCRIPTION:Jeden malý krok byl pouhým začátkem. Teď se vydáváme je
+ ště dál – vedeni neuhasitelnou zvědavostí\, s pohledem upřeným k 
+ Marsu a s odhodláním napsat nejodvážnější kapitolu lidského putov
+ ání\nvhodné od 10 let\nEnglish audio availableThe show is simultaneousl
+ y projected with English audio in headphones. It may\, however\, contain a
+  live part presented in Czech language exclusively. Headphones are availab
+ le on request at the ticket desk. The deposit for headphones is 100 CZK pe
+ r piece (cash only).\n3D stereoskopický pořad\nVstupenky: https://www.br
+ noid.cz/cs/hvezdarna-vstupenky?e=32357\n\n⚠️ Neoficiální zdroj – o
+ věřte si detaily na webu pořadatele.\nCena: cena: 200/150\nDatum: 8/5/2
+ 026\, 20:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/cesta-na-mars-dalsi-velky-skok-pro-lids
+ tvo-3d/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Kočičí dobrodružství za superúplňku I 2D
+DTSTART;TZID=Europe/Prague:20260509T100000
+DTEND;TZID=Europe/Prague:20260509T105500
+DTSTAMP:20260421T040451Z
+UID:572d98e736bb81d2@cal-scraper
+DESCRIPTION:Představte si budoucnost\, kde už nejsou žádní lidé – 
+ zůstaly jen kočky. Ale ne ty\, co se válí na gauči. Tyhle mají skafa
+ ndry\, raketoplány a pořádnou kuráž! Kiki\, Tutti a Pepe – kočič
+ í mňaukonauti – dostanou úkol\, který zní dost obyčejně: uklidit 
+ kosmické smetí. Jenže když si pořídíte Galaktický smeták (ano\, r
+ aketoplán\, co zametá)\, nikdy to není jen o úklidu. Právě o tom vš
+ em a mnohém dalším je nejnovější představení Kočičí dobrodružs
+ tví za superúplňku\, určené těm nejmenším kosmonautům.\nvhodné o
+ d 5 let\nEnglish audio availableThe show is simultaneously projected with 
+ English audio in headphones. It may\, however\, contain a live part presen
+ ted in Czech language exclusively. Headphones are available on request at 
+ the ticket desk. The deposit for headphones is 100 CZK per piece (cash onl
+ y).\nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32352\n\n
+ ⚠️ Neoficiální zdroj – ověřte si detaily na webu pořadatele.\nC
+ ena: cena: 170/120\nDatum: 9/5/2026\, 10:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/kocici-dobrodruzstvi-za-superuplnku/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Kočičí dobrodružství na vesmírné stanici II 2D
+DTSTART;TZID=Europe/Prague:20260509T140000
+DTEND;TZID=Europe/Prague:20260509T145500
+DTSTAMP:20260421T040451Z
+UID:0fa80fdc4b76d5a8@cal-scraper
+DESCRIPTION:Představte si budoucnost\, kde už nejsou žádní lidé – 
+ zůstaly jen kočky. Ale ne ty\, co se válí na gauči. Tyhle mají skafa
+ ndry\, raketoplány a pořádnou kuráž! Kiki\, Tutti a Pepe – kočič
+ í mňaukonauti!\nvhodné od 5 let\nEnglish audio availableThe show is sim
+ ultaneously projected with English audio in headphones. It may\, however\,
+  contain a live part presented in Czech language exclusively. Headphones a
+ re available on request at the ticket desk. The deposit for headphones is 
+ 100 CZK per piece (cash only).\nVstupenky: https://www.brnoid.cz/cs/hvezda
+ rna-vstupenky?e=32353\n\n⚠️ Neoficiální zdroj – ověřte si detail
+ y na webu pořadatele.\nCena: cena: 170/120\nDatum: 9/5/2026\, 14:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/kocici-dobrodruzstvi-na-vesmirne-stanic
+ i/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Velké dobrodružství v malé Sluneční soustavě 3D
+DTSTART;TZID=Europe/Prague:20260509T160000
+DTEND;TZID=Europe/Prague:20260509T165500
+DTSTAMP:20260421T040451Z
+UID:b174c0e9dfd4e48f@cal-scraper
+DESCRIPTION:Velevážení pozemšťané\, dychtíte po zázracích\, napě
+ tí a nebezpečí? Chcete objevit\, co je tam nahoře?  Pokud ano\, pak p
+ řistupte k našemu planetostroji a spolu s poněkud výstředním Schiapa
+ rellim\, vaším průvodcem\, vykonejte prohlídku Sluneční soustavy. Na
+  výpravě plné podivuhodností\, si vysvětlíme nevysvětlitelné\, obj
+ asníme neobjasnitelné.\nvhodné od 6 let\nEnglish audio availableThe sho
+ w is simultaneously projected with English audio in headphones. It may\, h
+ owever\, contain a live part presented in Czech language exclusively. Head
+ phones are available on request at the ticket desk. The deposit for headph
+ ones is 100 CZK per piece (cash only).\n3D stereoskopický pořad\nVstupen
+ ky: https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32354\n\n⚠️ Neofici
+ ální zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 200
+ /150\nDatum: 9/5/2026\, 16:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/velke-dobrodruzstvi-v-male-slunecni-sou
+ stave/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Cesta na Mars: Další velký skok pro lidstvo 3D
+DTSTART;TZID=Europe/Prague:20260509T180000
+DTEND;TZID=Europe/Prague:20260509T185500
+DTSTAMP:20260421T040451Z
+UID:5152d99867c8307e@cal-scraper
+DESCRIPTION:Jeden malý krok byl pouhým začátkem. Teď se vydáváme je
+ ště dál – vedeni neuhasitelnou zvědavostí\, s pohledem upřeným k 
+ Marsu a s odhodláním napsat nejodvážnější kapitolu lidského putov
+ ání\nvhodné od 10 let\nEnglish audio availableThe show is simultaneousl
+ y projected with English audio in headphones. It may\, however\, contain a
+  live part presented in Czech language exclusively. Headphones are availab
+ le on request at the ticket desk. The deposit for headphones is 100 CZK pe
+ r piece (cash only).\n3D stereoskopický pořad\nVstupenky: https://www.br
+ noid.cz/cs/hvezdarna-vstupenky?e=32358\n\n⚠️ Neoficiální zdroj – o
+ věřte si detaily na webu pořadatele.\nCena: cena: 200/150\nDatum: 9/5/2
+ 026\, 18:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/cesta-na-mars-dalsi-velky-skok-pro-lids
+ tvo-3d/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Vesmír všemi smysly 3D
+DTSTART;TZID=Europe/Prague:20260509T200000
+DTEND;TZID=Europe/Prague:20260509T205500
+DTSTAMP:20260421T040451Z
+UID:ce89ce454e3bcf8f@cal-scraper
+DESCRIPTION:Poznejte vesmír všemi smysly! Dozvíte se\, jaké to je dot
+ ýkat se vesmíru\, jak voní kometa či kosmický prostor i jakou přích
+ uť má Saturnův měsíc Enceladus nebo planeta Mars. A aby toho nebylo m
+ álo\, nasadíme vám k tomu speciální 3D brýle\, které celkový záž
+ itek ještě umocní.\nvhodné od 12 let\nEnglish audio availableThe show 
+ is simultaneously projected with English audio in headphones. It may\, how
+ ever\, contain a live part presented in Czech language exclusively. Headph
+ ones are available on request at the ticket desk. The deposit for headphon
+ es is 100 CZK per piece (cash only).\n3D stereoskopický pořad\nVstupenky
+ : https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32359\n\n⚠️ Neoficiá
+ lní zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 200/1
+ 50\nDatum: 9/5/2026\, 20:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/vesmir-vsemi-smysly-3d/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Pozorování večerní oblohy
+DTSTART;TZID=Europe/Prague:20260509T213000
+DTEND;TZID=Europe/Prague:20260509T223000
+DTSTAMP:20260421T040451Z
+UID:00c5f16d04f3416b@cal-scraper
+DESCRIPTION:Už jste na vlastní oči spatřili krátery na Měsíci\, Sat
+ urnův prstenec\, Jupiterovy bouře a satelity\, srpek Venuše\, barevné 
+ dvojhvězdy\, jiskřivé hvězdokupy\, jemné mlhoviny anebo galaxie vzdá
+ lené miliony světelných roků? To všechno můžeme pohodlně ukázat p
+ omocí moderních automaticky naváděných dalekohledů. V případě šp
+ atného počasí nabízíme náhradní program s ukázkou umělé hvězdn
+ é oblohy v malém planetáriu.\nvhodné od 10 let\npořad se odehrává v
+  astronomické pozorovatelně\nnezapomeňte se teple obléci\nVstupenky: h
+ ttps://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32360\n\n⚠️ Neoficiáln
+ í zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 150\nDa
+ tum: 9/5/2026\, 21:30
+LOCATION:astronomická pozorovatelna
+URL:https://www.hvezdarna.cz/porad/pozorovani-vecerni-oblohy/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Kočičí dobrodružství za superúplňku I 2D
+DTSTART;TZID=Europe/Prague:20260510T100000
+DTEND;TZID=Europe/Prague:20260510T105500
+DTSTAMP:20260421T040451Z
+UID:572d98e736bb81d2@cal-scraper
+DESCRIPTION:Představte si budoucnost\, kde už nejsou žádní lidé – 
+ zůstaly jen kočky. Ale ne ty\, co se válí na gauči. Tyhle mají skafa
+ ndry\, raketoplány a pořádnou kuráž! Kiki\, Tutti a Pepe – kočič
+ í mňaukonauti – dostanou úkol\, který zní dost obyčejně: uklidit 
+ kosmické smetí. Jenže když si pořídíte Galaktický smeták (ano\, r
+ aketoplán\, co zametá)\, nikdy to není jen o úklidu. Právě o tom vš
+ em a mnohém dalším je nejnovější představení Kočičí dobrodružs
+ tví za superúplňku\, určené těm nejmenším kosmonautům.\nvhodné o
+ d 5 let\nEnglish audio availableThe show is simultaneously projected with 
+ English audio in headphones. It may\, however\, contain a live part presen
+ ted in Czech language exclusively. Headphones are available on request at 
+ the ticket desk. The deposit for headphones is 100 CZK per piece (cash onl
+ y).\nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32361\n\n
+ ⚠️ Neoficiální zdroj – ověřte si detaily na webu pořadatele.\nC
+ ena: cena: 170/120\nDatum: 10/5/2026\, 10:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/kocici-dobrodruzstvi-za-superuplnku/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Kočičí dobrodružství na vesmírné stanici II 2D
+DTSTART;TZID=Europe/Prague:20260510T140000
+DTEND;TZID=Europe/Prague:20260510T145500
+DTSTAMP:20260421T040451Z
+UID:0fa80fdc4b76d5a8@cal-scraper
+DESCRIPTION:Představte si budoucnost\, kde už nejsou žádní lidé – 
+ zůstaly jen kočky. Ale ne ty\, co se válí na gauči. Tyhle mají skafa
+ ndry\, raketoplány a pořádnou kuráž! Kiki\, Tutti a Pepe – kočič
+ í mňaukonauti!\nvhodné od 5 let\nEnglish audio availableThe show is sim
+ ultaneously projected with English audio in headphones. It may\, however\,
+  contain a live part presented in Czech language exclusively. Headphones a
+ re available on request at the ticket desk. The deposit for headphones is 
+ 100 CZK per piece (cash only).\nVstupenky: https://www.brnoid.cz/cs/hvezda
+ rna-vstupenky?e=32362\n\n⚠️ Neoficiální zdroj – ověřte si detail
+ y na webu pořadatele.\nCena: cena: 170/120\nDatum: 10/5/2026\, 14:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/kocici-dobrodruzstvi-na-vesmirne-stanic
+ i/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Velké dobrodružství v malé Sluneční soustavě 2D
+DTSTART;TZID=Europe/Prague:20260510T160000
+DTEND;TZID=Europe/Prague:20260510T165500
+DTSTAMP:20260421T040451Z
+UID:4104579574d921c6@cal-scraper
+DESCRIPTION:Velevážení pozemšťané\, dychtíte po zázracích\, napě
+ tí a nebezpečí? Chcete objevit\, co je tam nahoře?  Pokud ano\, pak p
+ řistupte k našemu planetostroji a spolu s poněkud výstředním Schiapa
+ rellim\, vaším průvodcem\, vykonejte prohlídku Sluneční soustavy. Na
+  výpravě plné podivuhodností\, si vysvětlíme nevysvětlitelné\, obj
+ asníme neobjasnitelné.\nvhodné od 6 let\nEnglish audio availableThe sho
+ w is simultaneously projected with English audio in headphones. It may\, h
+ owever\, contain a live part presented in Czech language exclusively. Head
+ phones are available on request at the ticket desk. The deposit for headph
+ ones is 100 CZK per piece (cash only).\nVstupenky: https://www.brnoid.cz/c
+ s/hvezdarna-vstupenky?e=32363\n\n⚠️ Neoficiální zdroj – ověřte s
+ i detaily na webu pořadatele.\nCena: cena: 170/120\nDatum: 10/5/2026\, 16
+ :00
+LOCATION:digitárium - veřejnost
+URL:
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Cesta na Mars: Další velký skok pro lidstvo 3D
+DTSTART;TZID=Europe/Prague:20260510T180000
+DTEND;TZID=Europe/Prague:20260510T185500
+DTSTAMP:20260421T040451Z
+UID:5152d99867c8307e@cal-scraper
+DESCRIPTION:Jeden malý krok byl pouhým začátkem. Teď se vydáváme je
+ ště dál – vedeni neuhasitelnou zvědavostí\, s pohledem upřeným k 
+ Marsu a s odhodláním napsat nejodvážnější kapitolu lidského putov
+ ání\nvhodné od 10 let\nEnglish audio availableThe show is simultaneousl
+ y projected with English audio in headphones. It may\, however\, contain a
+  live part presented in Czech language exclusively. Headphones are availab
+ le on request at the ticket desk. The deposit for headphones is 100 CZK pe
+ r piece (cash only).\n3D stereoskopický pořad\nVstupenky: https://www.br
+ noid.cz/cs/hvezdarna-vstupenky?e=32364\n\n⚠️ Neoficiální zdroj – o
+ věřte si detaily na webu pořadatele.\nCena: cena: 200/150\nDatum: 10/5/
+ 2026\, 18:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/cesta-na-mars-dalsi-velky-skok-pro-lids
+ tvo-3d/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Mimořádná akce
+DTSTART;TZID=Europe/Prague:20260512T180000
+DTEND;TZID=Europe/Prague:20260512T185500
+DTSTAMP:20260421T040451Z
+UID:4104579574d921c6@cal-scraper
+DESCRIPTION:Věda je všude kolem nás – co vše vymyslely ženy?Pavla H
+ ubálková\, Ondřej Heigl\, Tomáš Přibyl\, Julie Vašků\, Jana Kláno
+ vá\, Lucie Vidovićová\, Radek Matuška a další.Přijďte si užít in
+ teraktivní podvečer v brněnském planetáriu.Za mnoha vědeckými objev
+ y stojí ženy – jen jejich přínos často zůstává neviditelný. V p
+ rvní části vyrazíme ke hvězdám a představíme vědkyně\, které se
+  řídí mottem „sky is NOT the limit“ a svými objevy mění svět.V 
+ druhé části na vás čeká hra o knížku Neviditelné ženy ve vědě\
+ , interaktivní stánky\, šifrovačka planetáriem a nakonec barvy a tře
+ sky při chemické show.Akce je pro všechny pozemšťany\, které baví o
+ bjevovat. Na své si přijdou ti\, kteří jsou v planetáriu jako doma i 
+ ti\, pro které to bude poprvé.\nVstupenky: https://www.brnoid.cz/cs/hvez
+ darna-vstupenky?e=32236\n\n⚠️ Neoficiální zdroj – ověřte si deta
+ ily na webu pořadatele.\nCena: cena: 50\nNote: End time is approximate (d
+ uration estimated at 55min)\nDatum: 12/5/2026\, 18:00
+LOCATION:digitárium - veřejnost
+URL:
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Přednáška
+DTSTART;TZID=Europe/Prague:20260519T193000
+DTEND;TZID=Europe/Prague:20260519T211000
+DTSTAMP:20260421T040451Z
+UID:21db3a02d582b613@cal-scraper
+DESCRIPTION:Andrea M. Ghez\, From the Possibility to the Certainty of a Su
+ permassive Black HoleLearn about new developments in the study of supermas
+ sive black holes. Through the capture and analysis of twenty years of high
+ -resolution imaging\, the UCLA Galactic Center Group has moved the case fo
+ r a supermassive black hole at the center of our galaxy from a possibility
+  to a certainty and provided the best evidence to date for the existence o
+ f these truly exotic objects. This was made possible with the first measur
+ ements of stellar orbits around a galactic nucleus. Further advances in st
+ ate-of-the-art high-resolution imaging technology on the world’s largest
+  telescopes have greatly expanded the power of using stellar orbits to stu
+ dy black holes. Recent observations have revealed an environment around th
+ e black hole that is quite unexpected (young stars where there should be n
+ one\, a lack of old stars where there should be many\, and a puzzling new 
+ class of objects). Continued measurements of the motions of stars have sol
+ ved many of the puzzles posed by these perplexing populations of stars. Th
+ is work provides insight into how black holes grow and the role that they 
+ play in regulating the growth of their host galaxies. Measurements this pa
+ st year of stellar orbits at the Galactic Center have provided new insight
+  into how gravity works near a supermassive hole\, a new and unexplored re
+ gime for this fundamental force of nature.\nvhodné pro vážné zájemce 
+ o přírodní vědy\nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupen
+ ky?e=32234\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu p
+ ořadatele.\nCena: cena: 70\nDatum: 19/5/2026\, 19:30
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/odborne-prednasky/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Relaxace pod hvězdami
+DTSTART;TZID=Europe/Prague:20260529T171500
+DTEND;TZID=Europe/Prague:20260529T174500
+DTSTAMP:20260421T040451Z
+UID:4104579574d921c6@cal-scraper
+DESCRIPTION:Pozor\, pořad se neodehrává v novém digitáriu\, nýbrž m
+ além planetáriu. Ač je již stařečkem\, umí vykouzlit nádhernou hv
+ ězdnou oblohu\, kterou v přesvětleném Brně nikde nespatříte. Přij
+ ďte si odpočinout a chvíli\, občas i v tichosti\, posedět pod hvězda
+ mi ...\npřístupné od 15 let\npořad probíhá v malém planetáriu\nVst
+ upenky: https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32365\n\n⚠️ Neo
+ ficiální zdroj – ověřte si detaily na webu pořadatele.\nCena: cena:
+  100\nDatum: 29/5/2026\, 17:15
+LOCATION:malé planetárium - veřejnost
+URL:
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Cesta na Mars: Další velký skok pro lidstvo 3D
+DTSTART;TZID=Europe/Prague:20260529T180000
+DTEND;TZID=Europe/Prague:20260529T185500
+DTSTAMP:20260421T040451Z
+UID:5152d99867c8307e@cal-scraper
+DESCRIPTION:Jeden malý krok byl pouhým začátkem. Teď se vydáváme je
+ ště dál – vedeni neuhasitelnou zvědavostí\, s pohledem upřeným k 
+ Marsu a s odhodláním napsat nejodvážnější kapitolu lidského putov
+ ání\nvhodné od 10 let\nEnglish audio availableThe show is simultaneousl
+ y projected with English audio in headphones. It may\, however\, contain a
+  live part presented in Czech language exclusively. Headphones are availab
+ le on request at the ticket desk. The deposit for headphones is 100 CZK pe
+ r piece (cash only).\n3D stereoskopický pořad\nVstupenky: https://www.br
+ noid.cz/cs/hvezdarna-vstupenky?e=32366\n\n⚠️ Neoficiální zdroj – o
+ věřte si detaily na webu pořadatele.\nCena: cena: 200/150\nDatum: 29/5/
+ 2026\, 18:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/cesta-na-mars-dalsi-velky-skok-pro-lids
+ tvo-3d/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Vesmír všemi smysly 3D
+DTSTART;TZID=Europe/Prague:20260529T200000
+DTEND;TZID=Europe/Prague:20260529T205500
+DTSTAMP:20260421T040451Z
+UID:ce89ce454e3bcf8f@cal-scraper
+DESCRIPTION:Poznejte vesmír všemi smysly! Dozvíte se\, jaké to je dot
+ ýkat se vesmíru\, jak voní kometa či kosmický prostor i jakou přích
+ uť má Saturnův měsíc Enceladus nebo planeta Mars. A aby toho nebylo m
+ álo\, nasadíme vám k tomu speciální 3D brýle\, které celkový záž
+ itek ještě umocní.\nvhodné od 12 let\nEnglish audio availableThe show 
+ is simultaneously projected with English audio in headphones. It may\, how
+ ever\, contain a live part presented in Czech language exclusively. Headph
+ ones are available on request at the ticket desk. The deposit for headphon
+ es is 100 CZK per piece (cash only).\n3D stereoskopický pořad\nVstupenky
+ : https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32367\n\n⚠️ Neoficiá
+ lní zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 200/1
+ 50\nDatum: 29/5/2026\, 20:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/vesmir-vsemi-smysly-3d/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Pozorování večerní oblohy
+DTSTART;TZID=Europe/Prague:20260529T213000
+DTEND;TZID=Europe/Prague:20260529T223000
+DTSTAMP:20260421T040451Z
+UID:00c5f16d04f3416b@cal-scraper
+DESCRIPTION:Už jste na vlastní oči spatřili krátery na Měsíci\, Sat
+ urnův prstenec\, Jupiterovy bouře a satelity\, srpek Venuše\, barevné 
+ dvojhvězdy\, jiskřivé hvězdokupy\, jemné mlhoviny anebo galaxie vzdá
+ lené miliony světelných roků? To všechno můžeme pohodlně ukázat p
+ omocí moderních automaticky naváděných dalekohledů. V případě šp
+ atného počasí nabízíme náhradní program s ukázkou umělé hvězdn
+ é oblohy v malém planetáriu.\nvhodné od 10 let\npořad se odehrává v
+  astronomické pozorovatelně\nnezapomeňte se teple obléci\nVstupenky: h
+ ttps://www.brnoid.cz/cs/hvezdarna-vstupenky?e=32368\n\n⚠️ Neoficiáln
+ í zdroj – ověřte si detaily na webu pořadatele.\nCena: cena: 150\nDa
+ tum: 29/5/2026\, 21:30
+LOCATION:astronomická pozorovatelna
+URL:https://www.hvezdarna.cz/porad/pozorovani-vecerni-oblohy/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:DIGIFEST
+DTSTART;TZID=Europe/Prague:20260530T140000
+DTEND;TZID=Europe/Prague:20260530T145500
+DTSTAMP:20260421T040451Z
+UID:f9da38e4e5e1c62b@cal-scraper
+DESCRIPTION:Přehlídka nejnovějších a nejzajímavějších filmů pro 
+ digitální planetária\, které byly natočeny v posledním roce. Vše v 
+ anglickém znění.\nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupen
+ ky?e=32314\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu p
+ ořadatele.\nCena: cena: 100\nNote: End time is approximate (duration esti
+ mated at 55min)\nDatum: 30/5/2026\, 14:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/digifest/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:DIGIFEST
+DTSTART;TZID=Europe/Prague:20260530T150000
+DTEND;TZID=Europe/Prague:20260530T155500
+DTSTAMP:20260421T040451Z
+UID:f9da38e4e5e1c62b@cal-scraper
+DESCRIPTION:Přehlídka nejnovějších a nejzajímavějších filmů pro 
+ digitální planetária\, které byly natočeny v posledním roce. Vše v 
+ anglickém znění.\nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupen
+ ky?e=32315\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu p
+ ořadatele.\nCena: cena: 100\nNote: End time is approximate (duration esti
+ mated at 55min)\nDatum: 30/5/2026\, 15:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/digifest/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:DIGIFEST
+DTSTART;TZID=Europe/Prague:20260530T160000
+DTEND;TZID=Europe/Prague:20260530T165500
+DTSTAMP:20260421T040451Z
+UID:f9da38e4e5e1c62b@cal-scraper
+DESCRIPTION:Přehlídka nejnovějších a nejzajímavějších filmů pro 
+ digitální planetária\, které byly natočeny v posledním roce. Vše v 
+ anglickém znění.\nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupen
+ ky?e=32316\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu p
+ ořadatele.\nCena: cena: 100\nNote: End time is approximate (duration esti
+ mated at 55min)\nDatum: 30/5/2026\, 16:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/digifest/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:DIGIFEST
+DTSTART;TZID=Europe/Prague:20260530T170000
+DTEND;TZID=Europe/Prague:20260530T175500
+DTSTAMP:20260421T040451Z
+UID:f9da38e4e5e1c62b@cal-scraper
+DESCRIPTION:Přehlídka nejnovějších a nejzajímavějších filmů pro 
+ digitální planetária\, které byly natočeny v posledním roce. Vše v 
+ anglickém znění.\nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupen
+ ky?e=32317\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu p
+ ořadatele.\nCena: cena: 100\nNote: End time is approximate (duration esti
+ mated at 55min)\nDatum: 30/5/2026\, 17:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/digifest/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:DIGIFEST
+DTSTART;TZID=Europe/Prague:20260530T180000
+DTEND;TZID=Europe/Prague:20260530T185500
+DTSTAMP:20260421T040451Z
+UID:f9da38e4e5e1c62b@cal-scraper
+DESCRIPTION:Přehlídka nejnovějších a nejzajímavějších filmů pro 
+ digitální planetária\, které byly natočeny v posledním roce. Vše v 
+ anglickém znění.\nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupen
+ ky?e=32318\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu p
+ ořadatele.\nCena: cena: 100\nNote: End time is approximate (duration esti
+ mated at 55min)\nDatum: 30/5/2026\, 18:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/digifest/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:DIGIFEST
+DTSTART;TZID=Europe/Prague:20260531T140000
+DTEND;TZID=Europe/Prague:20260531T145500
+DTSTAMP:20260421T040451Z
+UID:f9da38e4e5e1c62b@cal-scraper
+DESCRIPTION:Přehlídka nejnovějších a nejzajímavějších filmů pro 
+ digitální planetária\, které byly natočeny v posledním roce. Vše v 
+ anglickém znění.\nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupen
+ ky?e=32319\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu p
+ ořadatele.\nCena: cena: 100\nNote: End time is approximate (duration esti
+ mated at 55min)\nDatum: 31/5/2026\, 14:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/digifest/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:DIGIFEST
+DTSTART;TZID=Europe/Prague:20260531T150000
+DTEND;TZID=Europe/Prague:20260531T155500
+DTSTAMP:20260421T040451Z
+UID:f9da38e4e5e1c62b@cal-scraper
+DESCRIPTION:Přehlídka nejnovějších a nejzajímavějších filmů pro 
+ digitální planetária\, které byly natočeny v posledním roce. Vše v 
+ anglickém znění.\nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupen
+ ky?e=32320\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu p
+ ořadatele.\nCena: cena: 100\nNote: End time is approximate (duration esti
+ mated at 55min)\nDatum: 31/5/2026\, 15:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/digifest/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:DIGIFEST
+DTSTART;TZID=Europe/Prague:20260531T160000
+DTEND;TZID=Europe/Prague:20260531T165500
+DTSTAMP:20260421T040451Z
+UID:f9da38e4e5e1c62b@cal-scraper
+DESCRIPTION:Přehlídka nejnovějších a nejzajímavějších filmů pro 
+ digitální planetária\, které byly natočeny v posledním roce. Vše v 
+ anglickém znění.\nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupen
+ ky?e=32321\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu p
+ ořadatele.\nCena: cena: 100\nNote: End time is approximate (duration esti
+ mated at 55min)\nDatum: 31/5/2026\, 16:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/digifest/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:DIGIFEST
+DTSTART;TZID=Europe/Prague:20260531T170000
+DTEND;TZID=Europe/Prague:20260531T175500
+DTSTAMP:20260421T040451Z
+UID:f9da38e4e5e1c62b@cal-scraper
+DESCRIPTION:Přehlídka nejnovějších a nejzajímavějších filmů pro 
+ digitální planetária\, které byly natočeny v posledním roce. Vše v 
+ anglickém znění.\nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupen
+ ky?e=32322\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu p
+ ořadatele.\nCena: cena: 100\nNote: End time is approximate (duration esti
+ mated at 55min)\nDatum: 31/5/2026\, 17:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/digifest/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:DIGIFEST
+DTSTART;TZID=Europe/Prague:20260531T180000
+DTEND;TZID=Europe/Prague:20260531T185500
+DTSTAMP:20260421T040451Z
+UID:f9da38e4e5e1c62b@cal-scraper
+DESCRIPTION:Přehlídka nejnovějších a nejzajímavějších filmů pro 
+ digitální planetária\, které byly natočeny v posledním roce. Vše v 
+ anglickém znění.\nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupen
+ ky?e=32323\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu p
+ ořadatele.\nCena: cena: 100\nNote: End time is approximate (duration esti
+ mated at 55min)\nDatum: 31/5/2026\, 18:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/digifest/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Koncert
+DTSTART;TZID=Europe/Prague:20260608T190000
+DTEND;TZID=Europe/Prague:20260608T195500
+DTSTAMP:20260421T040451Z
+UID:8911ba34d9a9c034@cal-scraper
+DESCRIPTION:Distant Bells: Pink Floyd pod hvězdamiJiž tradiční vystoup
+ ení brněnské kapely Distant Bells rozezvučí sál digitária\, kde vá
+ s obklopí hudba Pink Floyd\, obraz\, hvězdy i tma.\nVstupenky: https://w
+ ww.brnoid.cz/cs/hvezdarna-vstupenky?e=32370\n\n⚠️ Neoficiální zdroj 
+ – ověřte si detaily na webu pořadatele.\nCena: cena: 440\nNote: End t
+ ime is approximate (duration estimated at 55min)\nDatum: 8/6/2026\, 19:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/koncert/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Koncert
+DTSTART;TZID=Europe/Prague:20260609T190000
+DTEND;TZID=Europe/Prague:20260609T195500
+DTSTAMP:20260421T040451Z
+UID:8911ba34d9a9c034@cal-scraper
+DESCRIPTION:Distant Bells: Pink Floyd pod hvězdamiJiž tradiční vystoup
+ ení brněnské kapely Distant Bells rozezvučí sál digitária\, kde vá
+ s obklopí hudba Pink Floyd\, obraz\, hvězdy i tma.\nVstupenky: https://w
+ ww.brnoid.cz/cs/hvezdarna-vstupenky?e=32371\n\n⚠️ Neoficiální zdroj 
+ – ověřte si detaily na webu pořadatele.\nCena: cena: 440\nNote: End t
+ ime is approximate (duration estimated at 55min)\nDatum: 9/6/2026\, 19:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/koncert/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Koncert
+DTSTART;TZID=Europe/Prague:20261122T150000
+DTEND;TZID=Europe/Prague:20261122T155500
+DTSTAMP:20260421T040451Z
+UID:8911ba34d9a9c034@cal-scraper
+DESCRIPTION:Pražský filmový orchestrJiž tradiční koncert Pražského
+  filmového orchestru rozezní sál digitária Hvězdárny a planetária B
+ rno\, kde vás obklopí ikonická filmová hudba\, obraz\, hvězdy i tma.\
+ nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=31993\n\n⚠️
+  Neoficiální zdroj – ověřte si detaily na webu pořadatele.\nCena: c
+ ena: 870\nNote: End time is approximate (duration estimated at 55min)\nDat
+ um: 22/11/2026\, 15:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/koncert/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Koncert
+DTSTART;TZID=Europe/Prague:20261122T180000
+DTEND;TZID=Europe/Prague:20261122T185500
+DTSTAMP:20260421T040451Z
+UID:8911ba34d9a9c034@cal-scraper
+DESCRIPTION:Pražský filmový orchestrJiž tradiční koncert Pražského
+  filmového orchestru rozezní sál digitária Hvězdárny a planetária B
+ rno\, kde vás obklopí ikonická filmová hudba\, obraz\, hvězdy i tma.\
+ nVstupenky: https://www.brnoid.cz/cs/hvezdarna-vstupenky?e=31994\n\n⚠️
+  Neoficiální zdroj – ověřte si detaily na webu pořadatele.\nCena: c
+ ena: 870\nNote: End time is approximate (duration estimated at 55min)\nDat
+ um: 22/11/2026\, 18:00
+LOCATION:digitárium - veřejnost
+URL:https://www.hvezdarna.cz/porad/koncert/
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,420 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//cal-scraper//vida//CS
+X-WR-CALDESC:Unofficial scrape — family events and lab workshops\, Brno 
+ area only (After Dark 18+ excluded). Source: http://vida.cz/doprovodny-pro
+ gram
+X-WR-CALNAME:VIDA! Science Center – Family Events (unofficial\, in CZ)
+X-CAL-SOURCE-URL:http://vida.cz/doprovodny-program
+BEGIN:VTIMEZONE
+TZID:Europe/Prague
+COMMENT:This timezone only works from 1970-01-01 to 2038-01-01.
+BEGIN:STANDARD
+DTSTART:19700101T000000
+TZNAME:CET
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0100
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:19790401T030000
+RDATE:19800406T030000,19810329T030000,19820328T030000,19830327T030000,1984
+ 0325T030000,19850331T030000,19860330T030000,19870329T030000,19880327T03000
+ 0,19890326T030000,19900325T030000,19910331T030000,19920329T030000,19930328
+ T030000,19940327T030000,19950326T030000,19960331T030000,19970330T030000,19
+ 980329T030000,19990328T030000,20000326T030000,20010325T030000,20020331T030
+ 000,20030330T030000,20040328T030000,20050327T030000,20060326T030000,200703
+ 25T030000,20080330T030000,20090329T030000,20100328T030000,20110327T030000,
+ 20120325T030000,20130331T030000,20140330T030000,20150329T030000,20160327T0
+ 30000,20170326T030000,20180325T030000,20190331T030000,20200329T030000,2021
+ 0328T030000,20220327T030000,20230326T030000,20240331T030000,20250330T03000
+ 0,20260329T030000,20270328T030000,20280326T030000,20290325T030000,20300331
+ T030000,20310330T030000,20320328T030000,20330327T030000,20340326T030000,20
+ 350325T030000,20360330T030000,20370329T030000
+TZNAME:CEST
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+END:DAYLIGHT
+BEGIN:STANDARD
+DTSTART:19790930T030000
+RDATE:19800928T030000,19810927T030000,19820926T030000,19830925T030000,1984
+ 0930T030000,19850929T030000,19860928T030000,19870927T030000,19880925T03000
+ 0,19890924T030000,19900930T030000,19910929T030000,19920927T030000,19930926
+ T030000,19940925T030000,19950924T030000,19961027T030000,19971026T030000,19
+ 981025T030000,19991031T030000,20001029T030000,20011028T030000,20021027T030
+ 000,20031026T030000,20041031T030000,20051030T030000,20061029T030000,200710
+ 28T030000,20081026T030000,20091025T030000,20101031T030000,20111030T030000,
+ 20121028T030000,20131027T030000,20141026T030000,20151025T030000,20161030T0
+ 30000,20171029T030000,20181028T030000,20191027T030000,20201025T030000,2021
+ 1031T030000,20221030T030000,20231029T030000,20241027T030000,20251026T03000
+ 0,20261025T030000,20271031T030000,20281029T030000,20291028T030000,20301027
+ T030000,20311026T030000,20321031T030000,20331030T030000,20341029T030000,20
+ 351028T030000,20361026T030000,20371025T030000
+TZNAME:CET
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+SUMMARY:VIDA! Labodílna
+DTSTART;TZID=Europe/Prague:20260425T120000
+DTEND;TZID=Europe/Prague:20260425T133000
+DTSTAMP:20260421T040746Z
+UID:b63ffeb80169506b@cal-scraper
+DESCRIPTION:Každý víkend a během svátků máme připravený speciáln
+ í program pro rodiny s dětmi. Těšit se můžete na ukázky zajímavýc
+ h experimentů i drobné vyrábění. Téma dílniček se mění několikr
+ át v roce.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu 
+ pořadatele.\nNote: End time is approximate (duration estimated at 1h 30mi
+ n)\nDatum: sobota 25. 4. 2026 / 12:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/labodilny
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:VIDA! Labodílna
+DTSTART;TZID=Europe/Prague:20260425T140000
+DTEND;TZID=Europe/Prague:20260425T153000
+DTSTAMP:20260421T040746Z
+UID:b63ffeb80169506b@cal-scraper
+DESCRIPTION:Každý víkend a během svátků máme připravený speciáln
+ í program pro rodiny s dětmi. Těšit se můžete na ukázky zajímavýc
+ h experimentů i drobné vyrábění. Téma dílniček se mění několikr
+ át v roce.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu 
+ pořadatele.\nNote: End time is approximate (duration estimated at 1h 30mi
+ n)\nDatum: sobota 25. 4. 2026 / 14:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/labodilny
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:VIDA! Labodílna
+DTSTART;TZID=Europe/Prague:20260425T160000
+DTEND;TZID=Europe/Prague:20260425T173000
+DTSTAMP:20260421T040746Z
+UID:b63ffeb80169506b@cal-scraper
+DESCRIPTION:Každý víkend a během svátků máme připravený speciáln
+ í program pro rodiny s dětmi. Těšit se můžete na ukázky zajímavýc
+ h experimentů i drobné vyrábění. Téma dílniček se mění několikr
+ át v roce.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu 
+ pořadatele.\nNote: End time is approximate (duration estimated at 1h 30mi
+ n)\nDatum: sobota 25. 4. 2026 / 16:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/labodilny
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:VIDA! Labodílna
+DTSTART;TZID=Europe/Prague:20260426T120000
+DTEND;TZID=Europe/Prague:20260426T133000
+DTSTAMP:20260421T040746Z
+UID:b63ffeb80169506b@cal-scraper
+DESCRIPTION:Každý víkend a během svátků máme připravený speciáln
+ í program pro rodiny s dětmi. Těšit se můžete na ukázky zajímavýc
+ h experimentů i drobné vyrábění. Téma dílniček se mění několikr
+ át v roce.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu 
+ pořadatele.\nNote: End time is approximate (duration estimated at 1h 30mi
+ n)\nDatum: neděle 26. 4. 2026 / 12:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/labodilny
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Den Země na Vinohradech
+DTSTART;TZID=Europe/Prague:20260426T130000
+DTEND;TZID=Europe/Prague:20260426T150000
+DTSTAMP:20260421T040746Z
+UID:e7ab99f440203e7d@cal-scraper
+DESCRIPTION:Rodinný festival plný zábavy\, objevování a inspirace\n\n
+ ⚠️ Neoficiální zdroj – ověřte si detaily na webu pořadatele.\nN
+ ote: End time is approximate (duration estimated at 2h)\nDatum: neděle 26
+ . 4. 2026\, 13:00\, Bzenecká 23\, Brno-Vinohrady
+LOCATION:Bzenecká 23\, Brno-Vinohrady
+URL:http://vida.cz/doprovodny-program/den-zeme-na-vinohradech
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:VIDA! Labodílna
+DTSTART;TZID=Europe/Prague:20260426T140000
+DTEND;TZID=Europe/Prague:20260426T153000
+DTSTAMP:20260421T040746Z
+UID:b63ffeb80169506b@cal-scraper
+DESCRIPTION:Každý víkend a během svátků máme připravený speciáln
+ í program pro rodiny s dětmi. Těšit se můžete na ukázky zajímavýc
+ h experimentů i drobné vyrábění. Téma dílniček se mění několikr
+ át v roce.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu 
+ pořadatele.\nNote: End time is approximate (duration estimated at 1h 30mi
+ n)\nDatum: neděle 26. 4. 2026 / 14:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/labodilny
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:VIDA! Labodílna
+DTSTART;TZID=Europe/Prague:20260426T160000
+DTEND;TZID=Europe/Prague:20260426T173000
+DTSTAMP:20260421T040746Z
+UID:b63ffeb80169506b@cal-scraper
+DESCRIPTION:Každý víkend a během svátků máme připravený speciáln
+ í program pro rodiny s dětmi. Těšit se můžete na ukázky zajímavýc
+ h experimentů i drobné vyrábění. Téma dílniček se mění několikr
+ át v roce.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu 
+ pořadatele.\nNote: End time is approximate (duration estimated at 1h 30mi
+ n)\nDatum: neděle 26. 4. 2026 / 16:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/labodilny
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:VIDA! Labodílna
+DTSTART;TZID=Europe/Prague:20260501T120000
+DTEND;TZID=Europe/Prague:20260501T133000
+DTSTAMP:20260421T040746Z
+UID:b63ffeb80169506b@cal-scraper
+DESCRIPTION:Každý víkend a během svátků máme připravený speciáln
+ í program pro rodiny s dětmi. Těšit se můžete na ukázky zajímavýc
+ h experimentů i drobné vyrábění. Téma dílniček se mění několikr
+ át v roce.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu 
+ pořadatele.\nNote: End time is approximate (duration estimated at 1h 30mi
+ n)\nDatum: pátek 1. 5. 2026 / 12:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/labodilny
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:VIDA! Labodílna
+DTSTART;TZID=Europe/Prague:20260501T140000
+DTEND;TZID=Europe/Prague:20260501T153000
+DTSTAMP:20260421T040746Z
+UID:b63ffeb80169506b@cal-scraper
+DESCRIPTION:Každý víkend a během svátků máme připravený speciáln
+ í program pro rodiny s dětmi. Těšit se můžete na ukázky zajímavýc
+ h experimentů i drobné vyrábění. Téma dílniček se mění několikr
+ át v roce.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu 
+ pořadatele.\nNote: End time is approximate (duration estimated at 1h 30mi
+ n)\nDatum: pátek 1. 5. 2026 / 14:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/labodilny
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:VIDA! Labodílna
+DTSTART;TZID=Europe/Prague:20260501T160000
+DTEND;TZID=Europe/Prague:20260501T173000
+DTSTAMP:20260421T040746Z
+UID:b63ffeb80169506b@cal-scraper
+DESCRIPTION:Každý víkend a během svátků máme připravený speciáln
+ í program pro rodiny s dětmi. Těšit se můžete na ukázky zajímavýc
+ h experimentů i drobné vyrábění. Téma dílniček se mění několikr
+ át v roce.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu 
+ pořadatele.\nNote: End time is approximate (duration estimated at 1h 30mi
+ n)\nDatum: pátek 1. 5. 2026 / 16:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/labodilny
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:VIDA! Labodílna
+DTSTART;TZID=Europe/Prague:20260502T120000
+DTEND;TZID=Europe/Prague:20260502T133000
+DTSTAMP:20260421T040746Z
+UID:b63ffeb80169506b@cal-scraper
+DESCRIPTION:Každý víkend a během svátků máme připravený speciáln
+ í program pro rodiny s dětmi. Těšit se můžete na ukázky zajímavýc
+ h experimentů i drobné vyrábění. Téma dílniček se mění několikr
+ át v roce.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu 
+ pořadatele.\nNote: End time is approximate (duration estimated at 1h 30mi
+ n)\nDatum: sobota 2. 5. 2026 / 12:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/labodilny
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:VIDA! Labodílna
+DTSTART;TZID=Europe/Prague:20260502T140000
+DTEND;TZID=Europe/Prague:20260502T153000
+DTSTAMP:20260421T040746Z
+UID:b63ffeb80169506b@cal-scraper
+DESCRIPTION:Každý víkend a během svátků máme připravený speciáln
+ í program pro rodiny s dětmi. Těšit se můžete na ukázky zajímavýc
+ h experimentů i drobné vyrábění. Téma dílniček se mění několikr
+ át v roce.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu 
+ pořadatele.\nNote: End time is approximate (duration estimated at 1h 30mi
+ n)\nDatum: sobota 2. 5. 2026 / 14:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/labodilny
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:VIDA! Labodílna
+DTSTART;TZID=Europe/Prague:20260502T160000
+DTEND;TZID=Europe/Prague:20260502T173000
+DTSTAMP:20260421T040746Z
+UID:b63ffeb80169506b@cal-scraper
+DESCRIPTION:Každý víkend a během svátků máme připravený speciáln
+ í program pro rodiny s dětmi. Těšit se můžete na ukázky zajímavýc
+ h experimentů i drobné vyrábění. Téma dílniček se mění několikr
+ át v roce.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu 
+ pořadatele.\nNote: End time is approximate (duration estimated at 1h 30mi
+ n)\nDatum: sobota 2. 5. 2026 / 16:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/labodilny
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:VIDA! Labodílna
+DTSTART;TZID=Europe/Prague:20260503T120000
+DTEND;TZID=Europe/Prague:20260503T133000
+DTSTAMP:20260421T040746Z
+UID:b63ffeb80169506b@cal-scraper
+DESCRIPTION:Každý víkend a během svátků máme připravený speciáln
+ í program pro rodiny s dětmi. Těšit se můžete na ukázky zajímavýc
+ h experimentů i drobné vyrábění. Téma dílniček se mění několikr
+ át v roce.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu 
+ pořadatele.\nNote: End time is approximate (duration estimated at 1h 30mi
+ n)\nDatum: neděle 3. 5. 2026 / 12:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/labodilny
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:VIDA! Labodílna
+DTSTART;TZID=Europe/Prague:20260503T140000
+DTEND;TZID=Europe/Prague:20260503T153000
+DTSTAMP:20260421T040746Z
+UID:b63ffeb80169506b@cal-scraper
+DESCRIPTION:Každý víkend a během svátků máme připravený speciáln
+ í program pro rodiny s dětmi. Těšit se můžete na ukázky zajímavýc
+ h experimentů i drobné vyrábění. Téma dílniček se mění několikr
+ át v roce.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu 
+ pořadatele.\nNote: End time is approximate (duration estimated at 1h 30mi
+ n)\nDatum: neděle 3. 5. 2026 / 14:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/labodilny
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:VIDA! Labodílna
+DTSTART;TZID=Europe/Prague:20260503T160000
+DTEND;TZID=Europe/Prague:20260503T173000
+DTSTAMP:20260421T040746Z
+UID:b63ffeb80169506b@cal-scraper
+DESCRIPTION:Každý víkend a během svátků máme připravený speciáln
+ í program pro rodiny s dětmi. Těšit se můžete na ukázky zajímavýc
+ h experimentů i drobné vyrábění. Téma dílniček se mění několikr
+ át v roce.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu 
+ pořadatele.\nNote: End time is approximate (duration estimated at 1h 30mi
+ n)\nDatum: neděle 3. 5. 2026 / 16:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/labodilny
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:VIDA! Labodílna
+DTSTART;TZID=Europe/Prague:20260508T120000
+DTEND;TZID=Europe/Prague:20260508T133000
+DTSTAMP:20260421T040746Z
+UID:b63ffeb80169506b@cal-scraper
+DESCRIPTION:Každý víkend a během svátků máme připravený speciáln
+ í program pro rodiny s dětmi. Těšit se můžete na ukázky zajímavýc
+ h experimentů i drobné vyrábění. Téma dílniček se mění několikr
+ át v roce.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu 
+ pořadatele.\nNote: End time is approximate (duration estimated at 1h 30mi
+ n)\nDatum: pátek 8. 5. 2026 / 12:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/labodilny
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:VIDA! Labodílna
+DTSTART;TZID=Europe/Prague:20260508T140000
+DTEND;TZID=Europe/Prague:20260508T153000
+DTSTAMP:20260421T040746Z
+UID:b63ffeb80169506b@cal-scraper
+DESCRIPTION:Každý víkend a během svátků máme připravený speciáln
+ í program pro rodiny s dětmi. Těšit se můžete na ukázky zajímavýc
+ h experimentů i drobné vyrábění. Téma dílniček se mění několikr
+ át v roce.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu 
+ pořadatele.\nNote: End time is approximate (duration estimated at 1h 30mi
+ n)\nDatum: pátek 8. 5. 2026 / 14:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/labodilny
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:VIDA! Labodílna
+DTSTART;TZID=Europe/Prague:20260508T160000
+DTEND;TZID=Europe/Prague:20260508T173000
+DTSTAMP:20260421T040746Z
+UID:b63ffeb80169506b@cal-scraper
+DESCRIPTION:Každý víkend a během svátků máme připravený speciáln
+ í program pro rodiny s dětmi. Těšit se můžete na ukázky zajímavýc
+ h experimentů i drobné vyrábění. Téma dílniček se mění několikr
+ át v roce.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu 
+ pořadatele.\nNote: End time is approximate (duration estimated at 1h 30mi
+ n)\nDatum: pátek 8. 5. 2026 / 16:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/labodilny
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:VIDA! Labodílna
+DTSTART;TZID=Europe/Prague:20260509T120000
+DTEND;TZID=Europe/Prague:20260509T133000
+DTSTAMP:20260421T040746Z
+UID:b63ffeb80169506b@cal-scraper
+DESCRIPTION:Každý víkend a během svátků máme připravený speciáln
+ í program pro rodiny s dětmi. Těšit se můžete na ukázky zajímavýc
+ h experimentů i drobné vyrábění. Téma dílniček se mění několikr
+ át v roce.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu 
+ pořadatele.\nNote: End time is approximate (duration estimated at 1h 30mi
+ n)\nDatum: sobota 9. 5. 2026 / 12:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/labodilny
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:VIDA! Labodílna
+DTSTART;TZID=Europe/Prague:20260509T140000
+DTEND;TZID=Europe/Prague:20260509T153000
+DTSTAMP:20260421T040746Z
+UID:b63ffeb80169506b@cal-scraper
+DESCRIPTION:Každý víkend a během svátků máme připravený speciáln
+ í program pro rodiny s dětmi. Těšit se můžete na ukázky zajímavýc
+ h experimentů i drobné vyrábění. Téma dílniček se mění několikr
+ át v roce.\n\n⚠️ Neoficiální zdroj – ověřte si detaily na webu 
+ pořadatele.\nNote: End time is approximate (duration estimated at 1h 30mi
+ n)\nDatum: sobota 9. 5. 2026 / 14:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/labodilny
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Den seniorů s ČSOB
+DTSTART;TZID=Europe/Prague:20260513T123000
+DTEND;TZID=Europe/Prague:20260513T143000
+DTSTAMP:20260421T040746Z
+UID:fe1549085e733699@cal-scraper
+DESCRIPTION:Odpolední program pro 60+\n\n⚠️ Neoficiální zdroj – o
+ věřte si detaily na webu pořadatele.\nNote: End time is approximate (du
+ ration estimated at 2h)\nDatum: středa 13. 5. 2026\, 12:30
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/den-senioru-s-csob
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Brno Expat Fair
+DTSTART;TZID=Europe/Prague:20260516T100000
+DTEND;TZID=Europe/Prague:20260516T120000
+DTSTAMP:20260421T040746Z
+UID:50dc51705143c7a6@cal-scraper
+DESCRIPTION:Objevte možnosti\, které Brno nabízí expatům\n\n⚠️ Ne
+ oficiální zdroj – ověřte si detaily na webu pořadatele.\nNote: End 
+ time is approximate (duration estimated at 2h)\nDatum: sobota 16. 5. 2026\
+ , 10:00\, Tržnice na Zelným trhu\, Brno
+LOCATION:Tržnice na Zelným trhu\, Brno
+URL:http://vida.cz/doprovodny-program/brno-expat-fair
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:VIDA! Den dětí
+DTSTART;TZID=Europe/Prague:20260530T100000
+DTEND;TZID=Europe/Prague:20260530T120000
+DTSTAMP:20260421T040746Z
+UID:6724f25aaa98fa22@cal-scraper
+DESCRIPTION:Oslavte Den dětí ve VIDA!\n\n⚠️ Neoficiální zdroj – 
+ ověřte si detaily na webu pořadatele.\nNote: End time is approximate (d
+ uration estimated at 2h)\nDatum: sobota 30. 5. 2026\, 10:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/den-deti
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Den otců
+DTSTART;TZID=Europe/Prague:20260614T100000
+DTEND;TZID=Europe/Prague:20260614T120000
+DTSTAMP:20260421T040746Z
+UID:e2c70f2dec0292f5@cal-scraper
+DESCRIPTION:Tatínci a dědečkové\, oslavte svůj den s dětmi v zábavn
+ ím vědeckém parku!\n\n⚠️ Neoficiální zdroj – ověřte si detail
+ y na webu pořadatele.\nNote: End time is approximate (duration estimated 
+ at 2h)\nDatum: neděle 14. 6. 2026\, 10:00
+LOCATION:VIDA! science center\, Křížkovského 554/12\, 603 00 Brno
+URL:http://vida.cz/doprovodny-program/den-otcu
+END:VEVENT
+END:VCALENDAR

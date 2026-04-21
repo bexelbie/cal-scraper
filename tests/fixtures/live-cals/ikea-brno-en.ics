@@ -1,0 +1,44 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//cal-scraper//ikea-brno//CS
+X-WR-CALDESC:Auto-translated to English via Azure OpenAI. Unofficial scrap
+ e — kids events only (promotions and adult events excluded). Source: htt
+ ps://www.ikea.com/cz/cs/stores/brno/
+X-WR-CALNAME:IKEA Brno – Kids Events (unofficial\, EN\, auto-translated 
+ from CZ)
+X-CAL-SOURCE-URL:https://www.ikea.com/cz/cs/stores/brno/
+BEGIN:VEVENT
+SUMMARY:Become a Resident of SMÅLANDBYN / Staňte se obyvateli SMÅLANDBY
+ NU
+DTSTART;VALUE=DATE:20250909
+DTEND;VALUE=DATE:20260901
+DTSTAMP:20260421T040654Z
+UID:da52a4f62a812fea@cal-scraper
+DESCRIPTION:A loyalty program for children visiting the IKEA Brno children
+ 's corner.\n\nDear children\, do you know what SMÅLANDBYN is? It is a vil
+ lage where our teddy bear FABLER BJÖRN lives. Do you want to live here wi
+ th him? Visit the children's corner and for each visit\, you will receive 
+ 1 stamp in Björn's passport. Once you collect 12 stamps\, you will become
+  an honorary resident of Smålandbyn. But don’t worry\, even on your 1st
+ \, 3rd\, 6th\, and 9th visits\, Björn has a surprise for you. So come to 
+ the corner today.\n\nThe program is intended for children aged 3 to 9 year
+ s. Visits are counted in Björn's passport only on weekdays. The rules of 
+ the children's corner apply during your stay.\n\n⚠️ Unofficial source 
+ – verify details on the organizer's website. Auto-translated via Azure O
+ penAI.\n\n---\n\nPrice/Cena: zdarma\nDatum: 2025-09-09T10:00:00\n\n---\n\n
+ Věrnostní program pro děti\, které navštěvují dětský koutek IKEA 
+ Brno.\n\nMilé děti\, víte co je SMÅLANDBYN? To je vesnička ve které 
+  bydlí náš medvídek FABLER BJÖRN. Chcete zde bydlet s ním?  Navštiv
+ te dětský koutek a za každou návštěvu získáte 1 razítko do Björn
+ ova pasu. Až jich nasbírate 12\, stanete se čestným obyvatelem Smålan
+ dbynu. Ale nebojte\, už při 1.\, 3.\, 6. a 9. návštěvě má pro vás 
+ Björn překvapení. Tak pojďte do koutku ještě dnes.\n\nProgram je ur
+ čený pro děti ve věku od 3 do 9 let. Do Björnova pasu se započítáv
+ ají návštěvy pouze ve všední dny. Pro pobyt v dětském koutku plat
+ í provozní řád dětského koutku.\n\n⚠️ Neoficiální zdroj – ov
+ ěřte si detaily na webu pořadatele.
+LOCATION:IKEA Brno\, Brno-Dolní Heršpice
+URL:https://www.ikea.com/stores/events/ikea-brno/872aeb45-83ee-4d59-8a28-b
+ 93957c00f97
+END:VEVENT
+END:VCALENDAR
