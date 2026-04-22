@@ -67,6 +67,8 @@ def load_azure_config() -> dict[str, str]:
 # Azure OpenAI client
 # ---------------------------------------------------------------------------
 
+BATCH_SIZE = 10  # max events per LLM call to avoid output truncation
+
 SYSTEM_PROMPT = """\
 You translate Czech cultural event information to English.
 
@@ -157,7 +159,7 @@ def _build_translation_request(events: list[Event]) -> list[dict]:
 def _parse_translation_response(raw: str, count: int) -> list[dict]:
     """Parse the LLM's JSON array response.
 
-    Returns a list of {id, title, description} dicts.
+    Returns a list of {id, title, description} dicts sorted by id.
     Falls back to empty list on parse failure.
     """
     # Strip markdown fences if the model wraps output
@@ -182,6 +184,23 @@ def _parse_translation_response(raw: str, count: int) -> list[dict]:
         )
         return []
 
+    # Validate that every expected id is present exactly once
+    expected_ids = set(range(count))
+    actual_ids: set[int] = set()
+    for item in parsed:
+        id_val = item.get("id")
+        if not isinstance(id_val, int) or id_val not in expected_ids:
+            logger.warning(
+                "Translation response contains unexpected id: %r", id_val
+            )
+            return []
+        if id_val in actual_ids:
+            logger.warning("Translation response contains duplicate id: %d", id_val)
+            return []
+        actual_ids.add(id_val)
+
+    # Sort by id so callers can use positional indexing safely
+    parsed.sort(key=lambda x: x["id"])
     return parsed
 
 
@@ -248,19 +267,15 @@ def _format_duration(event: Event) -> str:
     return f"{hours}h {mins}min"
 
 
-def translate_events(
+def _translate_batch(
     events: list[Event],
     config: dict[str, str],
-) -> tuple[list[Event], bool]:
-    """Translate a list of events to bilingual English/Czech.
+) -> list[dict] | None:
+    """Translate a single batch of events via one LLM call.
 
-    Returns a tuple of (events, success):
-    - On success: (bilingual Event objects, True)
-    - On failure: (original Czech events unchanged, False)
+    Returns a list of {id, title, description} dicts (sorted by id),
+    or ``None`` on failure.
     """
-    if not events:
-        return events, True
-
     items = _build_translation_request(events)
 
     messages = [
@@ -280,17 +295,74 @@ def translate_events(
         resp = _call_azure_openai(config, messages)
         content = resp["choices"][0]["message"]["content"]
     except (TranslationError, KeyError, IndexError) as exc:
-        logger.warning("Translation failed: %s — using Czech originals", exc)
-        return events, False
+        logger.warning("Translation batch failed: %s", exc)
+        return None
+
+    # Detect output truncation via finish_reason
+    try:
+        finish_reason = resp["choices"][0].get("finish_reason", "")
+        if finish_reason == "length":
+            logger.warning(
+                "Translation truncated (finish_reason=length) for %d events",
+                len(events),
+            )
+            return None
+    except (KeyError, IndexError):
+        pass
 
     translated = _parse_translation_response(content, len(events))
     if not translated:
-        logger.warning("Could not parse translation — using Czech originals")
-        return events, False
+        return None
 
-    result: list[Event] = []
+    return translated
+
+
+def translate_events(
+    events: list[Event],
+    config: dict[str, str],
+) -> tuple[list[Event], bool]:
+    """Translate a list of events to bilingual English/Czech.
+
+    Events are split into batches of ``BATCH_SIZE`` to avoid LLM output
+    truncation.  Each failed batch is retried once.
+
+    Returns a tuple of (events, success):
+    - On success: (bilingual Event objects, True)
+    - On failure: (original Czech events unchanged, False)
+    """
+    if not events:
+        return events, True
+
+    # --- translate in batches ---
+    all_translated: list[dict] = []
+    for batch_start in range(0, len(events), BATCH_SIZE):
+        batch = events[batch_start : batch_start + BATCH_SIZE]
+
+        result = _translate_batch(batch, config)
+        if result is None:
+            # Retry once — LLM output can be non-deterministic
+            logger.info(
+                "Retrying batch %d–%d …",
+                batch_start,
+                batch_start + len(batch) - 1,
+            )
+            result = _translate_batch(batch, config)
+
+        if result is None:
+            logger.warning(
+                "Translation failed for batch %d–%d after retry — "
+                "using Czech originals",
+                batch_start,
+                batch_start + len(batch) - 1,
+            )
+            return events, False
+
+        all_translated.extend(result)
+
+    # --- build bilingual events ---
+    result_events: list[Event] = []
     for i, ev in enumerate(events):
-        tr = translated[i]
+        tr = all_translated[i]
         en_title = tr.get("title", ev.title)
         en_desc = tr.get("description", ev.description)
 
@@ -304,6 +376,8 @@ def translate_events(
         dur_str = _format_duration(ev)
         bi_desc = _build_bilingual_description(en_desc, ev.description, ev, dur_str)
 
-        result.append(replace(ev, title=bi_title, description=bi_desc, translated=True))
+        result_events.append(
+            replace(ev, title=bi_title, description=bi_desc, translated=True)
+        )
 
-    return result, True
+    return result_events, True
