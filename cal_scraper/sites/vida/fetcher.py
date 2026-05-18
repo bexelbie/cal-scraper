@@ -24,7 +24,7 @@ def fetch_events_pages(verbose: bool = False) -> list[str]:
     if verbose:
         logger.info("Fetching VIDA events page 1: %s", EVENTS_URL)
 
-    resp = fetch(EVENTS_URL, timeout=30)
+    resp = fetch(EVENTS_URL, timeout=30, verify=False)
     resp.raise_for_status()
     pages = [resp.text]
 
@@ -48,7 +48,7 @@ def fetch_events_pages(verbose: bool = False) -> list[str]:
         url = f"{EVENTS_URL}?start={start}"
         if verbose:
             logger.info("Fetching VIDA events page: %s", url)
-        resp = fetch(url, timeout=30)
+        resp = fetch(url, timeout=30, verify=False)
         resp.raise_for_status()
         pages.append(resp.text)
         start += 12
@@ -64,6 +64,6 @@ def fetch_workshops_page(verbose: bool = False) -> str:
     if verbose:
         logger.info("Fetching VIDA workshops page: %s", WORKSHOPS_URL)
 
-    resp = fetch(WORKSHOPS_URL, timeout=30)
+    resp = fetch(WORKSHOPS_URL, timeout=30, verify=False)
     resp.raise_for_status()
     return resp.text

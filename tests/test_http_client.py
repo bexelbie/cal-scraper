@@ -42,7 +42,7 @@ class TestDirectSuccess:
         mock_requests.get.return_value = _ok_response()
         fetch("https://example.com", timeout=10, headers={"X-Foo": "bar"})
         mock_requests.get.assert_called_once_with(
-            "https://example.com", timeout=10, headers={"X-Foo": "bar"}
+            "https://example.com", timeout=10, verify=True, headers={"X-Foo": "bar"}
         )
 
     @patch("cal_scraper.http_client.requests")

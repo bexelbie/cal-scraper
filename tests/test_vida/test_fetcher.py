@@ -63,9 +63,9 @@ class TestFetchEventsPages:
         assert "page 3" in pages[2]
 
         # Verify URLs
-        mock_fetch.assert_any_call(EVENTS_URL, timeout=30)
-        mock_fetch.assert_any_call(f"{EVENTS_URL}?start=12", timeout=30)
-        mock_fetch.assert_any_call(f"{EVENTS_URL}?start=24", timeout=30)
+        mock_fetch.assert_any_call(EVENTS_URL, timeout=30, verify=False)
+        mock_fetch.assert_any_call(f"{EVENTS_URL}?start=12", timeout=30, verify=False)
+        mock_fetch.assert_any_call(f"{EVENTS_URL}?start=24", timeout=30, verify=False)
 
     @patch("cal_scraper.sites.vida.fetcher.time.sleep")
     @patch("cal_scraper.sites.vida.fetcher.fetch")
@@ -77,7 +77,7 @@ class TestFetchEventsPages:
         pages = fetch_events_pages()
 
         assert len(pages) == 1
-        mock_fetch.assert_called_once_with(EVENTS_URL, timeout=30)
+        mock_fetch.assert_called_once_with(EVENTS_URL, timeout=30, verify=False)
         mock_sleep.assert_not_called()
 
     @patch("cal_scraper.sites.vida.fetcher.time.sleep")
@@ -123,7 +123,7 @@ class TestFetchWorkshopsPage:
         result = fetch_workshops_page()
 
         assert result == WORKSHOP_HTML
-        mock_fetch.assert_called_once_with(WORKSHOPS_URL, timeout=30)
+        mock_fetch.assert_called_once_with(WORKSHOPS_URL, timeout=30, verify=False)
 
     @patch("cal_scraper.sites.vida.fetcher.fetch")
     def test_verbose_logging(self, mock_fetch, caplog):

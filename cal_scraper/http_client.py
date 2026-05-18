@@ -47,6 +47,7 @@ def fetch(
     session: requests.Session | None = None,
     timeout: int | float = DEFAULT_TIMEOUT,
     headers: dict[str, str] | None = None,
+    verify: bool = True,
 ) -> requests.Response:
     """Fetch a URL, falling back to a CORS proxy on network failure.
 
@@ -73,7 +74,7 @@ def fetch(
         When *session* is provided, these are merged per ``requests``
         semantics (per-request headers win on conflict).
     """
-    kwargs: dict = {"timeout": timeout}
+    kwargs: dict = {"timeout": timeout, "verify": verify}
     if headers:
         kwargs["headers"] = headers
 
