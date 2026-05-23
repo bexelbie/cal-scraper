@@ -4,7 +4,8 @@
 
 set -u
 
-OUTPUT_DIR="${CAL_SCRAPER_OUTPUT_DIR:-/data}"
+OUTPUT_DIR="${CAL_SCRAPER_OUTPUT_DIR:-/app-data/output}"
+CACHE_DIR="${CAL_SCRAPER_CACHE_DIR:-/app-data/cache}"
 
-cal-scraper --output-dir "$OUTPUT_DIR"
+cal-scraper --output-dir "$OUTPUT_DIR" --cache-dir "$CACHE_DIR"
 exit $?

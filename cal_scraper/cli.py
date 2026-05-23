@@ -20,6 +20,7 @@ from pathlib import Path
 from cal_scraper.ics_generator import events_to_ics
 from cal_scraper.index_generator import generate_index
 from cal_scraper.models import Event
+from cal_scraper.translation_cache import TranslationCache
 from cal_scraper.sites import SITE_REGISTRY
 from cal_scraper.translator import TranslationError, load_azure_config, translate_events
 
@@ -214,6 +215,15 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="Path to a custom HTML template for the index page",
     )
+    parser.add_argument(
+        "--cache-dir",
+        default=os.environ.get("CAL_SCRAPER_CACHE_DIR", ""),
+        help=(
+            "Directory for the translation cache database. "
+            "If not set, translations are not cached. "
+            "(env: CAL_SCRAPER_CACHE_DIR)"
+        ),
+    )
     args = parser.parse_args(argv)
 
     # Reject suffixes that could escape the output directory
@@ -281,6 +291,12 @@ def main(argv: list[str] | None = None) -> int:
     succeeded: list[str] = []
     failed: list[str] = []
 
+    # Initialize translation cache if cache-dir is configured
+    translation_cache: TranslationCache | None = None
+    if args.cache_dir and azure_config is not None:
+        cache_path = Path(args.cache_dir) / "translations.db"
+        translation_cache = TranslationCache(cache_path)
+
     for site_name in selected:
         config = SITE_REGISTRY[site_name]
         site_module = _import_site(site_name)
@@ -313,23 +329,24 @@ def main(argv: list[str] | None = None) -> int:
         if azure_config is not None:
             print(f"Translating {len(events)} events for {site_name}...",
                   file=sys.stderr)
-            translated, translation_ok = translate_events(events, azure_config)
+            translated, translation_ok = translate_events(
+                events, azure_config, site=site_name, cache=translation_cache,
+            )
             if not translation_ok:
                 print(
-                    f"Error [{site_name}]: translation failed — "
-                    "keeping previous translated file (if any)",
+                    f"Warning [{site_name}]: some translations failed — "
+                    "using Czech fallback for affected events",
                     file=sys.stderr,
                 )
-                errors += 1
                 if translate_only:
+                    errors += 1
                     failed.append(site_name)
                     continue
-            else:
-                suffix = args.translate_suffix if not translate_only else args.filename_suffix
-                _write_ics(
-                    translated, config, output_dir, args,
-                    suffix=suffix, translated=True,
-                )
+            suffix = args.translate_suffix if not translate_only else args.filename_suffix
+            _write_ics(
+                translated, config, output_dir, args,
+                suffix=suffix, translated=True,
+            )
 
         succeeded.append(site_name)
 
@@ -361,6 +378,9 @@ def main(argv: list[str] | None = None) -> int:
         )
     else:
         print(f"cal-scraper: {ok}/{total} sites OK", file=sys.stderr)
+
+    if translation_cache is not None:
+        translation_cache.close()
 
     return 1 if errors else 0
 

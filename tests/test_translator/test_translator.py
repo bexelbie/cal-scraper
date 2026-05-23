@@ -10,14 +10,13 @@ import pytest
 
 from cal_scraper.models import PRAGUE_TZ, Event
 from cal_scraper.translator import (
-    BATCH_SIZE,
     TranslationError,
     _build_bilingual_description,
-    _build_translation_request,
     _format_duration,
-    _parse_translation_response,
+    _parse_single_response,
     load_azure_config,
     translate_events,
+    translate_single_event,
 )
 
 # ---------------------------------------------------------------------------
@@ -101,83 +100,36 @@ class TestLoadAzureConfig:
 
 
 # ---------------------------------------------------------------------------
-# _build_translation_request
+# _parse_single_response
 # ---------------------------------------------------------------------------
 
 
-class TestBuildTranslationRequest:
-    def test_builds_json_array(self):
-        items = _build_translation_request([SAMPLE_EVENT, SAMPLE_EVENT_ESTIMATED])
-        assert len(items) == 2
-        assert items[0]["id"] == 0
-        assert items[0]["title"] == "Tvořivá dílna pro rodiny"
-        assert items[1]["id"] == 1
-        assert items[1]["description"] == "Animovaný příběh o kotěti."
-
-
-# ---------------------------------------------------------------------------
-# _parse_translation_response
-# ---------------------------------------------------------------------------
-
-
-class TestParseTranslationResponse:
-    def test_parses_valid_json(self):
-        raw = json.dumps([
-            {"id": 0, "title": "Workshop", "description": "Come create."},
-            {"id": 1, "title": "Cat Adventure", "description": "Animated story."},
-        ])
-        result = _parse_translation_response(raw, 2)
-        assert len(result) == 2
-        assert result[0]["title"] == "Workshop"
+class TestParseSingleResponse:
+    def test_parses_valid_json_object(self):
+        raw = json.dumps({"title": "Workshop", "description": "Come create."})
+        result = _parse_single_response(raw)
+        assert result == {"title": "Workshop", "description": "Come create."}
 
     def test_strips_markdown_fences(self):
-        inner = json.dumps([{"id": 0, "title": "Test", "description": "Desc"}])
+        inner = json.dumps({"title": "Test", "description": "Desc"})
         raw = f"```json\n{inner}\n```"
-        result = _parse_translation_response(raw, 1)
-        assert len(result) == 1
+        result = _parse_single_response(raw)
+        assert result is not None
+        assert result["title"] == "Test"
 
-    def test_returns_empty_on_invalid_json(self):
-        result = _parse_translation_response("not json", 1)
-        assert result == []
+    def test_returns_none_on_invalid_json(self):
+        result = _parse_single_response("not json")
+        assert result is None
 
-    def test_returns_empty_on_wrong_count(self):
-        raw = json.dumps([{"id": 0, "title": "Test", "description": "Desc"}])
-        result = _parse_translation_response(raw, 2)
-        assert result == []
+    def test_returns_none_on_array(self):
+        raw = json.dumps([{"title": "Test", "description": "Desc"}])
+        result = _parse_single_response(raw)
+        assert result is None
 
-    def test_reordered_ids_sorted_correctly(self):
-        raw = json.dumps([
-            {"id": 1, "title": "Second", "description": "B"},
-            {"id": 0, "title": "First", "description": "A"},
-        ])
-        result = _parse_translation_response(raw, 2)
-        assert len(result) == 2
-        assert result[0]["id"] == 0
-        assert result[0]["title"] == "First"
-        assert result[1]["id"] == 1
-
-    def test_duplicate_ids_rejected(self):
-        raw = json.dumps([
-            {"id": 0, "title": "A", "description": "a"},
-            {"id": 0, "title": "B", "description": "b"},
-        ])
-        result = _parse_translation_response(raw, 2)
-        assert result == []
-
-    def test_unexpected_id_rejected(self):
-        raw = json.dumps([
-            {"id": 0, "title": "A", "description": "a"},
-            {"id": 5, "title": "B", "description": "b"},
-        ])
-        result = _parse_translation_response(raw, 2)
-        assert result == []
-
-    def test_missing_id_field_rejected(self):
-        raw = json.dumps([
-            {"title": "A", "description": "a"},
-        ])
-        result = _parse_translation_response(raw, 1)
-        assert result == []
+    def test_returns_none_on_missing_keys(self):
+        raw = json.dumps({"title": "Test"})
+        result = _parse_single_response(raw)
+        assert result is None
 
 
 # ---------------------------------------------------------------------------
@@ -289,6 +241,67 @@ class TestBuildBilingualDescription:
 
 
 # ---------------------------------------------------------------------------
+# translate_single_event
+# ---------------------------------------------------------------------------
+
+
+class TestTranslateSingleEvent:
+    FAKE_CONFIG = {
+        "azure_openai_endpoint": "https://test.openai.azure.com",
+        "azure_openai_key": "fake",
+        "azure_openai_deployment": "gpt-4o-mini",
+        "azure_openai_api_version": "2025-01-01",
+    }
+
+    def _mock_response(self, title, description):
+        """Build a mock Azure OpenAI response for a single event."""
+        return {
+            "choices": [{
+                "message": {
+                    "content": json.dumps(
+                        {"title": title, "description": description},
+                        ensure_ascii=False,
+                    )
+                },
+                "finish_reason": "stop",
+            }]
+        }
+
+    @patch("cal_scraper.translator._call_azure_openai")
+    def test_returns_translated_pair(self, mock_call):
+        mock_call.return_value = self._mock_response(
+            "Creative Workshop", "Come create with kids."
+        )
+        result = translate_single_event(SAMPLE_EVENT, self.FAKE_CONFIG)
+        assert result == ("Creative Workshop", "Come create with kids.")
+
+    @patch("cal_scraper.translator._call_azure_openai")
+    def test_returns_none_on_api_error(self, mock_call):
+        mock_call.side_effect = TranslationError("API down")
+        result = translate_single_event(SAMPLE_EVENT, self.FAKE_CONFIG)
+        assert result is None
+
+    @patch("cal_scraper.translator._call_azure_openai")
+    def test_returns_none_on_bad_json(self, mock_call):
+        mock_call.return_value = {
+            "choices": [{"message": {"content": "not json"}, "finish_reason": "stop"}]
+        }
+        result = translate_single_event(SAMPLE_EVENT, self.FAKE_CONFIG)
+        assert result is None
+
+    @patch("cal_scraper.translator._call_azure_openai")
+    def test_returns_none_on_truncation(self, mock_call):
+        mock_call.return_value = {
+            "choices": [{
+                "message": {"content": '{"title": "T", "description":'},
+                "finish_reason": "length",
+            }]
+        }
+        result = translate_single_event(SAMPLE_EVENT, self.FAKE_CONFIG)
+        assert result is None
+
+
+# ---------------------------------------------------------------------------
 # translate_events (integration with mock)
 # ---------------------------------------------------------------------------
 
@@ -301,22 +314,26 @@ class TestTranslateEvents:
         "azure_openai_api_version": "2025-01-01",
     }
 
-    def _mock_response(self, translations):
-        """Build a mock Azure OpenAI response."""
+    def _mock_response(self, title, description):
+        """Build a mock Azure OpenAI response for a single event."""
         return {
             "choices": [{
                 "message": {
-                    "content": json.dumps(translations, ensure_ascii=False)
-                }
+                    "content": json.dumps(
+                        {"title": title, "description": description},
+                        ensure_ascii=False,
+                    )
+                },
+                "finish_reason": "stop",
             }]
         }
 
     @patch("cal_scraper.translator._call_azure_openai")
     def test_bilingual_title(self, mock_call):
-        mock_call.return_value = self._mock_response([
-            {"id": 0, "title": "Creative Workshop for Families",
-             "description": "Come create with kids in the gallery."},
-        ])
+        mock_call.return_value = self._mock_response(
+            "Creative Workshop for Families",
+            "Come create with kids in the gallery.",
+        )
         result, ok = translate_events([SAMPLE_EVENT], self.FAKE_CONFIG)
         assert ok is True
         assert len(result) == 1
@@ -326,20 +343,16 @@ class TestTranslateEvents:
     @patch("cal_scraper.translator._call_azure_openai")
     def test_identical_title_no_duplication(self, mock_call):
         """If title is already English, don't duplicate it."""
-        mock_call.return_value = self._mock_response([
-            {"id": 0, "title": "Småland otevřen",
-             "description": ""},
-        ])
+        mock_call.return_value = self._mock_response("Småland otevřen", "")
         result, ok = translate_events([SAMPLE_EVENT_EMPTY_DESC], self.FAKE_CONFIG)
         assert ok is True
         assert result[0].title == "Småland otevřen"
 
     @patch("cal_scraper.translator._call_azure_openai")
     def test_bilingual_description_layout(self, mock_call):
-        mock_call.return_value = self._mock_response([
-            {"id": 0, "title": "Creative Workshop",
-             "description": "Come create with kids."},
-        ])
+        mock_call.return_value = self._mock_response(
+            "Creative Workshop", "Come create with kids."
+        )
         result, ok = translate_events([SAMPLE_EVENT], self.FAKE_CONFIG)
         assert ok is True
         desc = result[0].description
@@ -348,21 +361,13 @@ class TestTranslateEvents:
         assert "Přijďte tvořit s dětmi v galerii." in desc
 
     @patch("cal_scraper.translator._call_azure_openai")
-    def test_fallback_on_api_error(self, mock_call):
+    def test_per_event_fallback_on_api_error(self, mock_call):
+        """Individual failures fall back to Czech, don't block others."""
         mock_call.side_effect = TranslationError("API down")
         result, ok = translate_events([SAMPLE_EVENT], self.FAKE_CONFIG)
         assert ok is False
         assert result[0].title == SAMPLE_EVENT.title
         assert result[0].translated is False
-
-    @patch("cal_scraper.translator._call_azure_openai")
-    def test_fallback_on_bad_json(self, mock_call):
-        mock_call.return_value = {
-            "choices": [{"message": {"content": "not valid json"}}]
-        }
-        result, ok = translate_events([SAMPLE_EVENT], self.FAKE_CONFIG)
-        assert ok is False
-        assert result[0].title == SAMPLE_EVENT.title
 
     @patch("cal_scraper.translator._call_azure_openai")
     def test_empty_events_list(self, mock_call):
@@ -372,62 +377,28 @@ class TestTranslateEvents:
         mock_call.assert_not_called()
 
     @patch("cal_scraper.translator._call_azure_openai")
-    def test_multiple_events_single_batch(self, mock_call):
-        mock_call.return_value = self._mock_response([
-            {"id": 0, "title": "Workshop", "description": "Come create."},
-            {"id": 1, "title": "Cat Adventure", "description": "A story."},
-        ])
+    def test_multiple_events_one_call_each(self, mock_call):
+        """Each event gets its own API call."""
+        mock_call.side_effect = [
+            self._mock_response("Workshop", "Come create."),
+            self._mock_response("Cat Adventure", "A story."),
+        ]
         events = [SAMPLE_EVENT, SAMPLE_EVENT_ESTIMATED]
         result, ok = translate_events(events, self.FAKE_CONFIG)
         assert ok is True
         assert len(result) == 2
-        # Two events fit in one batch → single API call
-        mock_call.assert_called_once()
+        assert mock_call.call_count == 2
 
     @patch("cal_scraper.translator._call_azure_openai")
-    def test_events_split_into_batches(self, mock_call):
-        """Events exceeding BATCH_SIZE are split into multiple LLM calls."""
-        n = BATCH_SIZE + 3  # e.g. 13 events → 2 batches (10 + 3)
-        events = [
-            Event(
-                title=f"Event {i}",
-                dtstart=datetime(2026, 5, 10, 14, 0, tzinfo=PRAGUE_TZ),
-                dtend=datetime(2026, 5, 10, 16, 0, tzinfo=PRAGUE_TZ),
-                all_day=False, venue="V", description=f"Desc {i}",
-                url="https://example.com", raw_date="10/5/2026",
-            )
-            for i in range(n)
-        ]
-
-        def side_effect(config, messages, **kw):
-            # Parse the batch from the user message to know how many items
-            user_msg = messages[-1]["content"]
-            items = json.loads(user_msg.split("\n\n", 1)[1])
-            return self._mock_response([
-                {"id": i, "title": f"Translated {items[i]['id']}",
-                 "description": f"Eng desc {items[i]['id']}"}
-                for i in range(len(items))
-            ])
-
-        mock_call.side_effect = side_effect
-        result, ok = translate_events(events, self.FAKE_CONFIG)
-        assert ok is True
-        assert len(result) == n
-        assert mock_call.call_count == 2  # 10 + 3
-
-    @patch("cal_scraper.translator._call_azure_openai")
-    def test_batch_retry_on_failure(self, mock_call):
-        """A failed batch is retried once; success on retry is accepted."""
+    def test_retry_on_failure(self, mock_call):
+        """A failed translation is retried once."""
         call_count = {"n": 0}
 
         def side_effect(config, messages, **kw):
             call_count["n"] += 1
             if call_count["n"] == 1:
-                # First attempt: bad JSON
-                return {"choices": [{"message": {"content": "oops"}}]}
-            return self._mock_response([
-                {"id": 0, "title": "Workshop", "description": "Come create."},
-            ])
+                return {"choices": [{"message": {"content": "oops"}, "finish_reason": "stop"}]}
+            return self._mock_response("Workshop", "Come create.")
 
         mock_call.side_effect = side_effect
         result, ok = translate_events([SAMPLE_EVENT], self.FAKE_CONFIG)
@@ -436,53 +407,75 @@ class TestTranslateEvents:
         assert mock_call.call_count == 2  # initial + retry
 
     @patch("cal_scraper.translator._call_azure_openai")
-    def test_all_or_nothing_on_batch_failure(self, mock_call):
-        """If any batch fails after retry, return all originals unchanged."""
-        n = BATCH_SIZE + 1
-        events = [
-            Event(
-                title=f"Event {i}",
-                dtstart=datetime(2026, 5, 10, 14, 0, tzinfo=PRAGUE_TZ),
-                dtend=datetime(2026, 5, 10, 16, 0, tzinfo=PRAGUE_TZ),
-                all_day=False, venue="V", description=f"Desc {i}",
-                url="https://example.com", raw_date="10/5/2026",
-            )
-            for i in range(n)
-        ]
-
-        call_count = {"n": 0}
+    def test_partial_failure_mixed_results(self, mock_call):
+        """If one event fails after retry, others still translate."""
+        calls = {"n": 0}
 
         def side_effect(config, messages, **kw):
-            call_count["n"] += 1
-            user_msg = messages[-1]["content"]
-            items = json.loads(user_msg.split("\n\n", 1)[1])
-            if call_count["n"] == 1:
-                # First batch succeeds
-                return self._mock_response([
-                    {"id": i, "title": f"T{i}", "description": f"D{i}"}
-                    for i in range(len(items))
-                ])
-            # All subsequent calls (second batch + its retry) fail
-            return {"choices": [{"message": {"content": "bad"}}]}
+            calls["n"] += 1
+            # First event: succeed
+            if calls["n"] == 1:
+                return self._mock_response("Workshop", "Come create.")
+            # Second event: fail both attempts
+            return {"choices": [{"message": {"content": "bad"}, "finish_reason": "stop"}]}
 
         mock_call.side_effect = side_effect
+        events = [SAMPLE_EVENT, SAMPLE_EVENT_ESTIMATED]
         result, ok = translate_events(events, self.FAKE_CONFIG)
-        assert ok is False
-        # All original events returned unchanged
-        for i, ev in enumerate(result):
-            assert ev.title == f"Event {i}"
-            assert ev.translated is False
+        assert ok is False  # not all succeeded
+        assert len(result) == 2
+        # First event translated
+        assert "Workshop" in result[0].title
+        assert result[0].translated is True
+        # Second event fell back to Czech
+        assert result[1].title == SAMPLE_EVENT_ESTIMATED.title
+        assert result[1].translated is False
+
+    @patch("cal_scraper.translator._call_azure_openai")
+    def test_duplicate_titles_translated_independently(self, mock_call):
+        """Events with identical titles each get their own translation call."""
+        dup_event_a = Event(
+            title="Tajemství pavučiny",
+            dtstart=datetime(2026, 5, 24, 10, 0, tzinfo=PRAGUE_TZ),
+            dtend=datetime(2026, 5, 24, 12, 0, tzinfo=PRAGUE_TZ),
+            all_day=False, venue="Moravská galerie",
+            description="Workshop pro děti 4-6 let.",
+            url="https://moravska-galerie.cz/event/a",
+            raw_date="24. 5. 2026, 10:00–12:00",
+        )
+        dup_event_b = Event(
+            title="Tajemství pavučiny",
+            dtstart=datetime(2026, 5, 31, 10, 0, tzinfo=PRAGUE_TZ),
+            dtend=datetime(2026, 5, 31, 12, 0, tzinfo=PRAGUE_TZ),
+            all_day=False, venue="Moravská galerie",
+            description="Workshop pro děti 4-6 let.",
+            url="https://moravska-galerie.cz/event/b",
+            raw_date="31. 5. 2026, 10:00–12:00",
+        )
+
+        mock_call.return_value = self._mock_response(
+            "Mystery of the Spider Web", "Workshop for children 4-6 years."
+        )
+        events = [dup_event_a, dup_event_b]
+        result, ok = translate_events(events, self.FAKE_CONFIG)
+        assert ok is True
+        assert len(result) == 2
+        # Both events translated (even though same title)
+        assert result[0].translated is True
+        assert result[1].translated is True
+        assert "Mystery of the Spider Web" in result[0].title
+        assert "Mystery of the Spider Web" in result[1].title
 
     @patch("cal_scraper.translator._call_azure_openai")
     def test_truncated_response_detected(self, mock_call):
-        """finish_reason=length signals truncation — should fail without retry."""
+        """finish_reason=length signals truncation — should fail."""
         mock_call.return_value = {
             "choices": [{
-                "message": {"content": '[{"id": 0, "title": "T", "description":'},
+                "message": {"content": '{"title": "T", "description":'},
                 "finish_reason": "length",
             }]
         }
         result, ok = translate_events([SAMPLE_EVENT], self.FAKE_CONFIG)
         assert ok is False
-        # Truncation detected on first call; retry still attempted but also truncated
+        # Truncation detected on first call + retry
         assert mock_call.call_count == 2

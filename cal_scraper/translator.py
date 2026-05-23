@@ -4,9 +4,12 @@ Produces bilingual Event objects with:
 - Title: "English / Czech"
 - Description: English text → details → Czech text
 
+Translates events individually (one API call per event) and caches results
+in a SQLite database so unchanged events are never re-translated.
+
 Public API:
     load_azure_config()           — load config from env vars
-    translate_events(events, cfg) — returns new Events with bilingual content
+    translate_events(events, cfg, site, cache) — returns bilingual Events
 """
 
 from __future__ import annotations
@@ -19,6 +22,7 @@ from dataclasses import replace
 import requests as http_requests
 
 from cal_scraper.models import Event
+from cal_scraper.translation_cache import TranslationCache
 
 logger = logging.getLogger(__name__)
 
@@ -66,8 +70,6 @@ def load_azure_config() -> dict[str, str]:
 # ---------------------------------------------------------------------------
 # Azure OpenAI client
 # ---------------------------------------------------------------------------
-
-BATCH_SIZE = 10  # max events per LLM call to avoid output truncation
 
 SYSTEM_PROMPT = """\
 You translate Czech cultural event information to English.
@@ -140,32 +142,17 @@ def _call_azure_openai(
 
 
 # ---------------------------------------------------------------------------
-# Batch translation
+# Single-event translation
 # ---------------------------------------------------------------------------
 
 
-def _build_translation_request(events: list[Event]) -> list[dict]:
-    """Build a JSON-serialisable list of {id, title, description} for the LLM."""
-    items = []
-    for i, ev in enumerate(events):
-        items.append({
-            "id": i,
-            "title": ev.title,
-            "description": ev.description,
-        })
-    return items
+def _parse_single_response(raw: str) -> dict | None:
+    """Parse a single {title, description} JSON object from LLM output.
 
-
-def _parse_translation_response(raw: str, count: int) -> list[dict]:
-    """Parse the LLM's JSON array response.
-
-    Returns a list of {id, title, description} dicts sorted by id.
-    Falls back to empty list on parse failure.
+    Returns the parsed dict or None on failure.
     """
-    # Strip markdown fences if the model wraps output
     text = raw.strip()
     if text.startswith("```"):
-        # Remove opening fence (```json or ```)
         text = text.split("\n", 1)[1] if "\n" in text else text[3:]
     if text.endswith("```"):
         text = text[:-3].rstrip()
@@ -174,34 +161,72 @@ def _parse_translation_response(raw: str, count: int) -> list[dict]:
         parsed = json.loads(text)
     except json.JSONDecodeError:
         logger.warning("Translation response is not valid JSON")
-        return []
+        return None
 
-    if not isinstance(parsed, list) or len(parsed) != count:
-        logger.warning(
-            "Translation returned %d items, expected %d",
-            len(parsed) if isinstance(parsed, list) else 0,
-            count,
-        )
-        return []
+    if not isinstance(parsed, dict):
+        logger.warning("Translation response is not a JSON object")
+        return None
 
-    # Validate that every expected id is present exactly once
-    expected_ids = set(range(count))
-    actual_ids: set[int] = set()
-    for item in parsed:
-        id_val = item.get("id")
-        if not isinstance(id_val, int) or id_val not in expected_ids:
-            logger.warning(
-                "Translation response contains unexpected id: %r", id_val
-            )
-            return []
-        if id_val in actual_ids:
-            logger.warning("Translation response contains duplicate id: %d", id_val)
-            return []
-        actual_ids.add(id_val)
+    if "title" not in parsed or "description" not in parsed:
+        logger.warning("Translation response missing 'title' or 'description' keys")
+        return None
 
-    # Sort by id so callers can use positional indexing safely
-    parsed.sort(key=lambda x: x["id"])
     return parsed
+
+
+def translate_single_event(
+    event: Event,
+    config: dict[str, str],
+) -> tuple[str, str] | None:
+    """Translate one event via a single LLM call.
+
+    Returns (title_en, description_en) or None on failure.
+    """
+    item = json.dumps(
+        {"title": event.title, "description": event.description},
+        ensure_ascii=False,
+    )
+
+    messages = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {
+            "role": "user",
+            "content": (
+                "Translate the title and description from Czech to English. "
+                'Return a JSON object: {"title": "...", "description": "..."}\n\n'
+                + item
+            ),
+        },
+    ]
+
+    try:
+        resp = _call_azure_openai(config, messages)
+        content = resp["choices"][0]["message"]["content"]
+    except (TranslationError, KeyError, IndexError) as exc:
+        logger.warning("Translation failed for '%s': %s", event.title, exc)
+        return None
+
+    try:
+        finish_reason = resp["choices"][0].get("finish_reason", "")
+        if finish_reason == "length":
+            logger.warning(
+                "Translation truncated (finish_reason=length) for '%s'",
+                event.title,
+            )
+            return None
+    except (KeyError, IndexError):
+        pass
+
+    parsed = _parse_single_response(content)
+    if parsed is None:
+        return None
+
+    return parsed["title"], parsed["description"]
+
+
+# ---------------------------------------------------------------------------
+# Bilingual event assembly
+# ---------------------------------------------------------------------------
 
 
 def _build_bilingual_description(
@@ -267,117 +292,87 @@ def _format_duration(event: Event) -> str:
     return f"{hours}h {mins}min"
 
 
-def _translate_batch(
-    events: list[Event],
-    config: dict[str, str],
-) -> list[dict] | None:
-    """Translate a single batch of events via one LLM call.
-
-    Returns a list of {id, title, description} dicts (sorted by id),
-    or ``None`` on failure.
-    """
-    items = _build_translation_request(events)
-
-    messages = [
-        {"role": "system", "content": SYSTEM_PROMPT},
-        {
-            "role": "user",
-            "content": (
-                "Translate each item's title and description from Czech to English. "
-                "Return a JSON array with the same structure: "
-                '[{"id": 0, "title": "...", "description": "..."}, ...]\n\n'
-                + json.dumps(items, ensure_ascii=False)
-            ),
-        },
-    ]
-
-    try:
-        resp = _call_azure_openai(config, messages)
-        content = resp["choices"][0]["message"]["content"]
-    except (TranslationError, KeyError, IndexError) as exc:
-        logger.warning("Translation batch failed: %s", exc)
-        return None
-
-    # Detect output truncation via finish_reason
-    try:
-        finish_reason = resp["choices"][0].get("finish_reason", "")
-        if finish_reason == "length":
-            logger.warning(
-                "Translation truncated (finish_reason=length) for %d events",
-                len(events),
-            )
-            return None
-    except (KeyError, IndexError):
-        pass
-
-    translated = _parse_translation_response(content, len(events))
-    if not translated:
-        return None
-
-    return translated
+# ---------------------------------------------------------------------------
+# Main translation entry point
+# ---------------------------------------------------------------------------
 
 
 def translate_events(
     events: list[Event],
     config: dict[str, str],
+    *,
+    site: str = "",
+    cache: TranslationCache | None = None,
 ) -> tuple[list[Event], bool]:
     """Translate a list of events to bilingual English/Czech.
 
-    Events are split into batches of ``BATCH_SIZE`` to avoid LLM output
-    truncation.  Each failed batch is retried once.
+    Each event is translated individually. If a cache is provided, cached
+    translations are reused and only new/changed events hit the API.
 
-    Returns a tuple of (events, success):
-    - On success: (bilingual Event objects, True)
-    - On failure: (original Czech events unchanged, False)
+    Returns a tuple of (bilingual_events, all_succeeded):
+    - bilingual_events: Event objects with translated content where available,
+      Czech fallback where translation failed
+    - all_succeeded: True if every event was translated (from cache or API)
     """
     if not events:
         return events, True
 
-    # --- translate in batches ---
-    all_translated: list[dict] = []
-    for batch_start in range(0, len(events), BATCH_SIZE):
-        batch = events[batch_start : batch_start + BATCH_SIZE]
-
-        result = _translate_batch(batch, config)
-        if result is None:
-            # Retry once — LLM output can be non-deterministic
-            logger.info(
-                "Retrying batch %d–%d …",
-                batch_start,
-                batch_start + len(batch) - 1,
-            )
-            result = _translate_batch(batch, config)
-
-        if result is None:
-            logger.warning(
-                "Translation failed for batch %d–%d after retry — "
-                "using Czech originals",
-                batch_start,
-                batch_start + len(batch) - 1,
-            )
-            return events, False
-
-        all_translated.extend(result)
-
-    # --- build bilingual events ---
     result_events: list[Event] = []
-    for i, ev in enumerate(events):
-        tr = all_translated[i]
-        en_title = tr.get("title", ev.title)
-        en_desc = tr.get("description", ev.description)
+    failures = 0
+    cache_hits = 0
+    api_calls = 0
 
-        # Bilingual title: "English / Czech" (skip if identical)
-        if en_title.strip() != ev.title.strip() and en_title.strip():
-            bi_title = f"{en_title} / {ev.title}"
+    for ev in events:
+        en_title: str | None = None
+        en_desc: str | None = None
+
+        # Check cache first
+        if cache is not None:
+            cached = cache.get(site, ev)
+            if cached is not None:
+                en_title, en_desc = cached
+                cache_hits += 1
+
+        # Cache miss — call API
+        if en_title is None:
+            result = translate_single_event(ev, config)
+            api_calls += 1
+            if result is not None:
+                en_title, en_desc = result
+                # Store in cache for next run
+                if cache is not None:
+                    cache.put(site, ev, en_title, en_desc)
+            else:
+                # Retry once
+                result = translate_single_event(ev, config)
+                api_calls += 1
+                if result is not None:
+                    en_title, en_desc = result
+                    if cache is not None:
+                        cache.put(site, ev, en_title, en_desc)
+
+        # Build bilingual event or fall back to Czech
+        if en_title is not None and en_desc is not None:
+            if en_title.strip() != ev.title.strip() and en_title.strip():
+                bi_title = f"{en_title} / {ev.title}"
+            else:
+                bi_title = ev.title
+
+            dur_str = _format_duration(ev)
+            bi_desc = _build_bilingual_description(en_desc, ev.description, ev, dur_str)
+            result_events.append(
+                replace(ev, title=bi_title, description=bi_desc, translated=True)
+            )
         else:
-            bi_title = ev.title
+            # Translation failed — use Czech original with bilingual framing
+            failures += 1
+            logger.warning("Using Czech fallback for '%s'", ev.title)
+            result_events.append(ev)
 
-        # Bilingual description
-        dur_str = _format_duration(ev)
-        bi_desc = _build_bilingual_description(en_desc, ev.description, ev, dur_str)
-
-        result_events.append(
-            replace(ev, title=bi_title, description=bi_desc, translated=True)
-        )
-
-    return result_events, True
+    logger.info(
+        "Translation: %d cache hits, %d API calls, %d failures",
+        cache_hits,
+        api_calls,
+        failures,
+    )
+    return result_events, failures == 0

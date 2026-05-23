@@ -12,7 +12,7 @@ RUN pip install --no-cache-dir .
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
-# Output .ics files go to a bind-mounted volume
-VOLUME /data
+# ICS output and translation cache stored in bind-mounted volume
+VOLUME /app-data
 
 ENTRYPOINT ["/app/entrypoint.sh"]

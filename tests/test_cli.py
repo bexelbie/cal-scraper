@@ -378,7 +378,7 @@ class TestCliTranslateFlag:
             assert existing.read_text() == "OLD CONTENT"
 
     def test_translate_failure_returns_1(self, tmp_path, capsys):
-        """Translation failure counts as an error."""
+        """Translation failure counts as an error in --translate mode."""
         out_dir = tmp_path / "out"
         out_dir.mkdir()
         with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
@@ -389,7 +389,7 @@ class TestCliTranslateFlag:
             result = main(["--translate", "--site", "moravska-galerie", "-d", str(out_dir)])
             assert result == 1
             captured = capsys.readouterr().err
-            assert "translation failed" in captured.lower()
+            assert "translations failed" in captured.lower()
 
 
 # ---------------------------------------------------------------------------
