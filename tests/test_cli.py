@@ -201,7 +201,7 @@ class TestCliSummary:
         assert "moravska-galerie.ics" in captured
 
     def test_summary_no_events(self, tmp_path, capsys):
-        """With empty events: returns 1 and prints error to stderr."""
+        """With empty events: return 0, write empty ICS, and print benign note."""
         out_dir = tmp_path / "out"
         out_dir.mkdir()
         with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=[]), \
@@ -209,9 +209,12 @@ class TestCliSummary:
             from cal_scraper.cli import main
             result = main(["-d", str(out_dir)])
 
-        assert result == 1
+        assert result == 0
+        assert (out_dir / "moravska-galerie.ics").exists()
         captured = capsys.readouterr().err
-        assert "no events found" in captured.lower()
+        assert "no upcoming events" in captured.lower()
+        assert "sites OK" in captured
+        assert "failed:" not in captured
 
     def test_dry_run_prints_to_stdout(self, tmp_path, capsys):
         """--dry-run prints ICS to stdout instead of writing file."""
@@ -416,7 +419,7 @@ class TestCliSummaryLine:
         out_dir = tmp_path / "out"
         out_dir.mkdir()
         with patch("cal_scraper.sites.moravska_galerie.scrape", return_value=MOCK_EVENTS), \
-             patch("cal_scraper.sites.hvezdarna.scrape", return_value=[]), \
+             patch("cal_scraper.sites.hvezdarna.scrape", side_effect=RuntimeError("broken")), \
              patch("cal_scraper.cli.events_to_ics", return_value=MOCK_ICS):
             from cal_scraper.cli import main
             result = main(["--site", "moravska-galerie", "hvezdarna", "-d", str(out_dir)])

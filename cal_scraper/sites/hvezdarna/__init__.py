@@ -1,6 +1,9 @@
 """Hvězdárna a planetárium Brno — public planetarium shows scraper."""
 
 from __future__ import annotations
+
+from bs4 import BeautifulSoup
+
 from cal_scraper.models import Event
 from cal_scraper.sites import SiteConfig, register
 
@@ -21,5 +24,9 @@ def scrape(verbose: bool = False, **kwargs) -> list[Event]:
     from cal_scraper.sites.hvezdarna.extractor import extract_events
 
     pages = fetch_all_weeks(verbose=verbose)
+    if not any(BeautifulSoup(html, "lxml").select("div.main-program-porad") for html, _ in pages):
+        raise RuntimeError(
+            "Hvezdarna listing structure changed: missing 'div.main-program-porad' blocks"
+        )
     events = extract_events(pages)
     return events

@@ -1,13 +1,15 @@
 """Tests for VIDA! fetcher module."""
 
+from datetime import datetime
 from unittest.mock import MagicMock, patch
 
-
 from cal_scraper.sites.vida.fetcher import (
-    fetch_events_pages,
-    fetch_workshops_page,
+    CALENDAR_URL,
     EVENTS_URL,
-    WORKSHOPS_URL,
+    EMPTY_STREAK_STOP,
+    MAX_CALENDAR_DAYS,
+    fetch_calendar_days,
+    fetch_events_pages,
 )
 
 # ---------------------------------------------------------------------------
@@ -27,7 +29,12 @@ PAGE1_HTML = """
 PAGE2_HTML = "<html><body><div class='program-item'>page 2</div></body></html>"
 PAGE3_HTML = "<html><body><div class='program-item'>page 3</div></body></html>"
 
-WORKSHOP_HTML = "<html><body><p>workshop content</p></body></html>"
+CALENDAR_NONEMPTY_HTML = (
+    "<html><body><a class='cal-item' href='/doprovodny-program/test'>"
+    "<span class='dp-item-date'>10:30</span><div class='cal-item-detail'><h6>T</h6></div>"
+    "</a></body></html>"
+)
+CALENDAR_EMPTY_HTML = "<html><body></body></html>"
 
 
 def _mock_response(text: str) -> MagicMock:
@@ -35,6 +42,15 @@ def _mock_response(text: str) -> MagicMock:
     resp.text = text
     resp.raise_for_status = MagicMock()
     return resp
+
+
+_real_datetime = datetime
+
+
+class _FrozenDatetime(_real_datetime):
+    @classmethod
+    def now(cls, tz=None):
+        return _real_datetime(2026, 7, 15, 0, 0, tzinfo=tz)
 
 
 # ---------------------------------------------------------------------------
@@ -112,26 +128,51 @@ class TestFetchEventsPages:
         assert any("page 1" in r.message.lower() or EVENTS_URL in r.message for r in caplog.records)
 
 
-class TestFetchWorkshopsPage:
-    """Tests for fetch_workshops_page."""
+class TestFetchCalendarDays:
+    @patch("cal_scraper.sites.vida.fetcher.fetch")
+    @patch("cal_scraper.sites.vida.fetcher.time.sleep")
+    @patch("cal_scraper.sites.vida.fetcher.datetime", _FrozenDatetime)
+    def test_stops_after_consecutive_empty_days(self, mock_sleep, mock_fetch):
+        """Fetcher stops after EMPTY_STREAK_STOP consecutive empty responses."""
+        mock_fetch.side_effect = [
+            _mock_response(CALENDAR_NONEMPTY_HTML),
+            _mock_response(CALENDAR_NONEMPTY_HTML),
+            *[_mock_response(CALENDAR_EMPTY_HTML) for _ in range(EMPTY_STREAK_STOP)],
+        ]
+
+        days = fetch_calendar_days()
+
+        assert len(days) == 2 + EMPTY_STREAK_STOP
+        assert mock_fetch.call_count == 2 + EMPTY_STREAK_STOP
+        first_call = mock_fetch.call_args_list[0]
+        assert first_call.args[0] == f"{CALENDAR_URL}?tmpl=raw&day=2026-07-15"
+        assert first_call.kwargs["timeout"] == 30
+        assert first_call.kwargs["verify"] is False
+        assert mock_sleep.call_count == (2 + EMPTY_STREAK_STOP - 1)
 
     @patch("cal_scraper.sites.vida.fetcher.fetch")
-    def test_fetches_workshop_page(self, mock_fetch):
-        """Workshop fetcher returns HTML string."""
-        mock_fetch.return_value = _mock_response(WORKSHOP_HTML)
-
-        result = fetch_workshops_page()
-
-        assert result == WORKSHOP_HTML
-        mock_fetch.assert_called_once_with(WORKSHOPS_URL, timeout=30, verify=False)
+    @patch("cal_scraper.sites.vida.fetcher.time.sleep")
+    @patch("cal_scraper.sites.vida.fetcher.datetime", _FrozenDatetime)
+    def test_hard_cap_limits_total_days(self, mock_sleep, mock_fetch):
+        """Fetcher respects MAX_CALENDAR_DAYS hard cap."""
+        mock_fetch.side_effect = [_mock_response(CALENDAR_NONEMPTY_HTML)] * MAX_CALENDAR_DAYS
+        days = fetch_calendar_days()
+        assert len(days) == MAX_CALENDAR_DAYS
+        assert mock_fetch.call_count == MAX_CALENDAR_DAYS
+        assert mock_sleep.call_count == MAX_CALENDAR_DAYS - 1
 
     @patch("cal_scraper.sites.vida.fetcher.fetch")
-    def test_verbose_logging(self, mock_fetch, caplog):
-        """Verbose mode logs workshop page fetch."""
-        mock_fetch.return_value = _mock_response(WORKSHOP_HTML)
+    @patch("cal_scraper.sites.vida.fetcher.time.sleep")
+    @patch("cal_scraper.sites.vida.fetcher.datetime", _FrozenDatetime)
+    def test_verbose_logging(self, mock_sleep, mock_fetch, caplog):
+        """Verbose mode logs daily calendar requests."""
+        mock_fetch.side_effect = [
+            _mock_response(CALENDAR_NONEMPTY_HTML),
+            *[_mock_response(CALENDAR_EMPTY_HTML) for _ in range(EMPTY_STREAK_STOP)],
+        ]
 
         import logging
         with caplog.at_level(logging.INFO, logger="cal_scraper.sites.vida.fetcher"):
-            fetch_workshops_page(verbose=True)
+            fetch_calendar_days(verbose=True)
 
-        assert any(WORKSHOPS_URL in r.message for r in caplog.records)
+        assert any(CALENDAR_URL in r.message for r in caplog.records)

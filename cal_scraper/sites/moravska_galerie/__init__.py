@@ -1,6 +1,9 @@
 """Moravská galerie — children/family events scraper."""
 
 from __future__ import annotations
+
+from bs4 import BeautifulSoup
+
 from cal_scraper.models import Event
 from cal_scraper.sites import SiteConfig, register
 
@@ -22,6 +25,10 @@ def scrape(verbose: bool = False, no_details: bool = False) -> list[Event]:
     from cal_scraper.sites.moravska_galerie.detail_parser import enrich_events
 
     pages = fetch_all_pages()
+    if not any(BeautifulSoup(page, "lxml").select("article.elementor-post") for page in pages):
+        raise RuntimeError(
+            "Moravska galerie listing structure changed: missing 'article.elementor-post' cards"
+        )
     events = extract_all_events(pages)
     if not no_details:
         events = enrich_events(events)

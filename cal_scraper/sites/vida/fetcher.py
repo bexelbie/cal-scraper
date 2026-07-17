@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import logging
 import time
+from datetime import date, datetime, timedelta
+from zoneinfo import ZoneInfo
 
 from bs4 import BeautifulSoup
 
@@ -13,7 +15,10 @@ logger = logging.getLogger(__name__)
 
 BASE_URL = "http://vida.cz"
 EVENTS_URL = f"{BASE_URL}/doprovodny-program"
-WORKSHOPS_URL = f"{BASE_URL}/doprovodny-program/labodilny"
+CALENDAR_URL = "https://vida.cz/index.php/kalendar"
+PRAGUE_TZ = ZoneInfo("Europe/Prague")
+MAX_CALENDAR_DAYS = 120
+EMPTY_STREAK_STOP = 14
 
 
 def fetch_events_pages(verbose: bool = False) -> list[str]:
@@ -56,14 +61,34 @@ def fetch_events_pages(verbose: bool = False) -> list[str]:
     return pages
 
 
-def fetch_workshops_page(verbose: bool = False) -> str:
-    """Fetch the lab workshops page.
+def fetch_calendar_days(verbose: bool = False) -> list[tuple[date, str]]:
+    """Fetch VIDA per-day program fragments until sustained emptiness or hard cap."""
+    day = datetime.now(tz=PRAGUE_TZ).date()
+    fetched: list[tuple[date, str]] = []
+    empty_streak = 0
 
-    Returns the HTML string.
-    """
-    if verbose:
-        logger.info("Fetching VIDA workshops page: %s", WORKSHOPS_URL)
+    for index in range(MAX_CALENDAR_DAYS):
+        if index > 0:
+            time.sleep(1)
 
-    resp = fetch(WORKSHOPS_URL, timeout=30, verify=False)
-    resp.raise_for_status()
-    return resp.text
+        if verbose:
+            logger.info("Fetching VIDA daily calendar: %s day=%s", CALENDAR_URL, day)
+
+        # ponytail: build the query inline; fetch() has no params kwarg and day.isoformat()/tmpl are URL-safe.
+        url = f"{CALENDAR_URL}?tmpl=raw&day={day.isoformat()}"
+        resp = fetch(url, timeout=30, verify=False)
+        resp.raise_for_status()
+        html = resp.text
+        fetched.append((day, html))
+
+        has_items = bool(BeautifulSoup(html, "lxml").select("a.cal-item"))
+        if has_items:
+            empty_streak = 0
+        else:
+            empty_streak += 1
+            if empty_streak >= EMPTY_STREAK_STOP:
+                break
+
+        day = day + timedelta(days=1)
+
+    return fetched

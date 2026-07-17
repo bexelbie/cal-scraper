@@ -1,9 +1,9 @@
-"""HTML extraction for VIDA! Science Center events and workshops."""
+"""HTML extraction for VIDA! Science Center listing and daily program."""
 
 from __future__ import annotations
 
 import re
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
 
 from bs4 import BeautifulSoup
@@ -18,21 +18,18 @@ _EVENT_DATE_RE = re.compile(
     r"(\d{1,2})\.\s*(\d{1,2})\.\s*(\d{4})[,\s]*(\d{1,2}:\d{2})?(?:[,\s]+(.+))?"
 )
 
-_WORKSHOP_DATE_RE = re.compile(
-    r"[a-záčďéěíňóřšťúůýž]+\s+"
-    r"(\d{1,2})\.\s*(\d{1,2})\.\s*(\d{4})\s*[/,]\s*(\d{1,2}):(\d{2})",
-    re.IGNORECASE,
-)
-
-
 def extract_events_from_listing(pages: list[str]) -> list[Event]:
     """Extract events from paginated listing HTML pages."""
     today = datetime.now(tz=PRAGUE_TZ).date()
     events: list[Event] = []
+    has_program_items = False
 
     for html in pages:
         soup = BeautifulSoup(html, "lxml")
-        for card in soup.select("div.program-item"):
+        cards = soup.select("div.program-item")
+        if cards:
+            has_program_items = True
+        for card in cards:
             h3 = card.select_one("h3")
             if not h3:
                 continue
@@ -110,55 +107,66 @@ def extract_events_from_listing(pages: list[str]) -> list[Event]:
                 )
             )
 
+    if not has_program_items:
+        raise RuntimeError(
+            "VIDA listing structure changed: missing 'div.program-item' cards"
+        )
+
     return events
 
 
-def extract_workshops(html: str) -> list[Event]:
-    """Extract lab workshop events from the workshops page."""
+def extract_program_from_calendar(days: list[tuple[date, str]]) -> list[Event]:
+    """Extract timed events from VIDA's daily calendar endpoint fragments."""
     today = datetime.now(tz=PRAGUE_TZ).date()
     events: list[Event] = []
+    for day, html in days:
+        soup = BeautifulSoup(html, "lxml")
+        for item in soup.select("a.cal-item"):
+            time_el = item.select_one("span.dp-item-date")
+            title_el = item.select_one("h6")
+            if time_el is None or title_el is None:
+                continue
 
-    # Try to extract a description from the page
-    soup = BeautifulSoup(html, "lxml")
-    desc_text = ""
-    for p in soup.find_all("p"):
-        text = p.get_text(strip=True)
-        # Heuristic: pick the first paragraph with enough text that isn't a date
-        if len(text) > 40 and not _WORKSHOP_DATE_RE.search(text):
-            desc_text = text
-            break
-    if not desc_text:
-        desc_text = "Víkendová laboratorní dílna pro děti"
+            time_text = time_el.get_text(strip=True)
+            match = re.fullmatch(r"(\d{1,2}):(\d{2})", time_text)
+            if not match:
+                continue
 
-    for m in _WORKSHOP_DATE_RE.finditer(html):
-        day = int(m.group(1))
-        month = int(m.group(2))
-        year = int(m.group(3))
-        hour = int(m.group(4))
-        minute = int(m.group(5))
+            hour, minute = int(match.group(1)), int(match.group(2))
+            title = title_el.get_text(strip=True)
+            category_el = item.select_one("div.cal-item-detail span")
+            category = category_el.get_text(strip=True) if category_el else ""
 
-        dtstart = datetime(year, month, day, hour, minute, tzinfo=PRAGUE_TZ)
+            if "after dark" in title.lower() or "after dark" in category.lower():
+                continue
 
-        if dtstart.date() < today:
-            continue
+            dtstart = datetime(day.year, day.month, day.day, hour, minute, tzinfo=PRAGUE_TZ)
+            if dtstart.date() < today:
+                continue
 
-        dtend = dtstart + timedelta(minutes=90)
+            href = item.get("href", "").strip()
+            if href.startswith("/"):
+                url = f"https://vida.cz{href}"
+            else:
+                url = href
 
-        events.append(
-            Event(
-                title="VIDA! Labodílna",
-                dtstart=dtstart,
-                dtend=dtend,
-                all_day=False,
-                venue=DEFAULT_VENUE,
-                description=desc_text,
-                url=f"{BASE_URL}/doprovodny-program/labodilny",
-                raw_date=m.group(0),
-                price="",
-                reservation="",
-                sold_out=False,
-                estimated_end=True,
+            # ponytail: 45-minute duration is an estimate; endpoint has no end times (detail page has precise duration).
+            dtend = dtstart + timedelta(minutes=45)
+            events.append(
+                Event(
+                    title=title,
+                    dtstart=dtstart,
+                    dtend=dtend,
+                    all_day=False,
+                    venue=DEFAULT_VENUE,
+                    description=category,
+                    url=url,
+                    raw_date=f"{day.isoformat()} {hour:02d}:{minute:02d}",
+                    price="",
+                    reservation="",
+                    sold_out=False,
+                    estimated_end=True,
+                )
             )
-        )
 
     return events

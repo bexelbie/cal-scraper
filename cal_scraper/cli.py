@@ -49,6 +49,11 @@ _DISCLAIMER_CZ = (
 
 def _summarize(events: list[Event], output_path: str) -> None:
     """Print a human-readable summary of the scraping result to stdout."""
+    if not events:
+        print("Scraped 0 events (no upcoming events)")
+        print(f"Written to {output_path}")
+        return
+
     dates: list[date] = []
     for ev in events:
         d = ev.dtstart
@@ -312,14 +317,7 @@ def main(argv: list[str] | None = None) -> int:
             continue
 
         if not events:
-            print(
-                f"Error [{site_name}]: no events found. The website template may "
-                "have changed — check that selectors still match.",
-                file=sys.stderr,
-            )
-            errors += 1
-            failed.append(site_name)
-            continue
+            print(f"Note [{site_name}]: no upcoming events", file=sys.stderr)
 
         # --- Czech output (unless --translate-only) ---
         if not translate_only:

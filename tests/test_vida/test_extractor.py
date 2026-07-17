@@ -1,15 +1,15 @@
 """Tests for VIDA! extractor module."""
 
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from unittest.mock import patch
 from zoneinfo import ZoneInfo
 
 import pytest
 
 from cal_scraper.sites.vida.extractor import (
-    extract_events_from_listing,
-    extract_workshops,
     DEFAULT_VENUE,
+    extract_events_from_listing,
+    extract_program_from_calendar,
 )
 
 PRAGUE_TZ = ZoneInfo("Europe/Prague")
@@ -184,90 +184,79 @@ class TestExtractEventsFromListing:
 
         assert events[0].url == "http://vida.cz/doprovodny-program/ext"
 
+    def test_missing_program_item_structure_raises(self):
+        """Missing program cards is treated as structural breakage."""
+        with pytest.raises(RuntimeError, match="div.program-item"):
+            extract_events_from_listing(["<html><body><p>empty</p></body></html>"])
+
+    def test_cards_present_but_no_matching_future_events_returns_empty(self):
+        """Cards may exist even when no future/matching events are extracted."""
+        html = _page(
+            _card("VIDA! After Dark", "pátek 19. 6. 2026, 19:00"),
+            _card("Minulá akce", "pondělí 1. 1. 2020, 10:00"),
+        )
+        events = extract_events_from_listing([html])
+        assert events == []
+
 
 # ---------------------------------------------------------------------------
-# Workshop tests
+# Daily program endpoint tests
 # ---------------------------------------------------------------------------
 
 
-class TestExtractWorkshops:
-    """Tests for extract_workshops."""
+class TestExtractProgramFromCalendar:
+    """Tests for extract_program_from_calendar."""
 
-    WORKSHOP_HTML = """
-    <html><body>
-    <h1>Labodílny</h1>
-    <p>Přijďte s dětmi na víkendové laboratorní dílny, kde si vyzkoušíte zajímavé pokusy.</p>
-    <p>pátek 3. 4. 2026 / 12:00</p>
-    <p>pátek 3. 4. 2026 / 14:00</p>
-    <p>sobota 4. 4. 2026 / 12:00</p>
-    </body></html>
-    """
-
-    def test_parse_workshop_timeslots(self):
-        """Workshop dates with / separator are parsed correctly."""
-        events = extract_workshops(self.WORKSHOP_HTML)
-
-        assert len(events) == 3
-        assert events[0].dtstart == datetime(2026, 4, 3, 12, 0, tzinfo=PRAGUE_TZ)
-        assert events[1].dtstart == datetime(2026, 4, 3, 14, 0, tzinfo=PRAGUE_TZ)
-        assert events[2].dtstart == datetime(2026, 4, 4, 12, 0, tzinfo=PRAGUE_TZ)
-
-    def test_workshop_duration_90_minutes(self):
-        """Workshop duration is 90 minutes."""
-        events = extract_workshops(self.WORKSHOP_HTML)
-
-        for ev in events:
-            assert ev.dtend == ev.dtstart + timedelta(minutes=90)
-
-    def test_workshop_title(self):
-        """Workshop title is 'VIDA! Labodílna'."""
-        events = extract_workshops(self.WORKSHOP_HTML)
-
-        for ev in events:
-            assert ev.title == "VIDA! Labodílna"
-
-    def test_workshop_venue(self):
-        """Workshop venue is the default VIDA! venue."""
-        events = extract_workshops(self.WORKSHOP_HTML)
-
-        for ev in events:
-            assert ev.venue == DEFAULT_VENUE
-
-    def test_workshop_url(self):
-        """Workshop URL points to labodilny page."""
-        events = extract_workshops(self.WORKSHOP_HTML)
-
-        for ev in events:
-            assert ev.url == "http://vida.cz/doprovodny-program/labodilny"
-
-    def test_past_workshop_dates_skipped(self):
-        """Past workshop dates are excluded."""
+    def test_extracts_calendar_items(self):
+        """Calendar item maps to Event fields with 45-minute estimated duration."""
         html = """
         <html><body>
-        <p>pátek 1. 1. 2020 / 12:00</p>
-        <p>sobota 2. 1. 2020 / 14:00</p>
+          <a class="cal-item mb-2 event-4228" href="/doprovodny-program/poklad-ve-vlnach" data-id="4228">
+            <span class="dp-item-date">10:30</span>
+            <div class="cal-item-detail cal-item-list px-3">
+              <h6>Poklad ve vlnách</h6><span>Prázdninové dílny s pokusy</span>
+            </div>
+          </a>
         </body></html>
         """
-        events = extract_workshops(html)
-
-        assert len(events) == 0
-
-    def test_workshop_description_extracted(self):
-        """Workshop description is extracted from page content."""
-        events = extract_workshops(self.WORKSHOP_HTML)
-
-        assert len(events) > 0
-        # The long paragraph should be used as description
-        assert "laboratorní dílny" in events[0].description
-
-    def test_workshop_default_description(self):
-        """Fallback description when no descriptive text found."""
-        html = """
-        <html><body>
-        <p>pátek 3. 4. 2026 / 12:00</p>
-        </body></html>
-        """
-        events = extract_workshops(html)
+        events = extract_program_from_calendar([(date(2026, 7, 16), html)])
 
         assert len(events) == 1
-        assert events[0].description == "Víkendová laboratorní dílna pro děti"
+        ev = events[0]
+        assert ev.title == "Poklad ve vlnách"
+        assert ev.dtstart == datetime(2026, 7, 16, 10, 30, tzinfo=PRAGUE_TZ)
+        assert ev.dtend == ev.dtstart + timedelta(minutes=45)
+        assert ev.estimated_end is True
+        assert ev.description == "Prázdninové dílny s pokusy"
+        assert ev.url == "https://vida.cz/doprovodny-program/poklad-ve-vlnach"
+        assert ev.venue == DEFAULT_VENUE
+        assert ev.raw_date == "2026-07-16 10:30"
+
+    def test_after_dark_filtered_by_title_or_category(self):
+        """After Dark entries are excluded from daily program feed."""
+        html = """
+        <html><body>
+          <a class="cal-item" href="/doprovodny-program/a"><span class="dp-item-date">12:00</span>
+            <div class="cal-item-detail"><h6>VIDA! After Dark</h6><span>Program</span></div></a>
+          <a class="cal-item" href="/doprovodny-program/b"><span class="dp-item-date">13:00</span>
+            <div class="cal-item-detail"><h6>Jiný program</h6><span>After Dark speciál</span></div></a>
+        </body></html>
+        """
+        events = extract_program_from_calendar([(date(2026, 7, 16), html)])
+        assert events == []
+
+    def test_past_date_skipped(self):
+        """Calendar entries before today are skipped."""
+        html = """
+        <html><body>
+          <a class="cal-item" href="/doprovodny-program/a"><span class="dp-item-date">12:00</span>
+            <div class="cal-item-detail"><h6>Dávno</h6><span>Kat</span></div></a>
+        </body></html>
+        """
+        events = extract_program_from_calendar([(date(2025, 12, 31), html)])
+        assert events == []
+
+    def test_empty_day_fragment_yields_no_events(self):
+        """Endpoint day with no a.cal-item is a legitimate empty result."""
+        events = extract_program_from_calendar([(date(2026, 7, 16), "<html><body></body></html>")])
+        assert events == []

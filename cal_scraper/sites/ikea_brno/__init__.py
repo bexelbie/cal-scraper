@@ -143,6 +143,18 @@ def scrape(verbose: bool = False, **kwargs) -> list[Event]:
     from cal_scraper.sites.ikea_brno.classifier import filter_kids_events
 
     raw_events = fetch_events(verbose=verbose)
+    if not isinstance(raw_events, list):
+        raise RuntimeError(
+            "IKEA Brno API structure changed: expected top-level JSON list of events"
+        )
+    if raw_events and not any(
+        isinstance(ev, dict) and "eventDetails" in ev and "timeSlots" in ev
+        for ev in raw_events
+    ):
+        raise RuntimeError(
+            "IKEA Brno API structure changed: missing eventDetails/timeSlots in events"
+        )
+
     kids_events = filter_kids_events(raw_events)
 
     if verbose:
