@@ -217,6 +217,8 @@ systemctl --user status cal-scraper.timer    # timer status
 journalctl --user -u cal-scraper --no-pager -n 50  # recent logs
 ```
 
+For fleet monitoring, set `FLEET_FACT_DIR` to a writable fact spool directory (and `FLEET_HOST` if you need a non-default host tag). Each run writes a `fleet_fact` line-protocol file with `status` set to `ok`, `empty`, `partial`, or `failed`; if `FLEET_FACT_DIR` is unset, emission is skipped.
+
 ### Serving the feeds
 
 Point a web server (nginx, caddy, etc.) at the output directory. The generated

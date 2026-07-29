@@ -17,6 +17,7 @@ import tempfile
 from datetime import date, datetime
 from pathlib import Path
 
+from cal_scraper.fleet_fact import emit_fleet_fact
 from cal_scraper.ics_generator import events_to_ics
 from cal_scraper.index_generator import generate_index
 from cal_scraper.models import Event
@@ -231,156 +232,190 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    # Reject suffixes that could escape the output directory
-    import re
-    _SAFE_SUFFIX = re.compile(r"^[a-zA-Z0-9._-]*$")
-    for label, value in [
-        ("--filename-suffix", args.filename_suffix),
-        ("--translate-suffix", args.translate_suffix),
-    ]:
-        if not _SAFE_SUFFIX.match(value):
-            parser.error(f"{label} may only contain letters, digits, dots, hyphens, "
-                         f"and underscores (got {value!r})")
-
-    logging.basicConfig(
-        level=logging.DEBUG if args.verbose else logging.WARNING,
-        format="%(levelname)s: %(message)s",
-    )
-
-    selected = args.site if args.site is not None else list(SITE_REGISTRY.keys())
+    selected: list[str] = []
     output_dir = Path(args.output_dir)
-
-    # --index-only: regenerate index.html from existing .ics files and exit
-    if args.index_only:
-        if not output_dir.is_dir():
-            parser.error(f"output directory does not exist: {output_dir}")
-        tpl_path = Path(args.index_template) if args.index_template else None
-        cal_base_url = os.environ.get("CAL_BASE_URL", "").strip()
-        index_html = generate_index(
-            output_dir, template_path=tpl_path, base_url=cal_base_url,
-        )
-        index_path = output_dir / "index.html"
-        fd, tmp = tempfile.mkstemp(dir=index_path.parent, suffix=".html.tmp")
-        try:
-            with os.fdopen(fd, "w", encoding="utf-8") as fh:
-                fh.write(index_html)
-            os.replace(tmp, index_path)
-        except BaseException:
-            os.unlink(tmp)
-            raise
-        print(f"Index written to {index_path}")
-        return 0
-
-    # Resolve translation mode:
-    #   --translate-only  → translate required, Czech output suppressed
-    #   --no-translate    → translation suppressed
-    #   (default)         → auto-detect: translate if Azure vars are present
-    azure_config: dict[str, str] | None = None
-    translate_only = args.translate_only
-
-    if translate_only:
-        # Explicit --translate-only: Azure config is mandatory
-        try:
-            azure_config = load_azure_config()
-        except TranslationError as exc:
-            print(f"Error: {exc}", file=sys.stderr)
-            return 1
-    elif not args.no_translate:
-        # Default: auto-detect Azure config (translate if available)
-        try:
-            azure_config = load_azure_config()
-        except TranslationError:
-            azure_config = None  # silently skip translation
-
     errors = 0
     succeeded: list[str] = []
     failed: list[str] = []
+    total_events = 0
+    wrote_index = False
+    fact_output_dir = os.environ.get("FLEET_FACT_DIR", "").strip()
+    status = "failed"
+    emit_fact = True
 
-    # Initialize translation cache if cache-dir is configured
-    translation_cache: TranslationCache | None = None
-    if args.cache_dir and azure_config is not None:
-        cache_path = Path(args.cache_dir) / "translations.db"
-        translation_cache = TranslationCache(cache_path)
+    def _build_detail() -> dict[str, object]:
+        return {
+            "sites_requested": len(selected),
+            "sites_succeeded": len(succeeded),
+            "sites_failed": len(failed),
+            "errors": errors,
+            "events_scraped": total_events,
+            "wrote_index": wrote_index,
+            "dry_run": args.dry_run,
+            "translate_only": args.translate_only,
+            "index_only": args.index_only,
+        }
 
-    for site_name in selected:
-        config = SITE_REGISTRY[site_name]
-        site_module = _import_site(site_name)
+    try:
+        # Reject suffixes that could escape the output directory
+        import re
+        _SAFE_SUFFIX = re.compile(r"^[a-zA-Z0-9._-]*$")
+        for label, value in [
+            ("--filename-suffix", args.filename_suffix),
+            ("--translate-suffix", args.translate_suffix),
+        ]:
+            if not _SAFE_SUFFIX.match(value):
+                parser.error(f"{label} may only contain letters, digits, dots, hyphens, "
+                             f"and underscores (got {value!r})")
 
-        try:
-            events = site_module.scrape(
-                verbose=args.verbose, no_details=args.no_details
+        logging.basicConfig(
+            level=logging.DEBUG if args.verbose else logging.WARNING,
+            format="%(levelname)s: %(message)s",
+        )
+
+        selected = args.site if args.site is not None else list(SITE_REGISTRY.keys())
+
+        # --index-only: regenerate index.html from existing .ics files and exit
+        if args.index_only:
+            emit_fact = False
+            if not output_dir.is_dir():
+                parser.error(f"output directory does not exist: {output_dir}")
+            tpl_path = Path(args.index_template) if args.index_template else None
+            cal_base_url = os.environ.get("CAL_BASE_URL", "").strip()
+            index_html = generate_index(
+                output_dir, template_path=tpl_path, base_url=cal_base_url,
             )
-        except Exception as exc:
-            print(f"Error [{site_name}]: {exc}", file=sys.stderr)
-            errors += 1
-            failed.append(site_name)
-            continue
+            index_path = output_dir / "index.html"
+            fd, tmp = tempfile.mkstemp(dir=index_path.parent, suffix=".html.tmp")
+            try:
+                with os.fdopen(fd, "w", encoding="utf-8") as fh:
+                    fh.write(index_html)
+                os.replace(tmp, index_path)
+            except BaseException:
+                os.unlink(tmp)
+                raise
+            print(f"Index written to {index_path}")
+            return 0
 
-        if not events:
-            print(f"Note [{site_name}]: no upcoming events", file=sys.stderr)
+        # Resolve translation mode:
+        #   --translate-only  → translate required, Czech output suppressed
+        #   --no-translate    → translation suppressed
+        #   (default)         → auto-detect: translate if Azure vars are present
+        azure_config: dict[str, str] | None = None
+        translate_only = args.translate_only
 
-        # --- Czech output (unless --translate-only) ---
-        if not translate_only:
-            _write_ics(events, config, output_dir, args, suffix=args.filename_suffix)
+        if translate_only:
+            # Explicit --translate-only: Azure config is mandatory
+            try:
+                azure_config = load_azure_config()
+            except TranslationError as exc:
+                print(f"Error: {exc}", file=sys.stderr)
+                errors = 1
+                return 1
+        elif not args.no_translate:
+            # Default: auto-detect Azure config (translate if available)
+            try:
+                azure_config = load_azure_config()
+            except TranslationError:
+                azure_config = None  # silently skip translation
 
-        # --- Translated output (when Azure config is available) ---
-        if azure_config is not None:
-            print(f"Translating {len(events)} events for {site_name}...",
-                  file=sys.stderr)
-            translated, translation_ok = translate_events(
-                events, azure_config, site=site_name, cache=translation_cache,
-            )
-            if not translation_ok:
-                print(
-                    f"Warning [{site_name}]: some translations failed — "
-                    "using Czech fallback for affected events",
-                    file=sys.stderr,
+        # Initialize translation cache if cache-dir is configured
+        translation_cache: TranslationCache | None = None
+        if args.cache_dir and azure_config is not None:
+            cache_path = Path(args.cache_dir) / "translations.db"
+            translation_cache = TranslationCache(cache_path)
+
+        for site_name in selected:
+            config = SITE_REGISTRY[site_name]
+            site_module = _import_site(site_name)
+
+            try:
+                events = site_module.scrape(
+                    verbose=args.verbose, no_details=args.no_details
                 )
-                if translate_only:
-                    errors += 1
-                    failed.append(site_name)
-                    continue
-            suffix = args.translate_suffix if not translate_only else args.filename_suffix
-            _write_ics(
-                translated, config, output_dir, args,
-                suffix=suffix, translated=True,
+            except Exception as exc:
+                print(f"Error [{site_name}]: {exc}", file=sys.stderr)
+                errors += 1
+                failed.append(site_name)
+                continue
+
+            if not events:
+                print(f"Note [{site_name}]: no upcoming events", file=sys.stderr)
+
+            total_events += len(events)
+
+            # --- Czech output (unless --translate-only) ---
+            if not translate_only:
+                _write_ics(events, config, output_dir, args, suffix=args.filename_suffix)
+
+            # --- Translated output (when Azure config is available) ---
+            if azure_config is not None:
+                print(f"Translating {len(events)} events for {site_name}...",
+                      file=sys.stderr)
+                translated, translation_ok = translate_events(
+                    events, azure_config, site=site_name, cache=translation_cache,
+                )
+                if not translation_ok:
+                    print(
+                        f"Warning [{site_name}]: some translations failed — "
+                        "using Czech fallback for affected events",
+                        file=sys.stderr,
+                    )
+                    if translate_only:
+                        errors += 1
+                        failed.append(site_name)
+                        continue
+                suffix = args.translate_suffix if not translate_only else args.filename_suffix
+                _write_ics(
+                    translated, config, output_dir, args,
+                    suffix=suffix, translated=True,
+                )
+
+            succeeded.append(site_name)
+
+        # Generate index.html unless suppressed or dry-run
+        if succeeded and not args.dry_run and not args.no_index:
+            tpl_path = Path(args.index_template) if args.index_template else None
+            cal_base_url = os.environ.get("CAL_BASE_URL", "").strip()
+            index_html = generate_index(
+                output_dir, template_path=tpl_path, base_url=cal_base_url,
             )
+            index_path = output_dir / "index.html"
+            fd, tmp = tempfile.mkstemp(dir=index_path.parent, suffix=".html.tmp")
+            try:
+                with os.fdopen(fd, "w", encoding="utf-8") as fh:
+                    fh.write(index_html)
+                os.replace(tmp, index_path)
+            except BaseException:
+                os.unlink(tmp)
+                raise
+            print(f"Index written to {index_path}")
+            wrote_index = True
 
-        succeeded.append(site_name)
+        # Final summary for journal/log visibility
+        total = len(selected)
+        ok = len(succeeded)
+        if failed:
+            print(
+                f"cal-scraper: {ok}/{total} sites OK (failed: {', '.join(failed)})",
+                file=sys.stderr,
+            )
+        else:
+            print(f"cal-scraper: {ok}/{total} sites OK", file=sys.stderr)
 
-    # Generate index.html unless suppressed or dry-run
-    if succeeded and not args.dry_run and not args.no_index:
-        tpl_path = Path(args.index_template) if args.index_template else None
-        cal_base_url = os.environ.get("CAL_BASE_URL", "").strip()
-        index_html = generate_index(
-            output_dir, template_path=tpl_path, base_url=cal_base_url,
-        )
-        index_path = output_dir / "index.html"
-        fd, tmp = tempfile.mkstemp(dir=index_path.parent, suffix=".html.tmp")
-        try:
-            with os.fdopen(fd, "w", encoding="utf-8") as fh:
-                fh.write(index_html)
-            os.replace(tmp, index_path)
-        except BaseException:
-            os.unlink(tmp)
-            raise
-        print(f"Index written to {index_path}")
+        if translation_cache is not None:
+            translation_cache.close()
 
-    # Final summary for journal/log visibility
-    total = len(selected)
-    ok = len(succeeded)
-    if failed:
-        print(
-            f"cal-scraper: {ok}/{total} sites OK (failed: {', '.join(failed)})",
-            file=sys.stderr,
-        )
-    else:
-        print(f"cal-scraper: {ok}/{total} sites OK", file=sys.stderr)
-
-    if translation_cache is not None:
-        translation_cache.close()
-
-    return 1 if errors else 0
+        status = "empty" if total_events == 0 else "ok"
+        if errors:
+            status = "partial" if succeeded else "failed"
+        return 1 if errors else 0
+    finally:
+        if emit_fact:
+            if sys.exc_info()[0] is not None and status != "failed":
+                status = "failed"
+            detail = _build_detail()
+            emit_fleet_fact(detail, status, output_dir=fact_output_dir)
 
 
 def _import_site(name: str):
