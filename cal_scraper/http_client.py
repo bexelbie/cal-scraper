@@ -1,9 +1,8 @@
-"""Shared HTTP client with optional CORS proxy fallback.
+"""Shared HTTP client with optional forward proxy fallback.
 
-When the ``CORS_PROXY_URL`` environment variable is set and a direct request
-fails with a timeout or connection error, the client retries the request
-through the specified CORS proxy.  The proxy is only attempted for HTTPS
-URLs (the proxy rejects plain HTTP).
+When the ``FALLBACK_PROXY_URL`` environment variable is set and a direct
+request fails with a timeout or connection error, the client retries the
+request through the specified forward proxy.
 
 Exports:
     fetch — fetch a URL with optional proxy fallback
@@ -22,23 +21,8 @@ DEFAULT_TIMEOUT = 30  # seconds
 
 
 def _get_proxy_url() -> str | None:
-    """Return the CORS proxy URL from environment, or None if unset."""
-    return os.environ.get("CORS_PROXY_URL") or None
-
-
-def _is_proxy_eligible(url: str) -> bool:
-    """Check if a URL can be routed through the proxy (HTTPS only)."""
-    return url.lower().startswith("https://")
-
-
-def _fetch_via_proxy(
-    proxy_url: str,
-    target_url: str,
-    timeout: int | float,
-) -> requests.Response:
-    """POST to the CORS proxy and return the upstream response."""
-    logger.info("Retrying via CORS proxy: %s", target_url)
-    return requests.post(proxy_url, json={"url": target_url}, timeout=timeout)
+    """Return the fallback proxy URL from environment, or None if unset."""
+    return os.environ.get("FALLBACK_PROXY_URL") or None
 
 
 def fetch(
@@ -49,13 +33,12 @@ def fetch(
     headers: dict[str, str] | None = None,
     verify: bool = True,
 ) -> requests.Response:
-    """Fetch a URL, falling back to a CORS proxy on network failure.
+    """Fetch a URL, falling back to a forward proxy on network failure.
 
     1. Tries a direct ``GET`` via *session* (or ``requests.get``).
     2. On :class:`~requests.exceptions.Timeout` or
-       :class:`~requests.exceptions.ConnectionError` — **and** the
-       ``CORS_PROXY_URL`` env-var is set **and** *url* is HTTPS —
-       retries the request through the proxy.
+       :class:`~requests.exceptions.ConnectionError` — and the
+       ``FALLBACK_PROXY_URL`` env-var is set — retries through the proxy.
     3. All other exceptions propagate unchanged.
 
     The caller is responsible for calling ``response.raise_for_status()``
@@ -84,9 +67,14 @@ def fetch(
         return client.get(url, **kwargs)  # type: ignore[union-attr]
     except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as direct_err:
         proxy_url = _get_proxy_url()
-        if proxy_url and _is_proxy_eligible(url):
+        if proxy_url:
             try:
-                return _fetch_via_proxy(proxy_url, url, timeout)
+                logger.info("Retrying via fallback proxy: %s", url)
+                return client.get(
+                    url,
+                    **kwargs,
+                    proxies={"http": proxy_url, "https": proxy_url},
+                )
             except requests.RequestException as proxy_err:
-                logger.warning("CORS proxy also failed for %s: %s", url, proxy_err)
+                logger.warning("Fallback proxy also failed for %s: %s", url, proxy_err)
         raise direct_err

@@ -149,20 +149,19 @@ introduces a new date format. The fallback:
 - Logs at INFO level when the LLM successfully parses a date
 - Is never called for known regex patterns (zero added latency for the common case)
 
-### CORS Proxy Fallback
+### Fallback Proxy
 
 Some venue websites block requests from certain IP ranges. When the
-`CORS_PROXY_URL` environment variable is set, any request that fails with
+`FALLBACK_PROXY_URL` environment variable is set, any request that fails with
 a timeout or connection error is automatically retried through the proxy.
 
 ```bash
-export CORS_PROXY_URL=https://your-proxy.example.com
+export FALLBACK_PROXY_URL=http://your-proxy.example.com:8888
 ```
 
 Requirements:
-- The proxy accepts `POST` with `{"url": "https://..."}` and returns the
-  response body verbatim
-- Only HTTPS target URLs are retried (plain HTTP requests skip the proxy)
+- The proxy supports HTTP forward-proxy connections for HTTP and HTTPS targets
+- The proxy URL may use either `http://` or `https://`
 - The direct request is always tried first — the proxy is purely a fallback
 
 ## Container Deployment
