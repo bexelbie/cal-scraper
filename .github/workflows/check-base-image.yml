@@ -1,0 +1,169 @@
+# ABOUTME: Rebuilds latest when the Python base image changes.
+# ABOUTME: Preserves the application revision and version from the published image.
+
+name: Check Base Image Updates
+
+on:
+  schedule:
+    - cron: "0 6 1 * *"
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  BASE_IMAGE_NAME: python:3.13-slim
+  DEPLOYMENT_TAG: latest
+
+jobs:
+  check-base-image:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: container-publish
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Set up crane
+        uses: imjasonh/setup-crane@v0.4
+
+      - name: Log in to ghcr.io
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compare base image digests
+        id: check
+        run: |
+          set -euo pipefail
+
+          image_repo="${REGISTRY}/${IMAGE_NAME,,}"
+          published_image="${image_repo}:${DEPLOYMENT_TAG}"
+          config_json="$(crane config "${published_image}")"
+
+          current_base_digest="$(jq -r '.config.Labels["org.opencontainers.image.base.digest"] // empty' <<<"${config_json}")"
+          current_revision="$(jq -r '.config.Labels["org.opencontainers.image.revision"] // empty' <<<"${config_json}")"
+          current_version="$(jq -r '.config.Labels["org.opencontainers.image.version"] // empty' <<<"${config_json}")"
+
+          test -n "${current_revision}" || {
+            echo "::error::${published_image} is missing org.opencontainers.image.revision" >&2
+            exit 1
+          }
+          test -n "${current_version}" || {
+            echo "::error::${published_image} is missing org.opencontainers.image.version" >&2
+            exit 1
+          }
+
+          upstream_digest="$(crane digest "${BASE_IMAGE_NAME}")"
+          if [ -z "${current_base_digest}" ] || [ "${current_base_digest}" != "${upstream_digest}" ]; then
+            changed=true
+          else
+            changed=false
+          fi
+
+          {
+            echo "image_repo=${image_repo}"
+            echo "published_image=${published_image}"
+            echo "current_base_digest=${current_base_digest}"
+            echo "current_revision=${current_revision}"
+            echo "current_version=${current_version}"
+            echo "upstream_digest=${upstream_digest}"
+            echo "changed=${changed}"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Set rebuild metadata
+        if: steps.check.outputs.changed == 'true'
+        id: rebuild_meta
+        run: |
+          set -euo pipefail
+          {
+            echo "timestamp=$(date -u +%Y%m%d-%H%M%S)"
+            echo "build_date=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Checkout published revision
+        if: steps.check.outputs.changed == 'true'
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ steps.check.outputs.current_revision }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        if: steps.check.outputs.changed == 'true'
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies and run release test gate
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          set -euo pipefail
+          python -m pip install --quiet -e '.[dev]'
+          python -m pytest
+
+      - name: Build and push refreshed image
+        if: steps.check.outputs.changed == 'true'
+        id: build
+        run: |
+          set -euo pipefail
+          export REGISTRY_AUTH_FILE="$HOME/.docker/config.json"
+          image="${{ steps.check.outputs.image_repo }}"
+          podman build \
+            --build-arg "VERSION=${{ steps.check.outputs.current_version }}" \
+            --build-arg "BUILD_DATE=${{ steps.rebuild_meta.outputs.build_date }}" \
+            --build-arg "VCS_REF=${{ steps.check.outputs.current_revision }}" \
+            --build-arg "BASE_IMAGE_REF=${{ env.BASE_IMAGE_NAME }}@${{ steps.check.outputs.upstream_digest }}" \
+            --build-arg "BASE_IMAGE_NAME=${{ env.BASE_IMAGE_NAME }}" \
+            --build-arg "BASE_IMAGE_DIGEST=${{ steps.check.outputs.upstream_digest }}" \
+            -t "${image}:${{ env.DEPLOYMENT_TAG }}" \
+            -t "${image}:base-refresh-${{ steps.rebuild_meta.outputs.timestamp }}" .
+          podman push "${image}:base-refresh-${{ steps.rebuild_meta.outputs.timestamp }}"
+          podman push "${image}:${{ env.DEPLOYMENT_TAG }}"
+
+      - name: Write step summary
+        if: always()
+        run: |
+          {
+            echo "## Base image check: ${BASE_IMAGE_NAME}"
+            echo
+            if [ "${{ steps.check.outcome }}" != "success" ]; then
+              echo "- Result: **operational failure** while checking image metadata"
+            elif [ "${{ steps.check.outputs.changed }}" = "true" ]; then
+              echo "- Published image: \`${{ steps.check.outputs.published_image }}\`"
+              echo "- Previous base digest: \`${{ steps.check.outputs.current_base_digest || 'none recorded' }}\`"
+              echo "- Current upstream digest: \`${{ steps.check.outputs.upstream_digest }}\`"
+              if [ "${{ steps.build.outcome }}" = "success" ]; then
+                echo "- Result: rebuilt version \`${{ steps.check.outputs.current_version }}\` from revision \`${{ steps.check.outputs.current_revision }}\`"
+              else
+                echo "- Result: change detected; deployment tag was not updated; audit tag may have been published"
+              fi
+            else
+              echo "- Published image: \`${{ steps.check.outputs.published_image }}\`"
+              echo "- Current base digest: \`${{ steps.check.outputs.upstream_digest }}\`"
+              echo "- Result: unchanged"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Notify bex
+        if: always() && (job.status != 'success' || steps.check.outputs.changed == 'true')
+        env:
+          BEX_NOTIFY_WEBHOOK_URL: ${{ secrets.BEX_NOTIFY_WEBHOOK_URL }}
+          STATUS: ${{ job.status }}
+          CHANGED: ${{ steps.check.outputs.changed }}
+          UPSTREAM_DIGEST: ${{ steps.check.outputs.upstream_digest }}
+        run: |
+          set -euo pipefail
+          if [ -z "${BEX_NOTIFY_WEBHOOK_URL:-}" ]; then
+            echo "BEX_NOTIFY_WEBHOOK_URL is not configured - skipping notification"
+            exit 0
+          fi
+
+          message="${GITHUB_REPOSITORY} base refresh ${STATUS}; changed=${CHANGED:-unknown}; digest=${UPSTREAM_DIGEST:-unknown}; run=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          payload="$(jq -n --arg message "${message}" '{message:$message}')"
+          curl --fail --silent --show-error --max-time 10 \
+            -H "Content-Type: application/json" \
+            -d "${payload}" \
+            "${BEX_NOTIFY_WEBHOOK_URL}"

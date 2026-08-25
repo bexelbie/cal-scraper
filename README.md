@@ -181,6 +181,16 @@ Or pull from GitHub Container Registry (after pushing to GitHub):
 podman pull ghcr.io/bexelbie/cal-scraper:latest
 ```
 
+The normal build records the application revision, version, and resolved
+`python:3.13-slim` digest in OCI labels. The manual base-refresh workflow
+compares that digest with the upstream image and rebuilds `latest` from the
+recorded application revision when the base changes. It also publishes a
+`base-refresh-YYYYMMDD-HHMMSS` audit tag. After the first instrumented image
+is verified, it checks monthly on the first day at 06:00 UTC and can also be
+run manually.
+Configure the optional `BEX_NOTIFY_WEBHOOK_URL` repository secret to receive
+refresh outcomes.
+
 ### Set up systemd quadlet
 
 1. Copy `cal-scraper.container` and `cal-scraper.timer` to your quadlet directory
