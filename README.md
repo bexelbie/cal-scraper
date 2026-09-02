@@ -187,9 +187,8 @@ compares that digest with the upstream image and rebuilds `latest` from the
 recorded application revision when the base changes. It also publishes a
 `base-refresh-YYYYMMDD-HHMMSS` audit tag. After the first instrumented image
 is verified, it checks monthly on the first day at 06:00 UTC and can also be
-run manually.
-Configure the optional `BEX_NOTIFY_WEBHOOK_URL` repository secret to receive
-refresh outcomes.
+run manually. Configure the `NOTIFICATION_URL` repository secret to receive
+failure and refresh outcome reports; unchanged checks do not submit reports.
 
 ### Set up systemd quadlet
 
