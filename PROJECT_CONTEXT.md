@@ -38,7 +38,7 @@ source-language event text unless translation is explicitly enabled.
 - Automated reports follow
   `~/repos/agentic-controller/REPORT_CONTRACT.md`.
 - Publisher registration and heartbeat policy live in
-  `~/repos/infra/systems/automated-report-publishers.toml`.
+  `~/repos/infra/systems/agentic-controller-jobs.toml`.
 
 ## Secrets
 
@@ -50,4 +50,3 @@ submission uses the repository `NOTIFICATION_URL` secret.
 - Deployment host topology: `~/repos/infra/systems/vps-flatcar.md`
 - Home Assistant report queue topology:
   `~/repos/infra/systems/home-assistant.md`
-

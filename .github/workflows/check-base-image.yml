@@ -155,8 +155,8 @@ jobs:
         if: always()
         env:
           NOTIFICATION_URL: ${{ secrets.NOTIFICATION_URL }}
-          REPORT_EVENT: cal-scraper.base-refresh.completed
-          REPORT_OUTCOME: ${{ job.status }}
+          REPORT_EVENT: base-refresh
+          JOB_STATUS: ${{ job.status }}
           REPORT_WORKFLOW: ${{ github.workflow }}
           REPORT_CHANGED: ${{ steps.check.outputs.changed }}
           REPORT_PUBLISHED_IMAGE: ${{ steps.check.outputs.published_image }}
@@ -168,7 +168,7 @@ jobs:
           set -euo pipefail
           : "${NOTIFICATION_URL:?NOTIFICATION_URL must be configured}"
           : "${REPORT_EVENT:?REPORT_EVENT must be set}"
-          : "${REPORT_OUTCOME:?REPORT_OUTCOME must be set}"
+          : "${JOB_STATUS:?JOB_STATUS must be set}"
           : "${REPORT_WORKFLOW:?REPORT_WORKFLOW must be set}"
           : "${GITHUB_REPOSITORY:?GITHUB_REPOSITORY must be set}"
           : "${GITHUB_RUN_ID:?GITHUB_RUN_ID must be set}"
@@ -178,6 +178,10 @@ jobs:
           event_id="github-actions:${GITHUB_REPOSITORY}:${GITHUB_RUN_ID}:${GITHUB_RUN_ATTEMPT}:${REPORT_EVENT}"
           occurred_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           run_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          outcome=success
+          if [ "$JOB_STATUS" != success ]; then
+            outcome=failure
+          fi
           payload="$(jq -n \
             --arg workflow "$REPORT_WORKFLOW" \
             --arg run_url "$run_url" \
@@ -195,7 +199,7 @@ jobs:
             --arg event_id "$event_id" \
             --arg occurred_at "$occurred_at" \
             --arg event "$REPORT_EVENT" \
-            --arg outcome "$REPORT_OUTCOME" \
+            --arg outcome "$outcome" \
             --arg repository "$GITHUB_REPOSITORY" \
             --argjson payload "$payload" \
             '{schema:1,event_id:$event_id,occurred_at:$occurred_at,
