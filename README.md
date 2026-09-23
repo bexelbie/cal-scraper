@@ -180,6 +180,13 @@ Or pull from GitHub Container Registry (after pushing to GitHub):
 podman pull ghcr.io/bexelbie/cal-scraper:latest
 ```
 
+Container arguments are passed to `cal-scraper`, so targeted manual runs work
+without overriding the entrypoint:
+
+```bash
+podman run --rm ghcr.io/bexelbie/cal-scraper:latest --site vida --dry-run
+```
+
 The normal build records the application revision, version, and resolved
 `python:3.13-slim` digest in OCI labels. The manual base-refresh workflow
 compares that digest with the upstream image and rebuilds `latest` from the
