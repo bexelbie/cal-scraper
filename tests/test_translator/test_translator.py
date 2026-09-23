@@ -7,10 +7,12 @@ from datetime import datetime
 from unittest.mock import patch
 
 import pytest
+import responses
 
 from cal_scraper.models import PRAGUE_TZ, Event
 from cal_scraper.translator import (
     TranslationError,
+    _call_azure_openai,
     _build_bilingual_description,
     _format_duration,
     _parse_single_response,
@@ -82,21 +84,55 @@ class TestLoadAzureConfig:
         monkeypatch.setenv("AZURE_OPENAI_ENDPOINT", "https://test.openai.azure.com")
         monkeypatch.setenv("AZURE_OPENAI_KEY", "test-key")
         monkeypatch.setenv("AZURE_OPENAI_DEPLOYMENT", "gpt-4o-mini")
-        monkeypatch.setenv("AZURE_OPENAI_API_VERSION", "2025-01-01")
 
         cfg = load_azure_config()
         assert cfg["azure_openai_endpoint"] == "https://test.openai.azure.com"
         assert cfg["azure_openai_key"] == "test-key"
         assert cfg["azure_openai_deployment"] == "gpt-4o-mini"
+        assert set(cfg) == {
+            "azure_openai_endpoint",
+            "azure_openai_key",
+            "azure_openai_deployment",
+        }
 
     def test_raises_on_missing_vars(self, monkeypatch):
         monkeypatch.delenv("AZURE_OPENAI_ENDPOINT", raising=False)
         monkeypatch.delenv("AZURE_OPENAI_KEY", raising=False)
         monkeypatch.delenv("AZURE_OPENAI_DEPLOYMENT", raising=False)
-        monkeypatch.delenv("AZURE_OPENAI_API_VERSION", raising=False)
 
         with pytest.raises(TranslationError, match="AZURE_OPENAI_ENDPOINT"):
             load_azure_config()
+
+
+# ---------------------------------------------------------------------------
+# _call_azure_openai
+# ---------------------------------------------------------------------------
+
+
+@responses.activate
+def test_call_azure_openai_uses_v1_endpoint():
+    config = {
+        "azure_openai_endpoint": "https://test.openai.azure.com/",
+        "azure_openai_key": "test-key",
+        "azure_openai_deployment": "gpt-4o-mini",
+    }
+    url = "https://test.openai.azure.com/openai/v1/chat/completions"
+    responses.post(url, json={"choices": []}, status=200)
+
+    result = _call_azure_openai(
+        config,
+        [{"role": "user", "content": "Hello"}],
+        max_tokens=100,
+    )
+
+    assert result == {"choices": []}
+    request = responses.calls[0].request
+    assert request.headers["api-key"] == "test-key"
+    assert json.loads(request.body) == {
+        "model": "gpt-4o-mini",
+        "messages": [{"role": "user", "content": "Hello"}],
+        "max_tokens": 100,
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -250,7 +286,6 @@ class TestTranslateSingleEvent:
         "azure_openai_endpoint": "https://test.openai.azure.com",
         "azure_openai_key": "fake",
         "azure_openai_deployment": "gpt-4o-mini",
-        "azure_openai_api_version": "2025-01-01",
     }
 
     def _mock_response(self, title, description):
@@ -311,7 +346,6 @@ class TestTranslateEvents:
         "azure_openai_endpoint": "https://test.openai.azure.com",
         "azure_openai_key": "fake",
         "azure_openai_deployment": "gpt-4o-mini",
-        "azure_openai_api_version": "2025-01-01",
     }
 
     def _mock_response(self, title, description):

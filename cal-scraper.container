@@ -26,7 +26,7 @@ Volume=/home/youruser/cal-scraper/feeds:/data:Z
 
 # Azure OpenAI settings for translation (optional — omit if Czech-only).
 # Required vars: AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_KEY,
-#   AZURE_OPENAI_DEPLOYMENT, AZURE_OPENAI_API_VERSION
+#   AZURE_OPENAI_DEPLOYMENT
 EnvironmentFile=/home/youruser/cal-scraper/cal-scraper.env
 
 # Set this to your Podman network that can reach the internet

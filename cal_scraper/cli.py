@@ -182,7 +182,7 @@ def main(argv: list[str] | None = None) -> int:
         help=(
             "Only produce translated output (no Czech files). "
             "Requires AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_KEY, "
-            "AZURE_OPENAI_DEPLOYMENT, AZURE_OPENAI_API_VERSION env vars."
+            "and AZURE_OPENAI_DEPLOYMENT env vars."
         ),
     )
     parser.add_argument(

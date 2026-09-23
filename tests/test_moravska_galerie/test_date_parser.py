@@ -307,7 +307,6 @@ class TestLlmFallback:
                 "azure_openai_endpoint": "https://fake",
                 "azure_openai_key": "fake",
                 "azure_openai_deployment": "fake",
-                "azure_openai_api_version": "2024-01-01",
             },
         )
 

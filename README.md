@@ -91,7 +91,7 @@ dedicated clickable links instead.
 
 ### Translation
 
-The `--translate` flag uses Azure OpenAI (gpt-4o-mini) to produce bilingual events:
+The `--translate` flag uses the Azure OpenAI v1 API (gpt-4o-mini) to produce bilingual events:
 - **Title:** `English Title / Czech Title`
 - **Description:** English text → event details → original Czech text
 
@@ -101,7 +101,6 @@ Set these environment variables:
 export AZURE_OPENAI_ENDPOINT=https://YOUR-RESOURCE.openai.azure.com
 export AZURE_OPENAI_KEY=your-api-key
 export AZURE_OPENAI_DEPLOYMENT=gpt-4o-mini
-export AZURE_OPENAI_API_VERSION=2025-01-01-preview
 ```
 
 Output files: `moravska-galerie.ics`, `hvezdarna.ics`, `ikea-brno.ics`, `vida.ics`, `index.html`

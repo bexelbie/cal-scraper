@@ -34,7 +34,6 @@ _ENV_MAP = {
     "azure_openai_endpoint": "AZURE_OPENAI_ENDPOINT",
     "azure_openai_key": "AZURE_OPENAI_KEY",
     "azure_openai_deployment": "AZURE_OPENAI_DEPLOYMENT",
-    "azure_openai_api_version": "AZURE_OPENAI_API_VERSION",
 }
 
 REQUIRED_KEYS = list(_ENV_MAP.keys())
@@ -48,7 +47,7 @@ def load_azure_config() -> dict[str, str]:
     """Load Azure OpenAI configuration from environment variables.
 
     Returns a dict with keys: azure_openai_endpoint, azure_openai_key,
-    azure_openai_deployment, azure_openai_api_version.
+    azure_openai_deployment.
 
     Raises TranslationError if any required variable is missing.
     """
@@ -99,13 +98,9 @@ def _call_azure_openai(
     """
     endpoint = config["azure_openai_endpoint"].rstrip("/")
     deployment = config["azure_openai_deployment"]
-    api_version = config["azure_openai_api_version"]
-    url = (
-        f"{endpoint}/openai/deployments/{deployment}"
-        f"/chat/completions?api-version={api_version}"
-    )
+    url = f"{endpoint}/openai/v1/chat/completions"
 
-    payload: dict = {"messages": messages}
+    payload: dict = {"model": deployment, "messages": messages}
     if max_tokens is not None:
         payload["max_tokens"] = max_tokens
 
