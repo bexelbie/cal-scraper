@@ -33,6 +33,7 @@ source-language event text unless translation is explicitly enabled.
 
 - `cal-scraper.container` and `cal-scraper.timer` define the systemd Quadlet
   deployment.
+- Releases follow the `github-release-changelog` skill.
 - `.github/workflows/check-base-image.yml` checks the mutable container base on
   the first day of each month at 06:00 UTC and supports manual runs.
 - Automated reports follow
